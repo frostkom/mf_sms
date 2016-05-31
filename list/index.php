@@ -65,17 +65,16 @@ echo "<div class='wrap'>
 
 	if($wpdb->num_rows > 0)
 	{
-		echo "<table class='widefat striped'>
-			<thead>
-				<tr>
-					<th></th>
-					<th>".__("From", 'lang_sms')."</th>
-					<th>".__("To", 'lang_sms')."</th>
-					<th>".__("Message", 'lang_sms')."</th>
-					<th>".__("Date", 'lang_sms')."</th>
-				</tr>
-			</thead>
-			<tbody>";
+		echo "<table class='widefat striped'>";
+
+			$arr_header[] = "";
+			$arr_header[] = __("From", 'lang_sms');
+			$arr_header[] = __("To", 'lang_sms');
+			$arr_header[] = __("Message", 'lang_sms');
+			$arr_header[] = __("Date", 'lang_sms');
+
+			echo show_table_header($arr_header)
+			."<tbody>";
 
 				foreach($result as $r)
 				{
