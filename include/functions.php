@@ -3,8 +3,8 @@
 function init_sms()
 {
 	$labels = array(
-		'name' => _x(__('SMS', 'lang_sms'), 'post type general name'),
-		'singular_name' => _x(__('SMS', 'lang_sms'), 'post type singular name'),
+		'name' => _x(__("SMS", 'lang_sms'), 'post type general name'),
+		'singular_name' => _x(__("SMS", 'lang_sms'), 'post type singular name'),
 		'menu_name' => __("SMS", 'lang_sms')
 	);
 
