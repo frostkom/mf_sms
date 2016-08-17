@@ -13,7 +13,7 @@ jQuery(function($)
 		}
 	});
 
-	$('#mf_sms textarea').on('keyup', function()
+	$('#strMessageText, #strSmsText').on('keyup', function()
 	{
 		var text_length = $(this).val().length,
 			sms_amount = Math.ceil(text_length / 155);
