@@ -29,9 +29,11 @@ function menu_sms()
 		mf_enqueue_script('script_sms', plugin_dir_url(__FILE__)."script_wp.js", array('plugin_url' => plugin_dir_url(__FILE__)));
 	}
 
-	add_menu_page(__("SMS", 'lang_sms'), __("SMS", 'lang_sms'), $menu_capability, $menu_start, '', 'dashicons-phone');
+	$menu_title = __("SMS", 'lang_sms');
+	add_menu_page($menu_title, $menu_title, $menu_capability, $menu_start, '', 'dashicons-phone');
 
-	add_submenu_page($menu_start, __("Settings", 'lang_sms'), __("Settings", 'lang_sms'), $menu_capability, admin_url("options-general.php?settings-updated=true#mf_sms_settings"));
+	$menu_title = __("Settings", 'lang_sms');
+	add_submenu_page($menu_start, $menu_title, $menu_title, $menu_capability, admin_url("options-general.php?settings-updated=true#mf_sms_settings"));
 }
 
 function contactmethods_sms($profile_fields)
