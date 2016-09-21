@@ -32,8 +32,10 @@ function menu_sms()
 	$menu_title = __("SMS", 'lang_sms');
 	add_menu_page($menu_title, $menu_title, $menu_capability, $menu_start, '', 'dashicons-phone');
 
-	$menu_title = __("Settings", 'lang_sms');
-	add_submenu_page($menu_start, $menu_title, $menu_title, $menu_capability, admin_url("options-general.php?settings-updated=true#mf_sms_settings"));
+	$menu_capability = "update_core";
+
+	$menu_title = __("Statistics", 'lang_sms');
+	add_submenu_page($menu_start, $menu_title, $menu_title, $menu_capability, $menu_root."stats/index.php");
 }
 
 function contactmethods_sms($profile_fields)
@@ -171,6 +173,7 @@ if(!function_exists('send_sms'))
 		global $wpdb;
 
 		if(!isset($data['country_no'])){	$data['country_no'] = "0046";}
+		if(!isset($data['user_id'])){		$data['user_id'] = get_current_user_id();}
 
 		if($data['to'] != '' && $data['text'] != '')
 		{
@@ -239,7 +242,7 @@ if(!function_exists('send_sms'))
 
 			if(substr($result, 0, 2) == "OK")
 			{
-				$wpdb->query($wpdb->prepare("INSERT INTO ".$wpdb->posts." SET post_type = 'mf_sms', post_title = %s, post_name = %s, post_content = %s, post_author = '%d', post_excerpt = %s, post_date = NOW()", $data['to'], $data['from'], $data['text'], get_current_user_id(), substr($result, 4)));
+				$wpdb->query($wpdb->prepare("INSERT INTO ".$wpdb->posts." SET post_type = 'mf_sms', post_title = %s, post_name = %s, post_content = %s, post_author = '%d', post_excerpt = %s, post_date = NOW()", $data['to'], $data['from'], $data['text'], $data['user_id'], substr($result, 4)));
 
 				$return_text = "OK";
 			}

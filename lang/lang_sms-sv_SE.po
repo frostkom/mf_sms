@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-22 11:37+0100\n"
+"POT-Creation-Date: 2016-09-21 09:11+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -20,41 +20,41 @@ msgstr ""
 #: ../include/functions.php:7
 #: ../include/functions.php:8
 #: ../include/functions.php:32
-#: ../include/functions.php:69
+#: ../include/functions.php:73
 #: ../list/index.php:6
 msgid "SMS"
-msgstr ""
+msgstr "SMS"
 
-#: ../include/functions.php:34
-#: ../list/index.php:48
-msgid "Settings"
-msgstr "Inställningar"
+#: ../include/functions.php:37
+#: ../stats/index.php:48
+msgid "Statistics"
+msgstr "Statistik"
 
-#: ../include/functions.php:39
+#: ../include/functions.php:43
 msgid "Phone number"
 msgstr "Telefonnummer"
 
-#: ../include/functions.php:51
+#: ../include/functions.php:55
 msgid "URL"
 msgstr "URL"
 
-#: ../include/functions.php:52
+#: ../include/functions.php:56
 msgid "Username"
 msgstr "Användarnamn"
 
-#: ../include/functions.php:53
+#: ../include/functions.php:57
 msgid "Password"
 msgstr "Lösenord"
 
-#: ../include/functions.php:54
+#: ../include/functions.php:58
 msgid "Senders"
 msgstr "Avsändare"
 
-#: ../include/functions.php:99
+#: ../include/functions.php:103
 msgid "Company,0046701234567"
 msgstr "Företag,0046701234567"
 
-#: ../include/functions.php:100
+#: ../include/functions.php:104
 msgid "One or more numbers/names separated by comma, is used for selecting which number/name is displayed to the recipient"
 msgstr "Ett eller flera nummer/namn separerat av komma, används för att kunna välja avsändare"
 
@@ -92,6 +92,10 @@ msgstr "Profil"
 msgid "or"
 msgstr "eller"
 
+#: ../list/index.php:48
+msgid "Settings"
+msgstr "Inställningar"
+
 #: ../list/index.php:49
 #: ../list/index.php:72
 msgid "To"
@@ -125,6 +129,40 @@ msgstr "för att detta ska fungera"
 #: ../list/index.php:74
 msgid "Date"
 msgstr "Datum"
+
+#: ../stats/index.php:53
+msgid "Amount / User"
+msgstr "Antal / användare"
+
+#: ../stats/index.php:76
+msgid "There were no text messages sent during this period"
+msgstr "Det skickades inga SMS under denna period"
+
+#: ../stats/index.php:84
+msgid "Filter"
+msgstr "Filter"
+
+#: ../stats/index.php:90
+msgid "Overall"
+msgstr "Allmänt"
+
+#: ../stats/index.php:97
+msgid "First Date"
+msgstr "Första datum"
+
+#: ../stats/index.php:98
+msgid "Last date"
+msgstr "Senaste datum"
+
+#: ../stats/index.php:99
+msgid "Total Amount"
+msgstr "Totalt antal"
+
+#~ msgid "Monthly"
+#~ msgstr "Per månad"
+
+#~ msgid "Totals"
+#~ msgstr "Totalt"
 
 #~ msgid "Slideshows"
 #~ msgstr "Bildspel"
@@ -418,10 +456,6 @@ msgstr "Datum"
 #, fuzzy
 #~ msgid "The widget area"
 #~ msgstr "Textfält"
-
-#, fuzzy
-#~ msgid "Footer"
-#~ msgstr "formulär"
 
 #, fuzzy
 #~ msgid "Edit post"
