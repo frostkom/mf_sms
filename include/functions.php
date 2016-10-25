@@ -105,57 +105,6 @@ function mf_sms_senders_callback()
 	</label>";
 }
 
-/*if(!function_exists('get_url_content'))
-{
-	function get_url_content($url, $catch_head = false, $password = "", $post = "", $post_data = array())
-	{
-		$url = validate_url($url, false);
-
-		$ch = curl_init();
-		$timeout = 5;
-
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
-		curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 5.1; sv-SE; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.10");
-
-		if($password != '')
-		{
-			curl_setopt($ch, CURLOPT_USERPWD, $password);
-		}
-
-		if($post != '')
-		{
-			curl_setopt($ch, CURLOPT_POST, 1);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, "status=".$post);
-		}
-
-		else if(count($post_data) > 0)
-		{
-			curl_setopt($ch, CURLOPT_POST, 1);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
-		}
-
-		$content = curl_exec($ch);
-
-		if($catch_head == true)
-		{
-			$headers = curl_getinfo($ch);
-
-			$return_value = array($content, $headers);
-		}
-
-		else
-		{
-			$return_value = $content;
-		}
-
-		curl_close($ch);
-
-		return $return_value;
-	}
-}*/
-
 if(!function_exists('strip_phone_no'))
 {
 	function strip_phone_no($data)
