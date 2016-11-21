@@ -48,7 +48,7 @@ echo "<div class='wrap'>
 					echo show_select(array('data' => $arr_data, 'name' => 'strSmsFrom', 'text' => __("From", 'lang_sms'), 'value' => "", 'required' => true, 'description' => __("Add more", 'lang_sms').": <a href='".admin_url("profile.php#mf_sms_phone")."'>".__("Profile", 'lang_sms')."</a> ".__("or", 'lang_sms')." <a href='".admin_url("options-general.php?page=settings_mf_base#settings_sms")."'>".__("Settings", 'lang_sms')."</a>"))
 					.show_textfield(array('name' => "strSmsTo", 'text' => __("To", 'lang_sms'), 'value' => $strSmsTo, 'required' => true, 'placeholder' => "0046701234567"))
 					.show_textarea(array('name' => "strSmsText", 'text' => __("Message", 'lang_sms'), 'value' => "", 'required' => true))
-					.show_submit(array('name' => "btnGroupSend", 'text' => __("Send", 'lang_sms')))
+					.show_button(array('name' => "btnGroupSend", 'text' => __("Send", 'lang_sms')))
 					."<span id='chars_left'></span> (<span id='sms_amount'>1</span>)
 				</form>";
 			}
