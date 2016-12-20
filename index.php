@@ -1,13 +1,15 @@
 <?php
 /*
 Plugin Name: MF SMS
-Plugin URI: 
+Plugin URI: https://github.com/frostkom/mf_sms
 Description: 
-Version: 2.1.0
+Version: 2.1.1
 Author: Martin Fors
 Author URI: http://frostkom.se
 Text Domain: lang_sms
 Domain Path: /lang
+
+GitHub Plugin URI: frostkom/mf_sms
 */
 
 if(is_admin())

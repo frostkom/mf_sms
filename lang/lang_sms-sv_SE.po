@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-21 09:11+0100\n"
+"POT-Creation-Date: 2016-12-15 11:59+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -26,7 +26,7 @@ msgid "SMS"
 msgstr "SMS"
 
 #: ../include/functions.php:37
-#: ../stats/index.php:48
+#: ../stats/index.php:53
 msgid "Statistics"
 msgstr "Statistik"
 
@@ -130,31 +130,31 @@ msgstr "för att detta ska fungera"
 msgid "Date"
 msgstr "Datum"
 
-#: ../stats/index.php:53
+#: ../stats/index.php:58
 msgid "Amount / User"
 msgstr "Antal / användare"
 
-#: ../stats/index.php:76
+#: ../stats/index.php:81
 msgid "There were no text messages sent during this period"
 msgstr "Det skickades inga SMS under denna period"
 
-#: ../stats/index.php:84
+#: ../stats/index.php:89
 msgid "Filter"
 msgstr "Filter"
 
-#: ../stats/index.php:90
+#: ../stats/index.php:95
 msgid "Overall"
 msgstr "Allmänt"
 
-#: ../stats/index.php:97
+#: ../stats/index.php:102
 msgid "First Date"
 msgstr "Första datum"
 
-#: ../stats/index.php:98
+#: ../stats/index.php:103
 msgid "Last date"
 msgstr "Senaste datum"
 
-#: ../stats/index.php:99
+#: ../stats/index.php:104
 msgid "Total Amount"
 msgstr "Totalt antal"
 
