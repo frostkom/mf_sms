@@ -52,10 +52,10 @@ function settings_sms()
 	add_settings_section($options_area, "", $options_area."_callback", BASE_OPTIONS_PAGE);
 
 	$arr_settings = array(
-		"mf_sms_url" => __("URL", 'lang_sms'),
-		"mf_sms_username" => __("Username", 'lang_sms'),
-		"mf_sms_password" => __("Password", 'lang_sms'),
-		"mf_sms_senders" => __("Senders", 'lang_sms'),
+		'mf_sms_url' => __("URL", 'lang_sms'),
+		'mf_sms_username' => __("Username", 'lang_sms'),
+		'mf_sms_password' => __("Password", 'lang_sms'),
+		'mf_sms_senders' => __("Senders", 'lang_sms'),
 	);
 
 	foreach($arr_settings as $handle => $text)
