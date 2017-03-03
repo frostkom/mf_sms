@@ -99,10 +99,15 @@ function mf_sms_password_callback()
 
 function mf_sms_senders_callback()
 {
-	echo "<label>
+	$setting_key = get_setting_key(__FUNCTION__);
+	$option = get_option($setting_key);
+
+	echo show_textfield(array('name' => $setting_key, 'value' => $option, 'placeholder' => __("Company,0046701234567", 'lang_sms'), 'description' => __("One or more numbers/names separated by comma, is used for selecting which number/name is displayed to the recipient", 'lang_sms')));
+
+	/*echo "<label>
 		<input type='text' name='mf_sms_senders' value='".get_option('mf_sms_senders')."' placeholder='".__("Company,0046701234567", 'lang_sms')."...' class='regular-text'>
 		<p class='description'>".__("One or more numbers/names separated by comma, is used for selecting which number/name is displayed to the recipient", 'lang_sms')."</p>
-	</label>";
+	</label>";*/
 }
 
 if(!function_exists('strip_phone_no'))
