@@ -10,7 +10,8 @@ function init_sms()
 
 	$args = array(
 		'labels' => $labels,
-		'public' => false
+		'public' => false,
+		'exclude_from_search' => true,
 	);
 
 	register_post_type('mf_sms', $args);
