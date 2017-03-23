@@ -53,18 +53,13 @@ function settings_sms()
 	add_settings_section($options_area, "", $options_area."_callback", BASE_OPTIONS_PAGE);
 
 	$arr_settings = array(
-		'mf_sms_url' => __("URL", 'lang_sms'),
-		'mf_sms_username' => __("Username", 'lang_sms'),
-		'mf_sms_password' => __("Password", 'lang_sms'),
-		'mf_sms_senders' => __("Senders", 'lang_sms'),
+		'setting_sms_url' => __("URL", 'lang_sms'),
+		'setting_sms_username' => __("Username", 'lang_sms'),
+		'setting_sms_password' => __("Password", 'lang_sms'),
+		'setting_sms_senders' => __("Senders", 'lang_sms'),
 	);
 
-	foreach($arr_settings as $handle => $text)
-	{
-		add_settings_field($handle, $text, $handle."_callback", BASE_OPTIONS_PAGE, $options_area);
-
-		register_setting(BASE_OPTIONS_PAGE, $handle);
-	}
+	show_settings_fields(array('area' => $options_area, 'settings' => $arr_settings));
 }
 
 function settings_sms_callback()
@@ -74,7 +69,7 @@ function settings_sms_callback()
 	echo settings_header($setting_key, __("SMS", 'lang_sms'));
 }
 
-function mf_sms_url_callback()
+function setting_sms_url_callback()
 {
 	$setting_key = get_setting_key(__FUNCTION__);
 	$option = get_option($setting_key);
@@ -82,7 +77,7 @@ function mf_sms_url_callback()
 	echo show_textfield(array('name' => $setting_key, 'value' => $option));
 }
 
-function mf_sms_username_callback()
+function setting_sms_username_callback()
 {
 	$setting_key = get_setting_key(__FUNCTION__);
 	$option = get_option($setting_key);
@@ -90,7 +85,7 @@ function mf_sms_username_callback()
 	echo show_textfield(array('name' => $setting_key, 'value' => $option));
 }
 
-function mf_sms_password_callback()
+function setting_sms_password_callback()
 {
 	$setting_key = get_setting_key(__FUNCTION__);
 	$option = get_option($setting_key);
@@ -98,7 +93,7 @@ function mf_sms_password_callback()
 	echo show_password_field(array('name' => $setting_key, 'value' => $option));
 }
 
-function mf_sms_senders_callback()
+function setting_sms_senders_callback()
 {
 	$setting_key = get_setting_key(__FUNCTION__);
 	$option = get_option($setting_key);
@@ -184,9 +179,9 @@ if(!function_exists('send_sms'))
 				}
 			}
 
-			$sms_url = get_option('mf_sms_url');
-			$sms_username = get_option('mf_sms_username');
-			$sms_password = get_option('mf_sms_password');
+			$sms_url = get_option('setting_sms_url');
+			$sms_username = get_option('setting_sms_username');
+			$sms_password = get_option('setting_sms_password');
 
 			$result = get_url_content($sms_url."?username=".$sms_username."&password=".$sms_password."&destination=".$data['to']."&originatortype=".$originatortype."&originator=".$data['from']."&charset=UTF-8&text=".urlencode(html_entity_decode(html_entity_decode(stripslashes($data['text']))))."&allowconcat=6");
 

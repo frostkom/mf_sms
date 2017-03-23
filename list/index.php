@@ -18,10 +18,10 @@ echo "<div class='wrap'>
 		<h3 class='hndle'>".__("Send SMS", 'lang_sms')."</h3>
 		<div class='inside'>";
 
-			$sms_url = get_option('mf_sms_url');
-			$sms_username = get_option('mf_sms_username');
-			$sms_password = get_option('mf_sms_password');
-			$sms_senders = get_option('mf_sms_senders');
+			$sms_url = get_option('setting_sms_url');
+			$sms_username = get_option('setting_sms_username');
+			$sms_password = get_option('setting_sms_password');
+			$sms_senders = get_option('setting_sms_senders');
 			$sms_phone = get_user_meta(get_current_user_id(), 'mf_sms_phone', true);
 
 			if($sms_url != '' && $sms_username && $sms_password != '' && ($sms_senders != '' || $sms_phone != ''))
