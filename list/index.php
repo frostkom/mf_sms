@@ -88,11 +88,11 @@ echo "<div class='wrap'>
 					switch($post_status)
 					{
 						case 'delivered':
-							$status_icon = "fa-check";
+							$status_icon = "fa-check green";
 						break;
 
 						case 'failed':
-							$status_icon = "fa-ban";
+							$status_icon = "fa-ban red";
 						break;
 
 						case 'buffered':
