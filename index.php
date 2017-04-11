@@ -3,7 +3,7 @@
 Plugin Name: MF SMS
 Plugin URI: https://github.com/frostkom/mf_sms
 Description: 
-Version: 2.2.1
+Version: 2.3.1
 Author: Martin Fors
 Author URI: http://frostkom.se
 Text Domain: lang_sms
@@ -11,6 +11,8 @@ Domain Path: /lang
 
 GitHub Plugin URI: frostkom/mf_sms
 */
+
+add_action('cron_base', 'activate_sms', mt_rand(1, 10));
 
 if(is_admin())
 {

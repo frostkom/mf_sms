@@ -24,12 +24,11 @@ echo "<div class='wrap'>
 			$sms_senders = get_option('setting_sms_senders');
 			$sms_phone = get_user_meta(get_current_user_id(), 'mf_sms_phone', true);
 
-			if($sms_url != '' && $sms_username && $sms_password != '' && ($sms_senders != '' || $sms_phone != ''))
+			if($sms_url != '' && $sms_username != '' && $sms_password != '' && ($sms_senders != '' || $sms_phone != ''))
 			{
 				echo "<form action='#' method='post' id='mf_sms' class='mf_form mf_settings'>";
 
 					$arr_data = array();
-
 					$arr_data[''] = "-- ".__("Choose here", 'lang_sms')." --";
 
 					foreach(explode(",", $sms_senders) as $sender)
@@ -46,7 +45,7 @@ echo "<div class='wrap'>
 					}
 
 					echo show_select(array('data' => $arr_data, 'name' => 'strSmsFrom', 'text' => __("From", 'lang_sms'), 'value' => "", 'required' => true, 'description' => __("Add more", 'lang_sms').": <a href='".admin_url("profile.php#mf_sms_phone")."'>".__("Profile", 'lang_sms')."</a> ".__("or", 'lang_sms')." <a href='".admin_url("options-general.php?page=settings_mf_base#settings_sms")."'>".__("Settings", 'lang_sms')."</a>"))
-					.show_textfield(array('name' => "strSmsTo", 'text' => __("To", 'lang_sms'), 'value' => $strSmsTo, 'required' => true, 'placeholder' => "0046701234567"))
+					.show_textfield(array('name' => "strSmsTo", 'text' => __("To", 'lang_sms'), 'value' => $strSmsTo, 'required' => true, 'placeholder' => "0046701234567", 'xtra' => "id='strSmsTo'"))
 					.show_textarea(array('name' => "strSmsText", 'text' => __("Message", 'lang_sms'), 'value' => "", 'required' => true))
 					.show_button(array('name' => "btnGroupSend", 'text' => __("Send", 'lang_sms')))
 					."<span id='chars_left'></span> (<span id='sms_amount'>1</span>)

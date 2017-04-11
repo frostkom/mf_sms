@@ -13,6 +13,29 @@ jQuery(function($)
 		}
 	});
 
+	$("#strSmsTo").autocomplete(
+	{
+		source: function(request, response)
+		{
+			$.ajax(
+			{
+				url: script_sms.plugin_url + 'ajax.php?type=sms/search',
+				dataType: "json",
+				data: {
+					s: request.term
+				},
+				success: function(data)
+				{
+					if(data.amount > 0)
+					{
+						response(data);
+					}
+				}
+			});
+		},
+		minLength: 3
+	});
+
 	$('#strMessageText, #strSmsText').on('keyup', function()
 	{
 		var text_length = $(this).val().length,
@@ -25,7 +48,7 @@ jQuery(function($)
 
 	$('#mf_sms').on('submit', function()
 	{
-		$('.updated, .error').hide();
+		$('.updated, .error').addClass('hide');
 
 		var form_data = $(this).serialize();
 
@@ -39,15 +62,14 @@ jQuery(function($)
 			{
 				if(data.success)
 				{
-					$('.updated').show();
+					$('.updated').removeClass('hide');
 
 					$('#mf_sms')[0].reset();
 				}
 
 				else if(data.error)
 				{
-					$('.error').show();
-					//alert(data.error);
+					$('.error').removeClass('hide');
 				}
 			}
 		});
