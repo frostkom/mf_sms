@@ -40,7 +40,7 @@ function menu_sms()
 
 	if(current_user_can($menu_capability))
 	{
-		mf_enqueue_script('script_sms', plugin_dir_url(__FILE__)."script_wp.js", array('plugin_url' => plugin_dir_url(__FILE__)));
+		mf_enqueue_script('script_sms', plugin_dir_url(__FILE__)."script_wp.js", array('plugin_url' => plugin_dir_url(__FILE__)), get_plugin_version(__FILE__));
 	}
 
 	$menu_title = __("SMS", 'lang_sms');
