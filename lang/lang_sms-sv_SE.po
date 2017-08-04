@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-01 11:27+0100\n"
+"POT-Creation-Date: 2017-05-22 10:56+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -16,45 +16,45 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: ..\n"
 
-#: ../include/functions.php:6
-#: ../include/functions.php:7
-#: ../include/functions.php:8
-#: ../include/functions.php:32
-#: ../include/functions.php:73
+#: ../include/functions.php:19
+#: ../include/functions.php:20
+#: ../include/functions.php:21
+#: ../include/functions.php:46
+#: ../include/functions.php:82
 #: ../list/index.php:6
 msgid "SMS"
 msgstr "SMS"
 
-#: ../include/functions.php:37
+#: ../include/functions.php:51
 #: ../stats/index.php:53
 msgid "Statistics"
 msgstr "Statistik"
 
-#: ../include/functions.php:43
+#: ../include/functions.php:57
 msgid "Phone number"
 msgstr "Telefonnummer"
 
-#: ../include/functions.php:55
+#: ../include/functions.php:69
 msgid "URL"
 msgstr "URL"
 
-#: ../include/functions.php:56
+#: ../include/functions.php:70
 msgid "Username"
 msgstr "Användarnamn"
 
-#: ../include/functions.php:57
+#: ../include/functions.php:71
 msgid "Password"
 msgstr "Lösenord"
 
-#: ../include/functions.php:58
+#: ../include/functions.php:72
 msgid "Senders"
 msgstr "Avsändare"
 
-#: ../include/functions.php:103
+#: ../include/functions.php:114
 msgid "Company,0046701234567"
 msgstr "Företag,0046701234567"
 
-#: ../include/functions.php:104
+#: ../include/functions.php:114
 msgid "One or more numbers/names separated by comma, is used for selecting which number/name is displayed to the recipient"
 msgstr "Ett eller flera nummer/namn separerat av komma, används för att kunna välja avsändare"
 
@@ -70,63 +70,63 @@ msgstr "Meddelandet skickades"
 msgid "Send SMS"
 msgstr "Skicka SMS"
 
-#: ../list/index.php:33
+#: ../list/index.php:32
 msgid "Choose here"
 msgstr "Välj här"
 
-#: ../list/index.php:48
-#: ../list/index.php:71
+#: ../list/index.php:47
+#: ../list/index.php:70
 msgid "From"
 msgstr "Från"
 
-#: ../list/index.php:48
+#: ../list/index.php:47
 msgid "Add more"
 msgstr "Lägg till fler"
 
-#: ../list/index.php:48
+#: ../list/index.php:47
 msgid "Profile"
 msgstr "Profil"
 
-#: ../list/index.php:48
-#: ../list/index.php:58
+#: ../list/index.php:47
+#: ../list/index.php:57
 msgid "or"
 msgstr "eller"
 
-#: ../list/index.php:48
+#: ../list/index.php:47
 msgid "Settings"
 msgstr "Inställningar"
 
-#: ../list/index.php:49
-#: ../list/index.php:72
+#: ../list/index.php:48
+#: ../list/index.php:71
 msgid "To"
 msgstr "Till"
 
-#: ../list/index.php:50
-#: ../list/index.php:73
+#: ../list/index.php:49
+#: ../list/index.php:72
 msgid "Message"
 msgstr "Meddelande"
 
-#: ../list/index.php:51
+#: ../list/index.php:50
 msgid "Send"
 msgstr "Skicka"
 
-#: ../list/index.php:58
+#: ../list/index.php:57
 msgid "You have to"
 msgstr "Du måste"
 
-#: ../list/index.php:58
+#: ../list/index.php:57
 msgid "Add your phone number in the profile"
 msgstr "Lägga till ditt telefonnummer i profilen"
 
-#: ../list/index.php:58
+#: ../list/index.php:57
 msgid "Add URL, Username & Password in the settings page"
 msgstr "Lägga till URL, användarnamn och lösenord på inställningssidan"
 
-#: ../list/index.php:58
+#: ../list/index.php:57
 msgid "for this to work"
 msgstr "för att detta ska fungera"
 
-#: ../list/index.php:74
+#: ../list/index.php:73
 msgid "Date"
 msgstr "Datum"
 

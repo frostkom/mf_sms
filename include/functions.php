@@ -95,7 +95,7 @@ function setting_sms_username_callback()
 	$setting_key = get_setting_key(__FUNCTION__);
 	$option = get_option($setting_key);
 
-	echo show_textfield(array('name' => $setting_key, 'value' => $option));
+	echo show_textfield(array('name' => $setting_key, 'value' => $option, 'xtra' => " autocomplete='off'"));
 }
 
 function setting_sms_password_callback()
@@ -103,7 +103,7 @@ function setting_sms_password_callback()
 	$setting_key = get_setting_key(__FUNCTION__);
 	$option = get_option($setting_key);
 
-	echo show_password_field(array('name' => $setting_key, 'value' => $option));
+	echo show_password_field(array('name' => $setting_key, 'value' => $option, 'xtra' => " autocomplete='off'"));
 }
 
 function setting_sms_senders_callback()
