@@ -3,7 +3,7 @@
 Plugin Name: MF SMS
 Plugin URI: https://github.com/frostkom/mf_sms
 Description: 
-Version: 2.3.5
+Version: 2.3.6
 Author: Martin Fors
 Author URI: http://frostkom.se
 Text Domain: lang_sms
@@ -41,5 +41,6 @@ function uninstall_sms()
 {
 	mf_uninstall_plugin(array(
 		'options' => array('setting_sms_url', 'setting_sms_username', 'setting_sms_password', 'setting_sms_senders'),
+		'post_types' => array('mf_sms'),
 	));
 }
