@@ -3,7 +3,7 @@
 Plugin Name: MF SMS
 Plugin URI: https://github.com/frostkom/mf_sms
 Description: 
-Version: 2.3.6
+Version: 2.3.7
 Author: Martin Fors
 Author URI: http://frostkom.se
 Text Domain: lang_sms
@@ -12,13 +12,10 @@ Domain Path: /lang
 GitHub Plugin URI: frostkom/mf_sms
 */
 
-add_action('cron_base', 'activate_sms', mt_rand(1, 10));
-
 if(is_admin())
 {
 	include_once("include/functions.php");
 
-	register_activation_hook(__FILE__, 'activate_sms');
 	register_uninstall_hook(__FILE__, 'uninstall_sms');
 
 	add_action('init', 'init_sms');
@@ -27,14 +24,6 @@ if(is_admin())
 	add_filter('user_contactmethods', 'contactmethods_sms');
 
 	load_plugin_textdomain('lang_sms', false, dirname(plugin_basename(__FILE__)).'/lang/');
-}
-
-function activate_sms()
-{
-	replace_option(array('old' => 'mf_sms_url', 'new' => 'setting_sms_url'));
-	replace_option(array('old' => 'mf_sms_username', 'new' => 'setting_sms_username'));
-	replace_option(array('old' => 'mf_sms_password', 'new' => 'setting_sms_password'));
-	replace_option(array('old' => 'mf_sms_senders', 'new' => 'setting_sms_senders'));
 }
 
 function uninstall_sms()
