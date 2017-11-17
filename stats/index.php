@@ -88,7 +88,7 @@ echo "<div class='wrap'>
 				<div class='postbox'>
 					<h3 class='hndle'><span>".__("Filter", 'lang_sms')."</span></h3>
 					<form method='post' class='inside mf_form'>"
-						.show_select(array('data' => $arr_data_months, 'name' => 'dteSmsMonth', 'value' => $dteSmsMonth, 'xtra' => "rel='submit_change'"))
+						.show_select(array('data' => $arr_data_months, 'name' => 'dteSmsMonth', 'value' => $dteSmsMonth, 'xtra' => "rel='submit_change' disabled"))
 					."</form>
 				</div>
 				<div class='postbox'>
