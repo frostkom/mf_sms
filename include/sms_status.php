@@ -35,7 +35,7 @@ if(!in_array($strDataIP, $arr_ips))
 
 else
 {
-	$wpdb->get_results("SELECT ID FROM ".$wpdb->posts." WHERE post_excerpt LIKE '%".esc_sql($trackingid)."%'");
+	$wpdb->get_results("SELECT ID FROM ".$wpdb->posts." WHERE post_excerpt LIKE '%".esc_sql($trackingid)."%' LIMIT 0, 1");
 
 	if($status != '' && $wpdb->num_rows > 0)
 	{
