@@ -5,7 +5,7 @@ jQuery(function($)
 		if(e.which != 3)
 		{
 			var this_href = $(this).attr('href').replace('tel:', ''),
-				url = '/wp-admin/admin.php?page=mf_sms/list/index.php&strSmsTo=' + this_href;
+				url = script_sms.admin_url + '&strSmsTo=' + this_href;
 
 			location.href = url;
 
