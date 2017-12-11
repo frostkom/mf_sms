@@ -3,7 +3,7 @@
 Plugin Name: MF SMS
 Plugin URI: https://github.com/frostkom/mf_sms
 Description: 
-Version: 2.3.14
+Version: 2.3.15
 Author: Martin Fors
 Author URI: http://frostkom.se
 Text Domain: lang_sms

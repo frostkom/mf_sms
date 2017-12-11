@@ -19,7 +19,7 @@ jQuery(function($)
 		{
 			$.ajax(
 			{
-				url: script_sms.plugin_url + 'ajax.php?type=sms/search',
+				url: script_sms.plugin_url + 'api/?type=sms/search',
 				dataType: "json",
 				data: {
 					s: request.term
@@ -54,7 +54,7 @@ jQuery(function($)
 
 		$.ajax(
 		{
-			url: script_sms.plugin_url + 'ajax.php?type=sms_send',
+			url: script_sms.plugin_url + 'api/?type=sms_send',
 			type: 'post',
 			data: form_data,
 			dataType: 'json',
