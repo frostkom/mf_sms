@@ -42,7 +42,7 @@ else if($type_action == "sms")
 
 		if(is_plugin_active("mf_address/index.php"))
 		{
-			$result = $wpdb->get_results("SELECT addressCellNo FROM ".$wpdb->base_prefix."address WHERE addressCellNo != '' AND (addressFirstName LIKE '%".$strSearch."%' OR addressSurName LIKE '%".$strSearch."%' OR CONCAT(addressFirstName, ' ', addressSurName) LIKE '%".$strSearch."%' OR REPLACE(REPLACE(REPLACE(addressCellNo, '/', ''), '-', ''), ' ', '') LIKE '%".$strSearch."%') GROUP BY addressCellNo ORDER BY addressSurName ASC, addressFirstName ASC");
+			$result = $wpdb->get_results("SELECT addressCellNo FROM ".$wpdb->prefix."address WHERE addressCellNo != '' AND (addressFirstName LIKE '%".$strSearch."%' OR addressSurName LIKE '%".$strSearch."%' OR CONCAT(addressFirstName, ' ', addressSurName) LIKE '%".$strSearch."%' OR REPLACE(REPLACE(REPLACE(addressCellNo, '/', ''), '-', ''), ' ', '') LIKE '%".$strSearch."%') GROUP BY addressCellNo ORDER BY addressSurName ASC, addressFirstName ASC");
 
 			foreach($result as $r)
 			{
