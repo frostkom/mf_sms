@@ -3,7 +3,7 @@
 Plugin Name: MF SMS
 Plugin URI: https://github.com/frostkom/mf_sms
 Description: 
-Version: 2.4.2
+Version: 2.4.3
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: http://frostkom.se
@@ -27,7 +27,7 @@ if(is_admin())
 
 	add_action('admin_menu', 'menu_sms');
 	add_action('admin_init', 'settings_sms');
-	add_action('admin_init', array($obj_sms, 'admin_init'));
+	add_action('admin_init', array($obj_sms, 'admin_init'), 0);
 
 	add_filter('user_contactmethods', 'contactmethods_sms');
 
