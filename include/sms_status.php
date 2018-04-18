@@ -23,7 +23,7 @@ $arr_ips = array(
 
 if(!in_array($strDataIP, $arr_ips))
 {
-	error_log("Wrong IP: ".$strDataIP.", ".$trackingid.", ".$status);
+	do_log("Wrong IP: ".$strDataIP.", ".$trackingid.", ".$status);
 
 	header("Status: 503 Unknown IP-address");
 }
