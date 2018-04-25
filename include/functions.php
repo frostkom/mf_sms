@@ -39,7 +39,7 @@ function menu_sms()
 	$menu_capability = "edit_pages";
 
 	$menu_title = __("SMS", 'lang_sms');
-	add_menu_page($menu_title, $menu_title, $menu_capability, $menu_start, '', 'dashicons-phone', 80);
+	add_menu_page($menu_title, $menu_title, $menu_capability, $menu_start, '', 'dashicons-phone', 99);
 
 	$menu_capability = "update_core";
 
