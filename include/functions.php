@@ -49,7 +49,7 @@ function menu_sms()
 
 function contactmethods_sms($profile_fields)
 {
-	$profile_fields['mf_sms_phone'] = __("Phone number", 'lang_sms');
+	$profile_fields['meta_sms_phone'] = __("Phone number", 'lang_sms');
 
 	return $profile_fields;
 }

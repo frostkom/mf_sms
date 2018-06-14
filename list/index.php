@@ -22,14 +22,14 @@ echo "<div class='wrap'>
 			$sms_username = get_option('setting_sms_username');
 			$sms_password = get_option('setting_sms_password');
 			$sms_senders = get_option('setting_sms_senders');
-			$sms_phone = get_user_meta(get_current_user_id(), 'mf_sms_phone', true);
+			$sms_phone = get_user_meta(get_current_user_id(), 'meta_sms_phone', true);
 
 			if($sms_url != '' && $sms_username != '' && $sms_password != '' && ($sms_senders != '' || $sms_phone != ''))
 			{
 				echo "<form action='#' method='post' id='mf_sms' class='mf_form mf_settings'>";
 
 					$arr_data = array();
-					$arr_data[''] = "-- ".__("Choose here", 'lang_sms')." --";
+					$arr_data[''] = "-- ".__("Choose Here", 'lang_sms')." --";
 
 					foreach(explode(",", $sms_senders) as $sender)
 					{
@@ -44,7 +44,7 @@ echo "<div class='wrap'>
 						$arr_data[$sms_phone] = $sms_phone;
 					}
 
-					echo show_select(array('data' => $arr_data, 'name' => 'strSmsFrom', 'text' => __("From", 'lang_sms'), 'value' => "", 'required' => true, 'description' => __("Add more", 'lang_sms').": <a href='".admin_url("profile.php#mf_sms_phone")."'>".__("Profile", 'lang_sms')."</a> ".__("or", 'lang_sms')." <a href='".admin_url("options-general.php?page=settings_mf_base#settings_sms")."'>".__("Settings", 'lang_sms')."</a>"))
+					echo show_select(array('data' => $arr_data, 'name' => 'strSmsFrom', 'text' => __("From", 'lang_sms'), 'value' => "", 'required' => true, 'description' => __("Add more", 'lang_sms').": <a href='".admin_url("profile.php#meta_sms_phone")."'>".__("Profile", 'lang_sms')."</a> ".__("or", 'lang_sms')." <a href='".admin_url("options-general.php?page=settings_mf_base#settings_sms")."'>".__("Settings", 'lang_sms')."</a>"))
 					.show_textfield(array('name' => "strSmsTo", 'text' => __("To", 'lang_sms'), 'value' => $strSmsTo, 'required' => true, 'placeholder' => "0046701234567"))
 					.show_textarea(array('name' => "strSmsText", 'text' => __("Message", 'lang_sms'), 'value' => "", 'required' => true))
 					.show_button(array('name' => "btnGroupSend", 'text' => __("Send", 'lang_sms')))
@@ -54,7 +54,7 @@ echo "<div class='wrap'>
 
 			else
 			{
-				echo __("You have to", 'lang_sms')." <a href='".admin_url("profile.php#mf_sms_phone")."'>".__("Add your phone number in the profile", 'lang_sms')."</a> ".__("or", 'lang_sms')." <a href='".admin_url("options-general.php?page=settings_mf_base#settings_sms")."'>".__("Add URL, Username & Password in the settings page", 'lang_sms')."</a> ".__("for this to work", 'lang_sms');
+				echo __("You have to", 'lang_sms')." <a href='".admin_url("profile.php#meta_sms_phone")."'>".__("Add your phone number in the profile", 'lang_sms')."</a> ".__("or", 'lang_sms')." <a href='".admin_url("options-general.php?page=settings_mf_base#settings_sms")."'>".__("Add URL, Username & Password in the settings page", 'lang_sms')."</a> ".__("for this to work", 'lang_sms');
 			}
 
 		echo "</div>
