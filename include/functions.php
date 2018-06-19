@@ -36,12 +36,12 @@ function menu_sms()
 
 	$menu_root = 'mf_sms/';
 	$menu_start = $menu_root.'list/index.php';
-	$menu_capability = "edit_pages";
+	$menu_capability = override_capability(array('page' => $menu_start, 'default' => 'edit_pages'));
 
 	$menu_title = __("SMS", 'lang_sms');
 	add_menu_page($menu_title, $menu_title, $menu_capability, $menu_start, '', 'dashicons-phone', 99);
 
-	$menu_capability = "update_core";
+	$menu_capability = override_capability(array('page' => $menu_start, 'default' => 'update_core'));
 
 	$menu_title = __("Statistics", 'lang_sms');
 	add_submenu_page($menu_start, $menu_title, $menu_title, $menu_capability, $menu_root."stats/index.php");
