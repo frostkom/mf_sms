@@ -95,7 +95,7 @@ echo "<div class='wrap'>
 						break;
 
 						case 'buffered':
-							$status_icon = "fa-cloud";
+							$status_icon = "fa-cloud blue";
 						break;
 
 						default:
