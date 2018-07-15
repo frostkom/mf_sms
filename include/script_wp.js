@@ -20,7 +20,7 @@ jQuery(function($)
 			$.ajax(
 			{
 				url: script_sms.plugin_url + 'api/?type=sms/search',
-				dataType: "json",
+				dataType: 'json',
 				data: {
 					s: request.term
 				},
@@ -36,19 +36,19 @@ jQuery(function($)
 		minLength: 3
 	});
 
-	$('#strMessageText, #strSmsText').on('keyup', function()
+	$("#strMessageText, #strSmsText").on('keyup', function()
 	{
 		var text_length = $(this).val().length,
 			sms_amount = Math.ceil(text_length / 155);
 			chars_left = 155 - text_length % 155;
 
-		$('#sms_amount').text(sms_amount);
-		$('#chars_left').text(chars_left);
+		$("#sms_amount").text(sms_amount);
+		$("#chars_left").text(chars_left);
 	});
 
-	$('#mf_sms').on('submit', function()
+	$("#mf_sms").on('submit', function()
 	{
-		$('.updated, .error').addClass('hide');
+		$(".updated, .error").addClass('hide');
 
 		var form_data = $(this).serialize();
 
@@ -62,14 +62,14 @@ jQuery(function($)
 			{
 				if(data.success)
 				{
-					$('.updated').removeClass('hide');
+					$(".updated").removeClass('hide');
 
-					$('#mf_sms')[0].reset();
+					$("#mf_sms")[0].reset();
 				}
 
-				else if(data.error)
+				else
 				{
-					$('.error').removeClass('hide');
+					$(".error").removeClass('hide');
 				}
 			}
 		});

@@ -9,7 +9,8 @@ if(!defined('ABSPATH'))
 	require_once($folder."wp-load.php");
 }
 
-//require_once("functions.php");
+include_once("../classes.php");
+require_once("../functions.php");
 
 $json_output = array();
 
@@ -17,7 +18,7 @@ $type = check_var('type', 'char');
 $arr_input = explode("/", $type);
 $type_action = $arr_input[0];
 
-if($type_action == "sms_send" && get_current_user_id() > 0)
+if($type_action == 'sms_send' && get_current_user_id() > 0)
 {
 	$strSmsFrom = check_var('strSmsFrom');
 	$strSmsTo = check_var('strSmsTo');
@@ -31,9 +32,9 @@ if($type_action == "sms_send" && get_current_user_id() > 0)
 	}
 }
 
-else if($type_action == "sms")
+else if($type_action == 'sms')
 {
-	if($arr_input[1] == "search")
+	if($arr_input[1] == 'search')
 	{
 		$strSearch = check_var('s', 'char');
 

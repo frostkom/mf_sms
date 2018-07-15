@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-24 09:58+0100\n"
+"POT-Creation-Date: 2018-07-15 10:08+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -19,42 +19,56 @@ msgstr ""
 #: ../include/functions.php:19
 #: ../include/functions.php:20
 #: ../include/functions.php:21
-#: ../include/functions.php:46
-#: ../include/functions.php:82
+#: ../include/functions.php:41
+#: ../include/functions.php:78
 #: ../list/index.php:6
 msgid "SMS"
 msgstr "SMS"
 
-#: ../include/functions.php:51
+#: ../include/functions.php:46
 #: ../stats/index.php:53
 msgid "Statistics"
 msgstr "Statistik"
 
-#: ../include/functions.php:57
+#: ../include/functions.php:52
 msgid "Phone number"
 msgstr "Telefonnummer"
 
-#: ../include/functions.php:69
-msgid "URL"
-msgstr "URL"
+#: ../include/functions.php:64
+msgid "Provider"
+msgstr "Leverantör"
 
-#: ../include/functions.php:70
+#: ../include/functions.php:66
 msgid "Username"
 msgstr "Användarnamn"
 
-#: ../include/functions.php:71
+#: ../include/functions.php:67
 msgid "Password"
 msgstr "Lösenord"
 
-#: ../include/functions.php:72
+#: ../include/functions.php:68
 msgid "Senders"
 msgstr "Avsändare"
 
-#: ../include/functions.php:114
+#: ../include/functions.php:87
+#: ../list/index.php:33
+msgid "Choose Here"
+msgstr "Välj här"
+
+#: ../include/functions.php:88
+msgid "Cellsynt"
+msgstr "Cellsynt"
+
+#: ../include/functions.php:94
+#, php-format
+msgid "Use the URL %s for delivery reports"
+msgstr "Använd URLen %s för leveransrapporter"
+
+#: ../include/functions.php:134
 msgid "Company,0046701234567"
 msgstr "Företag,0046701234567"
 
-#: ../include/functions.php:114
+#: ../include/functions.php:134
 msgid "One or more numbers/names separated by comma, is used for selecting which number/name is displayed to the recipient"
 msgstr "Ett eller flera nummer/namn separerat av komma, används för att kunna välja avsändare"
 
@@ -70,63 +84,59 @@ msgstr "Meddelandet skickades"
 msgid "Send SMS"
 msgstr "Skicka SMS"
 
-#: ../list/index.php:32
-msgid "Choose here"
-msgstr "Välj här"
-
-#: ../list/index.php:47
-#: ../list/index.php:70
+#: ../list/index.php:49
+#: ../list/index.php:72
 msgid "From"
 msgstr "Från"
 
-#: ../list/index.php:47
+#: ../list/index.php:49
 msgid "Add more"
 msgstr "Lägg till fler"
 
-#: ../list/index.php:47
+#: ../list/index.php:49
 msgid "Profile"
 msgstr "Profil"
 
-#: ../list/index.php:47
-#: ../list/index.php:57
+#: ../list/index.php:49
+#: ../list/index.php:59
 msgid "or"
 msgstr "eller"
 
-#: ../list/index.php:47
+#: ../list/index.php:49
 msgid "Settings"
 msgstr "Inställningar"
 
-#: ../list/index.php:48
-#: ../list/index.php:71
+#: ../list/index.php:50
+#: ../list/index.php:73
 msgid "To"
 msgstr "Till"
 
-#: ../list/index.php:49
-#: ../list/index.php:72
+#: ../list/index.php:51
+#: ../list/index.php:74
 msgid "Message"
 msgstr "Meddelande"
 
-#: ../list/index.php:50
+#: ../list/index.php:52
 msgid "Send"
 msgstr "Skicka"
 
-#: ../list/index.php:57
+#: ../list/index.php:59
 msgid "You have to"
 msgstr "Du måste"
 
-#: ../list/index.php:57
+#: ../list/index.php:59
 msgid "Add your phone number in the profile"
 msgstr "Lägga till ditt telefonnummer i profilen"
 
-#: ../list/index.php:57
+#: ../list/index.php:59
 msgid "Add URL, Username & Password in the settings page"
 msgstr "Lägga till URL, användarnamn och lösenord på inställningssidan"
 
-#: ../list/index.php:57
+#: ../list/index.php:59
 msgid "for this to work"
 msgstr "för att detta ska fungera"
 
-#: ../list/index.php:73
+#: ../list/index.php:75
 msgid "Date"
 msgstr "Datum"
 
@@ -158,3 +168,5 @@ msgstr "Senaste datum"
 msgid "Total Amount"
 msgstr "Totalt antal"
 
+#~ msgid "URL"
+#~ msgstr "URL"

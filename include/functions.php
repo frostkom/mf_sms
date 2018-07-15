@@ -2,7 +2,7 @@
 
 function sms_is_active()
 {
-	if(get_option('setting_sms_url') != '' && get_option('setting_sms_username') != '' && get_option('setting_sms_password') != '')
+	if((get_option('setting_sms_provider') != '' || get_option('setting_sms_url') != '') && get_option('setting_sms_username') != '' && get_option('setting_sms_password') != '')
 	{
 		return true;
 	}
@@ -61,7 +61,8 @@ function settings_sms()
 	add_settings_section($options_area, "", $options_area."_callback", BASE_OPTIONS_PAGE);
 
 	$arr_settings = array(
-		'setting_sms_url' => __("URL", 'lang_sms'),
+		'setting_sms_provider' => __("Provider", 'lang_sms'),
+		//'setting_sms_url' => __("URL", 'lang_sms'),
 		'setting_sms_username' => __("Username", 'lang_sms'),
 		'setting_sms_password' => __("Password", 'lang_sms'),
 		'setting_sms_senders' => __("Senders", 'lang_sms'),
@@ -75,6 +76,30 @@ function settings_sms_callback()
 	$setting_key = get_setting_key(__FUNCTION__);
 
 	echo settings_header($setting_key, __("SMS", 'lang_sms'));
+}
+
+function setting_sms_provider_callback()
+{
+	$setting_key = get_setting_key(__FUNCTION__);
+	$option = get_option($setting_key, (get_option('setting_sms_url') == "se-1.cellsynt.net/sms.php" ? 'cellsynt' : ''));
+
+	$arr_data = array(
+		'' => "-- ".__("Choose Here", 'lang_sms')." --",
+		'cellsynt' => __("Cellsynt", 'lang_sms'),
+	);
+
+	switch($option)
+	{
+		case 'cellsynt':
+			$description = sprintf(__("Use the URL %s for delivery reports", 'lang_sms'), plugin_dir_url(__FILE__)."sms_status.php");
+		break;
+
+		default:
+			$description = "";
+		break;
+	}
+
+	echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'description' => $description));
 }
 
 function setting_sms_url_callback()
@@ -187,11 +212,24 @@ if(!function_exists('send_sms'))
 				}
 			}
 
-			$sms_url = get_option('setting_sms_url');
-			$sms_username = get_option('setting_sms_username');
-			$sms_password = get_option('setting_sms_password');
+			$setting_sms_provider = get_option('setting_sms_provider');
+			$setting_sms_username = get_option('setting_sms_username');
+			$setting_sms_password = get_option('setting_sms_password');
 
-			$result = get_url_content($sms_url."?username=".$sms_username."&password=".$sms_password."&destination=".$data['to']."&originatortype=".$originatortype."&originator=".$data['from']."&charset=UTF-8&text=".urlencode(html_entity_decode(html_entity_decode(stripslashes($data['text']))))."&allowconcat=6");
+			switch($setting_sms_provider)
+			{
+				case 'cellsynt':
+					$url = "https://se-1.cellsynt.net/sms.php?username=".$setting_sms_username."&password=".$setting_sms_password."&destination=".$data['to']."&originatortype=".$originatortype."&originator=".$data['from']."&charset=UTF-8&text=".urlencode(html_entity_decode(html_entity_decode(stripslashes($data['text']))))."&allowconcat=6";
+				break;
+
+				default:
+					$setting_sms_url = get_option('setting_sms_url');
+
+					$url = $setting_sms_url."?username=".$setting_sms_username."&password=".$setting_sms_password."&destination=".$data['to']."&originatortype=".$originatortype."&originator=".$data['from']."&charset=UTF-8&text=".urlencode(html_entity_decode(html_entity_decode(stripslashes($data['text']))))."&allowconcat=6";
+				break;
+			}
+
+			$result = get_url_content($url);
 
 			if(substr($result, 0, 2) == "OK")
 			{

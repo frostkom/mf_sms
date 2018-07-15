@@ -6,7 +6,7 @@ Description:
 Version: 2.4.9
 Licence: GPLv2 or later
 Author: Martin Fors
-Author URI: http://frostkom.se
+Author URI: https://frostkom.se
 Text Domain: lang_sms
 Domain Path: /lang
 
@@ -45,7 +45,7 @@ function activate_sms()
 function uninstall_sms()
 {
 	mf_uninstall_plugin(array(
-		'options' => array('setting_sms_url', 'setting_sms_username', 'setting_sms_password', 'setting_sms_senders'),
+		'options' => array('setting_sms_provider', 'setting_sms_url', 'setting_sms_username', 'setting_sms_password', 'setting_sms_senders'),
 		'meta' => array('meta_sms_phone'),
 		'post_types' => array('mf_sms'),
 	));
