@@ -9,7 +9,7 @@ if(!defined('ABSPATH'))
 	require_once($folder."wp-load.php");
 }
 
-include_once("../classes.php");
+require_once("../classes.php");
 require_once("../functions.php");
 
 $json_output = array();
