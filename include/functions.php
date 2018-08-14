@@ -229,7 +229,7 @@ if(!function_exists('send_sms'))
 				break;
 			}
 
-			$result = get_url_content($url);
+			$result = get_url_content(array('url' => $url));
 
 			if(substr($result, 0, 2) == "OK")
 			{
