@@ -89,26 +89,26 @@ echo "<div class='wrap'>
 					switch($post_status)
 					{
 						case 'delivered':
-							$status_icon = "fa-check green";
+							$status_icon = "fa fa-check green";
 						break;
 
 						case 'failed':
-							$status_icon = "fa-ban red";
+							$status_icon = "fa fa-ban red";
 						break;
 
 						case 'buffered':
-							$status_icon = "fa-cloud blue";
+							$status_icon = "fa fa-cloud blue";
 						break;
 
 						default:
 						case 'unknown':
 						case 'acked':
-							$status_icon = "fa-question";
+							$status_icon = "fa fa-question";
 						break;
 					}
 
 					echo "<tr>
-						<td><i class='fa ".$status_icon."'></i></td>
+						<td><i class='".$status_icon."'></i></td>
 						<td>".$post_name."</td>
 						<td>".$post_title."</td>
 						<td>".$post_content."</td>
