@@ -7,7 +7,7 @@ if(!defined('ABSPATH'))
 	require_once($folder."wp-load.php");
 }
 
-require_once("functions.php");
+include_once("classes.php");
 
 $trackingid = check_var('trackingid', 'char');
 $status = check_var('status', 'char');
@@ -30,12 +30,29 @@ if(!in_array($strDataIP, $arr_ips))
 
 else
 {
-	$wpdb->get_results("SELECT ID FROM ".$wpdb->posts." WHERE post_excerpt LIKE '%".esc_sql($trackingid)."%' LIMIT 0, 1");
+	$wpdb->get_results($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_excerpt LIKE %s LIMIT 0, 1", "%".$trackingid."%"));
 
 	if($status != '' && $wpdb->num_rows > 0)
 	{
-		$wpdb->query("UPDATE ".$wpdb->posts." SET post_status = '".esc_sql($status)."' WHERE post_excerpt LIKE '%".esc_sql($trackingid)."%'");
+		$wpdb->query($wpdb->prepare("UPDATE ".$wpdb->posts." SET post_status = %s WHERE post_excerpt LIKE %s", esc_sql($status), "%".$trackingid."%"));
+
+		if($wpdb->rows_affected == 1)
+		{
+			header("Status: 200 OK");
+		}
+
+		else
+		{
+			do_log("There were no trackingIDs that matched (".var_export($_REQUEST, true).", ".$wpdb->last_query.")");
+
+			header("Status: 500 Internal Server Error");
+		}
 	}
 
-	header("Status: 200 OK");
+	else
+	{
+		do_log("There were no trackingIDs that matched (".var_export($_REQUEST, true).", ".$wpdb->last_query.")");
+
+		header("Status: 500 Internal Server Error");
+	}
 }

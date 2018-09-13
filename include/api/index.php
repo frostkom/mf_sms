@@ -10,7 +10,8 @@ if(!defined('ABSPATH'))
 }
 
 require_once("../classes.php");
-require_once("../functions.php");
+
+$obj_sms = new mf_sms();
 
 $json_output = array();
 
@@ -24,7 +25,7 @@ if($type_action == 'sms_send' && get_current_user_id() > 0)
 	$strSmsTo = check_var('strSmsTo');
 	$strSmsText = check_var('strSmsText');
 
-	$sent = send_sms(array('from' => $strSmsFrom, 'to' => $strSmsTo, 'text' => $strSmsText));
+	$sent = $obj_sms->send_sms(array('from' => $strSmsFrom, 'to' => $strSmsTo, 'text' => $strSmsText));
 
 	if($sent == "OK")
 	{
