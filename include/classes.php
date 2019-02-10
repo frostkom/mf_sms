@@ -94,7 +94,7 @@ class mf_sms
 				break;
 			}
 
-			$result = get_url_content(array('url' => $url));
+			list($result, $headers) = get_url_content(array('url' => $url, 'catch_head' => true));
 
 			if(substr($result, 0, 2) == "OK")
 			{
@@ -219,8 +219,6 @@ class mf_sms
 
 	function admin_menu()
 	{
-		global $wpdb;
-
 		$menu_root = 'mf_sms/';
 		$menu_start = $menu_root.'list/index.php';
 		$menu_capability = override_capability(array('page' => $menu_start, 'default' => 'edit_pages'));
