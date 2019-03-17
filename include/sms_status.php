@@ -15,11 +15,21 @@ $status = check_var('status', 'char');
 $strDataIP = $_SERVER['REMOTE_ADDR'];
 
 $arr_ips = array(
-	"212.100.254.167",
+	/*"212.100.254.167",
 	"37.250.191.29",
 	"83.138.162.66",
-	"83.138.162.68",
+	"83.138.162.68",*/
 );
+
+for($i = 64; $i <= 71; $i++)
+{
+	$arr_ips[] = "83.138.162.".$i;
+}
+
+for($i = 144; $i <= 151; $i++)
+{
+	$arr_ips[] = "159.135.143.".$i;
+}
 
 if(!in_array($strDataIP, $arr_ips))
 {
