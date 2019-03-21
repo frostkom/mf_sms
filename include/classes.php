@@ -23,7 +23,7 @@ class mf_sms
 			$data['to'] = $this->strip_phone_no(array('number' => $data['to']));
 			$data['from'] = $this->strip_phone_no(array('number' => $data['from']));
 
-			// Mottagare av sms på MSISDN-format (ex. 0708123456 blir 0046708123456)
+			// MSISDN-format (ex. 0708123456 -> 0046708123456)
 			#########################
 			if(!preg_match("/^(\+|00)/", $data['to']))
 			{
@@ -45,9 +45,6 @@ class mf_sms
 			{
 				if(is_numeric($data['from']))
 				{
-					// NUMERISK AVSÄNDARE
-					#########################
-					// Ett telefonnummer kommer stå som avsändare på smset. + läggs alltid till före numret. Dvs om du vill att 0708123456 skall stå som avsändare, ange 46708123456 så kommer numret formateras om till +46708123456
 					$originatortype = "numeric";
 
 					if(!preg_match("/^(\+|00)/", $data['from']))
@@ -64,13 +61,10 @@ class mf_sms
 					}
 
 					$data['from'] = $data['country_no'].$data['from'];
-					###############################
 				}
 
 				else
 				{
-					// ALFANUMERISK AVSÄNDARE
-					// En text kommer stå som avsänadare
 					$originatortype = "alpha";
 
 					$data['from'] = urlencode($data['from']);
@@ -139,7 +133,7 @@ class mf_sms
 			'setting_sms_provider' => __("Provider", 'lang_sms'),
 			//'setting_sms_url' => __("URL", 'lang_sms'),
 			'setting_sms_username' => __("Username", 'lang_sms'),
-			'setting_sms_password' => __("Password", 'lang_sms'),
+			'setting_sms_password' => __("Password"),
 			'setting_sms_senders' => __("Senders", 'lang_sms'),
 		);
 
