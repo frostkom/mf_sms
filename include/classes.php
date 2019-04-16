@@ -154,7 +154,7 @@ class mf_sms
 
 		$arr_data = array(
 			'' => "-- ".__("Choose Here", 'lang_sms')." --",
-			'cellsynt' => __("Cellsynt", 'lang_sms'),
+			'cellsynt' => "Cellsynt",
 		);
 
 		switch($option)
