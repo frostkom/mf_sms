@@ -3,7 +3,7 @@
 Plugin Name: MF SMS
 Plugin URI: https://github.com/frostkom/mf_sms
 Description: 
-Version: 2.5.4
+Version: 2.5.6
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://frostkom.se
@@ -14,14 +14,14 @@ Depends: MF Base
 GitHub Plugin URI: frostkom/mf_sms
 */
 
+include_once("include/classes.php");
+
+$obj_sms = new mf_sms();
+
 add_action('cron_base', 'activate_sms', mt_rand(1, 10));
 
 if(is_admin())
 {
-	include_once("include/classes.php");
-
-	$obj_sms = new mf_sms();
-
 	register_activation_hook(__FILE__, 'activate_sms');
 	register_uninstall_hook(__FILE__, 'uninstall_sms');
 
@@ -31,10 +31,18 @@ if(is_admin())
 	add_action('admin_init', array($obj_sms, 'admin_init'), 0);
 	add_action('admin_menu', array($obj_sms, 'admin_menu'));
 
-	add_filter('user_contactmethods', array($obj_sms, 'user_contactmethods'));
+	add_filter('get_group_message_type', array($obj_sms, 'get_group_message_type'));
+	add_filter('get_group_message_form_fields', array($obj_sms, 'get_group_message_form_fields'));
+	add_filter('get_group_message_send_fields', array($obj_sms, 'get_group_message_send_fields'));
 
-	load_plugin_textdomain('lang_sms', false, dirname(plugin_basename(__FILE__)).'/lang/');
+	add_filter('user_contactmethods', array($obj_sms, 'user_contactmethods'));
+	add_filter('add_group_list_amount_actions', array($obj_sms, 'add_group_list_amount_actions'), 10, 2);
 }
+
+add_action('group_init_other', array($obj_sms, 'group_init_other'));
+add_filter('group_send_other', array($obj_sms, 'group_send_other'));
+
+load_plugin_textdomain('lang_sms', false, dirname(plugin_basename(__FILE__)).'/lang/');
 
 function activate_sms()
 {

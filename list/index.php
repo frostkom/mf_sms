@@ -56,7 +56,7 @@ echo "<div class='wrap'>
 
 			else
 			{
-				echo __("You have to", 'lang_sms')." <a href='".admin_url("profile.php#meta_sms_phone")."'>".__("Add your phone number in the profile", 'lang_sms')."</a> ".__("or", 'lang_sms')." <a href='".admin_url("options-general.php?page=settings_mf_base#settings_sms")."'>".__("Add URL, Username & Password in the settings page", 'lang_sms')."</a> ".__("for this to work", 'lang_sms');
+				echo sprintf(__("You have to %sadd your phone number in the profile%s and %sadd Provider, Username & Password in the settings page%s for this to work", 'lang_sms'), "<a href='".admin_url("profile.php#meta_sms_phone")."'>", "</a>", "<a href='".admin_url("options-general.php?page=settings_mf_base#settings_sms")."'>", "</a>");
 			}
 
 		echo "</div>
