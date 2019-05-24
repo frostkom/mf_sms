@@ -56,8 +56,8 @@ jQuery(function($)
 		{
 			url: script_sms.plugin_url + 'api/?type=sms_send',
 			type: 'post',
-			data: form_data,
 			dataType: 'json',
+			data: form_data,
 			success: function(data)
 			{
 				if(data.success)

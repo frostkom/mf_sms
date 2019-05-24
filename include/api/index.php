@@ -25,12 +25,7 @@ if($type_action == 'sms_send' && get_current_user_id() > 0)
 	$strSmsTo = check_var('strSmsTo');
 	$strSmsText = check_var('strSmsText');
 
-	$sent = $obj_sms->send_sms(array('from' => $strSmsFrom, 'to' => $strSmsTo, 'text' => $strSmsText));
-
-	if($sent == "OK")
-	{
-		$json_output['success'] = true;
-	}
+	$json_output['success'] = $obj_sms->send_sms(array('from' => $strSmsFrom, 'to' => $strSmsTo, 'text' => $strSmsText));
 }
 
 else if($type_action == 'sms')

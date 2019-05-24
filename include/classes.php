@@ -31,65 +31,61 @@ class mf_sms
 		return $wpdb->get_var($wpdb->prepare("SELECT COUNT(ID) FROM ".$wpdb->posts." WHERE post_type = %s".$query_limit, $this->post_type));
 	}
 
+	function has_correct_settings()
+	{
+		switch(get_option('setting_sms_provider'))
+		{
+			case 'cellsynt':
+			case 'ip1sms':
+				if(get_option('setting_sms_username') != '' && get_option('setting_sms_password') != '')
+				{
+					return true;
+				}
+			break;
+		}
+
+		return false;
+	}
+
+	function get_from_for_select()
+	{
+		$setting_sms_senders = get_option('setting_sms_senders');
+		$setting_sms_phone = get_user_meta(get_current_user_id(), 'meta_sms_phone', true);
+
+		$arr_data = array(
+			'' => "-- ".__("Choose Here", 'lang_sms')." --",
+		);
+
+		if(is_array($setting_sms_senders))
+		{
+			foreach(explode(",", $setting_sms_senders) as $sender)
+			{
+				if($sender != '')
+				{
+					$arr_data[$sender] = $sender;
+				}
+			}
+		}
+
+		if($setting_sms_phone != '')
+		{
+			$arr_data[$setting_sms_phone] = $setting_sms_phone;
+		}
+
+		return $arr_data;
+	}
+
 	function send_sms($data)
 	{
 		global $wpdb;
 
-		if(!isset($data['country_no'])){	$data['country_no'] = "0046";}
+		if(!isset($data['country_no'])){	$data['country_no'] = "46";}
 		if(!isset($data['user_id'])){		$data['user_id'] = get_current_user_id();}
 
 		if($data['to'] != '' && $data['text'] != '')
 		{
 			$data['to'] = $this->strip_phone_no(array('number' => $data['to']));
 			$data['from'] = $this->strip_phone_no(array('number' => $data['from']));
-
-			// MSISDN-format (ex. 0708123456 -> 0046708123456)
-			#########################
-			if(!preg_match("/^(\+|00)/", $data['to']))
-			{
-				if(substr($data['to'], 0, 1) == 0)
-				{
-					$data['to'] = substr($data['to'], 1, 20);
-				}
-
-				/*else
-				{
-					$data['to'] = substr($data['to'], 0, 20);
-				}*/
-			}
-
-			$data['to'] = $data['country_no'].$data['to'];
-			###############################
-
-			if($data['from'] != '')
-			{
-				if(is_numeric($data['from']))
-				{
-					$originatortype = "numeric";
-
-					if(!preg_match("/^(\+|00)/", $data['from']))
-					{
-						if(substr($data['from'], 0, 1) == 0)
-						{
-							$data['from'] = substr($data['from'], 1, 20);
-						}
-
-						/*else
-						{
-							$data['from'] = substr($data['from'], 0, 20);
-						}*/
-					}
-
-					$data['from'] = $data['country_no'].$data['from'];
-				}
-
-				else
-				{
-					$originatortype = "alpha";
-
-					$data['from'] = urlencode($data['from']);
-				}
-			}
 
 			$setting_sms_provider = get_option('setting_sms_provider');
 			$setting_sms_username = get_option('setting_sms_username');
@@ -98,31 +94,152 @@ class mf_sms
 			switch($setting_sms_provider)
 			{
 				case 'cellsynt':
+					// MSISDN-format (ex. 0708123456 -> 0046708123456)
+					if(!preg_match("/^(\+|00)/", $data['to']))
+					{
+						if(substr($data['to'], 0, 1) == 0)
+						{
+							$data['to'] = substr($data['to'], 1, 20);
+						}
+					}
+
+					$data['to'] = "00".$data['country_no'].$data['to'];
+
+					if($data['from'] != '')
+					{
+						if(is_numeric($data['from']))
+						{
+							$originatortype = "numeric";
+
+							if(!preg_match("/^(\+|00)/", $data['from']))
+							{
+								if(substr($data['from'], 0, 1) == 0)
+								{
+									$data['from'] = substr($data['from'], 1, 20);
+								}
+							}
+
+							$data['from'] = "00".$data['country_no'].$data['from'];
+						}
+
+						else
+						{
+							$originatortype = "alpha";
+
+							$data['from'] = urlencode($data['from']);
+						}
+					}
+
 					$url = "https://se-1.cellsynt.net/sms.php?username=".$setting_sms_username."&password=".$setting_sms_password."&destination=".$data['to']."&originatortype=".$originatortype."&originator=".$data['from']."&charset=UTF-8&text=".urlencode(html_entity_decode(html_entity_decode(stripslashes($data['text']))))."&allowconcat=6";
+
+					list($content, $headers) = get_url_content(array('url' => $url, 'catch_head' => true));
+
+					if(substr($content, 0, 2) == "OK")
+					{
+						$wpdb->query($wpdb->prepare("INSERT INTO ".$wpdb->posts." SET post_type = %s, post_title = %s, post_name = %s, post_content = %s, post_author = '%d', post_excerpt = %s, post_date = NOW()", $this->post_type, $data['to'], $data['from'], $data['text'], $data['user_id'], substr($content, 4)));
+
+						return true;
+					}
+
+					else
+					{
+						do_log("Error while sending SMS through Cellsynt: ".htmlspecialchars($content));
+
+						return false;
+					}
 				break;
 
-				default:
-					$setting_sms_url = get_option('setting_sms_url');
+				case 'ip1sms':
+					// E164-format (ex. 0708123456 -> 46708123456)
+					if(!preg_match("/^(\+|00)/", $data['to']))
+					{
+						if(substr($data['to'], 0, 1) == 0)
+						{
+							$data['to'] = substr($data['to'], 1, 20);
+						}
+					}
 
-					$url = $setting_sms_url."?username=".$setting_sms_username."&password=".$setting_sms_password."&destination=".$data['to']."&originatortype=".$originatortype."&originator=".$data['from']."&charset=UTF-8&text=".urlencode(html_entity_decode(html_entity_decode(stripslashes($data['text']))))."&allowconcat=6";
+					$data['to'] = $data['country_no'].$data['to'];
+
+					if($data['from'] != '')
+					{
+						if(is_numeric($data['from']))
+						{
+							if(!preg_match("/^(\+|00)/", $data['from']))
+							{
+								if(substr($data['from'], 0, 1) == 0)
+								{
+									$data['from'] = substr($data['from'], 1, 20);
+								}
+							}
+
+							$data['from'] = $data['country_no'].$data['from'];
+						}
+
+						else
+						{
+							$data['from'] = urlencode($data['from']);
+						}
+					}
+
+					$url = "https://api.ip1sms.com/api/sms/send";
+
+					$arr_post_data = array(
+						'From' => $data['from'],
+						'Numbers' => array($data['to']),
+						'Message' => $data['text'],
+					);
+
+					$post_data = json_encode($arr_post_data);
+
+					list($content, $headers) = get_url_content(array(
+						'url' => $url,
+						'catch_head' => true,
+						'headers' => array(
+							'Authorization: Basic '.base64_encode($setting_sms_username.":".$setting_sms_password),
+							'Content-Type: application/json',
+							'Content-Length: '.strlen($post_data),
+						),
+						'post_data' => $post_data,
+					));
+
+					switch($headers['http_code'])
+					{
+						case 200:
+						case 201:
+							$json = json_decode($content, true);
+
+							foreach($json as $r)
+							{
+								//do_log("JSON Row: ".var_export($r, true));
+
+								/*{
+								   "ID": 65416,
+								   "BundleID": null,
+								   "Status": 0,
+								   "StatusDescription": "Delivered to gateway",
+								   "Prio": 1,
+								   "From": "iP1sms",
+								   "To": "46123456789",
+								   "Message": "Hello world!"
+								}*/
+
+								$wpdb->query($wpdb->prepare("INSERT INTO ".$wpdb->posts." SET post_type = %s, post_title = %s, post_name = %s, post_content = %s, post_author = '%d', post_excerpt = %s, post_status = '%d', post_date = NOW()", $this->post_type, $data['to'], $data['from'], $data['text'], $data['user_id'], $r['ID'], $r['Status']));
+							}
+
+							return true;
+						break;
+
+						default:
+							do_log("Error while sending SMS through IP1SMS: ".$headers['http_code']." (".htmlspecialchars($content).", ".var_export($arr_post_data, true).")");
+
+							return false;
+						break;
+					}
 				break;
 			}
 
-			list($result, $headers) = get_url_content(array('url' => $url, 'catch_head' => true));
-
-			if(substr($result, 0, 2) == "OK")
-			{
-				$wpdb->query($wpdb->prepare("INSERT INTO ".$wpdb->posts." SET post_type = %s, post_title = %s, post_name = %s, post_content = %s, post_author = '%d', post_excerpt = %s, post_date = NOW()", $this->post_type, $data['to'], $data['from'], $data['text'], $data['user_id'], substr($result, 4)));
-
-				$return_text = "OK";
-			}
-
-			else
-			{
-				$return_text = $result;
-			}
-
-			return $return_text;
+			return false;
 		}
 	}
 
@@ -151,11 +268,23 @@ class mf_sms
 
 		$arr_settings = array(
 			'setting_sms_provider' => __("Provider", 'lang_sms'),
-			//'setting_sms_url' => __("URL", 'lang_sms'),
-			'setting_sms_username' => __("Username", 'lang_sms'),
-			'setting_sms_password' => __("Password"),
-			'setting_sms_senders' => __("Senders", 'lang_sms'),
 		);
+
+		$setting_sms_provider = get_option('setting_sms_provider');
+
+		if($setting_sms_provider != '')
+		{
+			switch($setting_sms_provider)
+			{
+				case 'cellsynt':
+				case 'ip1sms':
+					$arr_settings['setting_sms_username'] = __("Username", 'lang_sms');
+					$arr_settings['setting_sms_password'] = __("Password")." / ".__("API Key", 'lang_sms');
+				break;
+			}
+
+			$arr_settings['setting_sms_senders'] = __("Senders", 'lang_sms');
+		}
 
 		show_settings_fields(array('area' => $options_area, 'object' => $this, 'settings' => $arr_settings));
 	}
@@ -170,11 +299,12 @@ class mf_sms
 	function setting_sms_provider_callback()
 	{
 		$setting_key = get_setting_key(__FUNCTION__);
-		$option = get_option($setting_key, (get_option('setting_sms_url') == "se-1.cellsynt.net/sms.php" ? 'cellsynt' : ''));
+		$option = get_option($setting_key);
 
 		$arr_data = array(
 			'' => "-- ".__("Choose Here", 'lang_sms')." --",
 			'cellsynt' => "Cellsynt",
+			'ip1sms' => "IP.1",
 		);
 
 		switch($option)
@@ -189,14 +319,6 @@ class mf_sms
 		}
 
 		echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'description' => $description));
-	}
-
-	function setting_sms_url_callback()
-	{
-		$setting_key = get_setting_key(__FUNCTION__);
-		$option = get_option($setting_key);
-
-		echo show_textfield(array('name' => $setting_key, 'value' => $option));
 	}
 
 	function setting_sms_username_callback()
@@ -259,7 +381,7 @@ class mf_sms
 		return $type;
 	}
 
-	function get_from_for_select()
+	/*function get_from_for_select()
 	{
 		$sms_senders = get_option('setting_sms_senders');
 		$sms_phone = get_user_meta(get_current_user_id(), 'meta_sms_phone', true);
@@ -282,7 +404,7 @@ class mf_sms
 		}
 
 		return $arr_data;
-	}
+	}*/
 
 	function get_group_message_form_fields($data)
 	{
@@ -339,8 +461,6 @@ class mf_sms
 
 	function group_send_other($data)
 	{
-		$sent = $this->send_sms(array('from' => $data['from'], 'to' => $data['to'], 'text' => $data['message'], 'user_id' => $data['user_id']));
-
-		return ($sent == "OK");
+		return $this->send_sms(array('from' => $data['from'], 'to' => $data['to'], 'text' => $data['message'], 'user_id' => $data['user_id']));
 	}
 }

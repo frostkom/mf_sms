@@ -1,5 +1,7 @@
 <?php
 
+$obj_sms = new mf_sms();
+
 $strSmsTo = check_var('strSmsTo');
 
 echo "<div class='wrap'>
@@ -18,45 +20,30 @@ echo "<div class='wrap'>
 		<h3 class='hndle'>".__("Send SMS", 'lang_sms')."</h3>
 		<div class='inside'>";
 
-			$setting_sms_provider = get_option('setting_sms_provider');
-			$setting_sms_url = get_option('setting_sms_url');
-			$setting_sms_username = get_option('setting_sms_username');
-			$setting_sms_password = get_option('setting_sms_password');
-			$setting_sms_senders = get_option('setting_sms_senders');
-			$setting_sms_phone = get_user_meta(get_current_user_id(), 'meta_sms_phone', true);
-
-			if(($setting_sms_provider != '' || $setting_sms_url != '') && $setting_sms_username != '' && $setting_sms_password != '' && ($setting_sms_senders != '' || $setting_sms_phone != ''))
+			if($obj_sms->has_correct_settings())
 			{
-				echo "<form action='#' method='post' id='mf_sms' class='mf_form mf_settings'>";
+				$arr_data_from = $obj_sms->get_from_for_select();
 
-					$arr_data = array(
-						'' => "-- ".__("Choose Here", 'lang_sms')." --",
-					);
+				if(count($arr_data_from) > 1)
+				{
+					echo "<form action='#' method='post' id='mf_sms' class='mf_form mf_settings'>"
+						.show_select(array('data' => $arr_data_from, 'name' => 'strSmsFrom', 'text' => __("From", 'lang_sms'), 'value' => "", 'required' => true, 'description' => __("Add more", 'lang_sms').": <a href='".admin_url("profile.php#meta_sms_phone")."'>".__("Profile", 'lang_sms')."</a> ".__("or", 'lang_sms')." <a href='".admin_url("options-general.php?page=settings_mf_base#settings_sms")."'>".__("Settings", 'lang_sms')."</a>"))
+						.show_textfield(array('name' => 'strSmsTo', 'text' => __("To", 'lang_sms'), 'value' => $strSmsTo, 'required' => true, 'placeholder' => "0046701234567"))
+						.show_textarea(array('name' => 'strSmsText', 'text' => __("Message", 'lang_sms'), 'value' => "", 'required' => true))
+						.show_button(array('name' => 'btnGroupSend', 'text' => __("Send", 'lang_sms')))
+						."<span id='chars_left'></span> (<span id='sms_amount'>1</span>)
+					</form>";
+				}
 
-					foreach(explode(",", $setting_sms_senders) as $sender)
-					{
-						if($sender != '')
-						{
-							$arr_data[$sender] = $sender;
-						}
-					}
-
-					if($setting_sms_phone != '')
-					{
-						$arr_data[$setting_sms_phone] = $setting_sms_phone;
-					}
-
-					echo show_select(array('data' => $arr_data, 'name' => 'strSmsFrom', 'text' => __("From", 'lang_sms'), 'value' => "", 'required' => true, 'description' => __("Add more", 'lang_sms').": <a href='".admin_url("profile.php#meta_sms_phone")."'>".__("Profile", 'lang_sms')."</a> ".__("or", 'lang_sms')." <a href='".admin_url("options-general.php?page=settings_mf_base#settings_sms")."'>".__("Settings", 'lang_sms')."</a>"))
-					.show_textfield(array('name' => 'strSmsTo', 'text' => __("To", 'lang_sms'), 'value' => $strSmsTo, 'required' => true, 'placeholder' => "0046701234567"))
-					.show_textarea(array('name' => 'strSmsText', 'text' => __("Message", 'lang_sms'), 'value' => "", 'required' => true))
-					.show_button(array('name' => 'btnGroupSend', 'text' => __("Send", 'lang_sms')))
-					."<span id='chars_left'></span> (<span id='sms_amount'>1</span>)
-				</form>";
+				else
+				{
+					echo sprintf(__("You have to %sadd your phone number in the profile%s or %sadd a sender on the settings page%s for this to work", 'lang_sms'), "<a href='".admin_url("profile.php#meta_sms_phone")."'>", "</a>", "<a href='".admin_url("options-general.php?page=settings_mf_base#settings_sms")."'>", "</a>");
+				}
 			}
 
 			else
 			{
-				echo sprintf(__("You have to %sadd your phone number in the profile%s and %sadd Provider, Username & Password in the settings page%s for this to work", 'lang_sms'), "<a href='".admin_url("profile.php#meta_sms_phone")."'>", "</a>", "<a href='".admin_url("options-general.php?page=settings_mf_base#settings_sms")."'>", "</a>");
+				echo sprintf(__("You have to %sadd Provider and credentials on the settings page%s for this to work", 'lang_sms'), "<a href='".admin_url("options-general.php?page=settings_mf_base#settings_sms")."'>", "</a>");
 			}
 
 		echo "</div>
@@ -88,19 +75,48 @@ echo "<div class='wrap'>
 
 					switch($post_status)
 					{
+						// Cellsynt
 						case 'delivered':
+						//IP.1
+						case 22:
 							$status_icon = "fa fa-check green";
 						break;
 
+						// Cellsynt
 						case 'failed':
+						//IP.1
+						case 1:
+						case 2:
+						case 3:
+						case 4:
+						case 12:
+						case 30:
+						case 41:
+						case 42:
+						case 43:
+						case 44:
+						case 45:
+						case 50:
+						case 51:
+						case 52:
+						case 100:
+						case 101:
+						case 110:
 							$status_icon = "fa fa-ban red";
 						break;
 
+						// Cellsynt
 						case 'buffered':
+						//IP.1
+						case 0:
+						case 10:
+						case 11:
+						case 21:
 							$status_icon = "fa fa-cloud blue";
 						break;
 
 						default:
+						// Cellsynt
 						case 'unknown':
 						case 'acked':
 							$status_icon = "fa fa-question";
