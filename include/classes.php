@@ -130,9 +130,10 @@ class mf_sms
 						}
 					}
 
-					$url = "https://se-1.cellsynt.net/sms.php?username=".$setting_sms_username."&password=".$setting_sms_password."&destination=".$data['to']."&originatortype=".$originatortype."&originator=".$data['from']."&charset=UTF-8&text=".urlencode(html_entity_decode(html_entity_decode(stripslashes($data['text']))))."&allowconcat=6";
-
-					list($content, $headers) = get_url_content(array('url' => $url, 'catch_head' => true));
+					list($content, $headers) = get_url_content(array(
+						'url' => "https://se-1.cellsynt.net/sms.php?username=".$setting_sms_username."&password=".$setting_sms_password."&destination=".$data['to']."&originatortype=".$originatortype."&originator=".$data['from']."&charset=UTF-8&text=".urlencode(html_entity_decode(html_entity_decode(stripslashes($data['text']))))."&allowconcat=6",
+						'catch_head' => true,
+					));
 
 					if(substr($content, 0, 2) == "OK")
 					{
@@ -182,8 +183,6 @@ class mf_sms
 						}
 					}
 
-					$url = "https://api.ip1sms.com/api/sms/send";
-
 					$arr_post_data = array(
 						'From' => $data['from'],
 						'Numbers' => array($data['to']),
@@ -193,7 +192,7 @@ class mf_sms
 					$post_data = json_encode($arr_post_data);
 
 					list($content, $headers) = get_url_content(array(
-						'url' => $url,
+						'url' => "https://api.ip1sms.com/api/sms/send",
 						'catch_head' => true,
 						'headers' => array(
 							'Authorization: Basic '.base64_encode($setting_sms_username.":".$setting_sms_password),
@@ -241,6 +240,86 @@ class mf_sms
 
 			return false;
 		}
+	}
+
+	function cron_base()
+	{
+		global $wpdb;
+
+		$obj_cron = new mf_cron();
+		$obj_cron->start(__CLASS__);
+
+		if($obj_cron->is_running == false)
+		{
+			$setting_sms_provider = get_option('setting_sms_provider');
+			$setting_sms_username = get_option('setting_sms_username');
+			$setting_sms_password = get_option('setting_sms_password');
+
+			switch($setting_sms_provider)
+			{
+				case 'ip1sms':
+					$arr_status = array(0, 10, 11, 21);
+
+					$result = $wpdb->get_results($wpdb->prepare("SELECT ID, post_excerpt FROM ".$wpdb->posts." WHERE post_type = %s AND post_excerpt != '' AND post_status IN ('".implode("','", $arr_status)."')", $this->post_type));
+
+					foreach($result as $r)
+					{
+						$intSmsID = $r->ID;
+						$intSmsApiID = $r->post_excerpt;
+
+						list($content, $headers) = get_url_content(array(
+							'url' => "https://api.ip1sms.com/api/sms/sent/".$intSmsApiID,
+							'catch_head' => true,
+							'headers' => array(
+								'Authorization: Basic '.base64_encode($setting_sms_username.":".$setting_sms_password),
+								'Content-Type: application/json',
+							),
+						));
+
+						switch($headers['http_code'])
+						{
+							case 200:
+							case 201:
+								$json = json_decode($content, true);
+
+								/*{
+									"Created": "2019-05-21T17:53:36.3333017+00:00",
+									"CreatedDate": "2019-05-21T17:53:36.3333017+00:00",
+									"Modified": "2019-05-21T17:53:36.3333017+00:00",
+									"UpdatedDate": "2019-05-21T17:53:36.3333017+00:00",
+									"ID": 1,
+									"BundleID": 1,
+									"Status": 2,
+									"StatusDescription": "Invalid message content",
+									"To": "sample string 3",
+									"CountryCode": null,
+									"Currency": "SEK",
+									"TotalPrice": 4.0,
+									"Price": 5.0,
+									"Encoding": "GSM7",
+									"Segments": 1,
+									"Prio": 2,
+									"From": "sample string 7",
+									"Message": "sample string 8"
+								}*/
+
+								$wpdb->query($wpdb->prepare("UPDATE ".$wpdb->posts." SET post_status = '%d' WHERE post_type = %s AND post_excerpt = %s", $json['Status'], $this->post_type, $json['ID']));
+
+								return true;
+							break;
+
+							default:
+								do_log("Error while getting SMS status through IP1SMS: ".$headers['http_code']." (".htmlspecialchars($content).")");
+
+								return false;
+							break;
+						}
+					}
+				break;
+			}
+		}
+
+		$obj_cron->end();
 	}
 
 	function init()

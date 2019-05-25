@@ -3,7 +3,7 @@
 Plugin Name: MF SMS
 Plugin URI: https://github.com/frostkom/mf_sms
 Description: 
-Version: 2.5.8
+Version: 2.5.9
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://frostkom.se
@@ -21,6 +21,7 @@ include_once("include/classes.php");
 $obj_sms = new mf_sms();
 
 add_action('cron_base', 'activate_sms', mt_rand(1, 10));
+add_action('cron_base', array($obj_sms, 'cron_base'), mt_rand(1, 10));
 
 if(is_admin())
 {
