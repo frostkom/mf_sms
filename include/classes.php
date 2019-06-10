@@ -358,7 +358,7 @@ class mf_sms
 				case 'cellsynt':
 				case 'ip1sms':
 					$arr_settings['setting_sms_username'] = __("Username", 'lang_sms');
-					$arr_settings['setting_sms_password'] = __("Password")." / ".__("API Key", 'lang_sms');
+					$arr_settings['setting_sms_password'] = __("Password", 'lang_sms')." / ".__("API Key", 'lang_sms');
 				break;
 			}
 
