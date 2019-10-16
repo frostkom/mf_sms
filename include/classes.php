@@ -50,13 +50,13 @@ class mf_sms
 	function get_from_for_select()
 	{
 		$setting_sms_senders = get_option('setting_sms_senders');
-		$setting_sms_phone = get_user_meta(get_current_user_id(), 'meta_sms_phone', true);
+		$meta_sms_phone = get_user_meta(get_current_user_id(), 'meta_sms_phone', true);
 
 		$arr_data = array(
 			'' => "-- ".__("Choose Here", 'lang_sms')." --",
 		);
 
-		if(is_array($setting_sms_senders))
+		if($setting_sms_senders != '')
 		{
 			foreach(explode(",", $setting_sms_senders) as $sender)
 			{
@@ -67,9 +67,9 @@ class mf_sms
 			}
 		}
 
-		if($setting_sms_phone != '')
+		if($meta_sms_phone != '')
 		{
-			$arr_data[$setting_sms_phone] = $setting_sms_phone;
+			$arr_data[$meta_sms_phone] = $meta_sms_phone;
 		}
 
 		return $arr_data;
@@ -459,31 +459,6 @@ class mf_sms
 
 		return $type;
 	}
-
-	/*function get_from_for_select()
-	{
-		$sms_senders = get_option('setting_sms_senders');
-		$sms_phone = get_user_meta(get_current_user_id(), 'meta_sms_phone', true);
-
-		$arr_data = array(
-			'' => "-- ".__("Choose Here", 'lang_sms')." --"
-		);
-
-		foreach(explode(",", $sms_senders) as $sender)
-		{
-			if($sender != '')
-			{
-				$arr_data[$sender] = $sender;
-			}
-		}
-
-		if($sms_phone != '')
-		{
-			$arr_data[$sms_phone] = $sms_phone;
-		}
-
-		return $arr_data;
-	}*/
 
 	function get_group_message_form_fields($data)
 	{

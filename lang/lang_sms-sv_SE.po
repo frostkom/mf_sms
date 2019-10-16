@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-07 15:20+0100\n"
+"POT-Creation-Date: 2019-10-16 07:23+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -83,6 +83,12 @@ msgstr "Inställningar"
 
 msgid "Send"
 msgstr "Skicka"
+
+msgid "You have to %sadd your phone number in the profile%s or %sadd a sender on the settings page%s for this to work"
+msgstr "Du behöver %slägga in ditt telefonnummer i profilen%s eller %slägga till en avsändare på inställningssidan%s för att detta ska fungera"
+
+msgid "You have to %sadd Provider and credentials on the settings page%s for this to work"
+msgstr "Du behöver %slägga till leverantör och inloggningsuppgifter på inställsningssidan%s för att detta ska fungera"
 
 msgid "Date"
 msgstr "Datum"
