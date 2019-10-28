@@ -38,13 +38,22 @@ if(!in_array($strDataIP, $arr_ips))
 	header("Status: 503 Unknown IP-address");
 }
 
+else if($trackingid == '' || $status == '')
+{
+	do_log("No trackingIDs or status attached (".var_export($_REQUEST, true).")");
+
+	header("Status: 400 Bad Request");
+}
+
 else
 {
-	$wpdb->get_results($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_excerpt LIKE %s LIMIT 0, 1", "%".$trackingid."%"));
+	$obj_sms = new mf_sms();
 
-	if($status != '' && $wpdb->num_rows > 0)
+	$wpdb->get_results($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_type = %s AND post_excerpt LIKE %s LIMIT 0, 1", $obj_sms->post_type, "%".$trackingid."%"));
+
+	if($wpdb->num_rows > 0)
 	{
-		$wpdb->query($wpdb->prepare("UPDATE ".$wpdb->posts." SET post_status = %s WHERE post_excerpt LIKE %s", esc_sql($status), "%".$trackingid."%"));
+		$wpdb->query($wpdb->prepare("UPDATE ".$wpdb->posts." SET post_status = %s WHERE post_type = %s AND post_excerpt LIKE %s", $status, $obj_sms->post_type, "%".$trackingid."%"));
 
 		if($wpdb->rows_affected == 1)
 		{
@@ -53,7 +62,7 @@ else
 
 		else
 		{
-			do_log("There were no trackingIDs that matched (".var_export($_REQUEST, true).", ".$wpdb->last_query.")");
+			do_log("No trackingIDs were updated (".var_export($_REQUEST, true).", ".$wpdb->last_query.")");
 
 			header("Status: 500 Internal Server Error");
 		}
