@@ -36,14 +36,81 @@ jQuery(function($)
 		minLength: 3
 	});
 
-	$("#strMessageText, #strSmsText").on('keyup', function()
+	function calculate_amount()
 	{
-		var text_length = $(this).val().length,
-			sms_amount = Math.ceil(text_length / 155);
-			chars_left = 155 - text_length % 155;
+		var text_length = $("#strMessageText, #strSmsText").val().length,
+			recipients = 0,
+			chars_limit = 155;
 
-		$("#sms_amount").text(sms_amount);
-		$("#chars_left").text(chars_left);
+		if(text_length > 0)
+		{
+			var sms_amount = Math.ceil(text_length / chars_limit),
+				chars_left = chars_limit - (text_length % chars_limit);
+
+			if(chars_left == chars_limit)
+			{
+				chars_left = 0;
+			}
+
+			$("#sms_count").removeClass('hide')
+				.children("span:first-child").text(sms_amount)
+				.siblings("span").text(chars_left);
+
+			if($("#strSmsTo").length > 0 && $("#strSmsTo").val() != '')
+			{
+				recipients++;
+
+				console.log("To");
+			}
+
+			else if($("#arrGroupID").length > 0)
+			{
+				var selected_options = $("#arrGroupID option:selected");
+
+				$.each(selected_options, function(e)
+				{
+					recipients += parseInt($(this).attr('amount'));
+				});
+
+				console.log("Group");
+			}
+		}
+
+		else
+		{
+			$("#sms_count").addClass('hide');
+		}
+
+		if(($("#strMessageFrom").length > 0 && $("#strMessageFrom").val() != '' || $("#strSmsFrom").length > 0 && $("#strSmsFrom").val() != '') && recipients > 0)
+		{
+			var sms_total = recipients * sms_amount,
+				sms_cost = Math.ceil(sms_total * script_sms.sms_price);
+
+			$("#sms_cost").removeClass('hide')
+				.children("span:first-child").text(sms_total)
+				.siblings("span").text(sms_cost);
+
+			$("button[name='btnGroupSend']").removeAttr("disabled");
+		}
+
+		else
+		{
+			$("#sms_cost").addClass('hide');
+				
+			$("button[name='btnGroupSend']").prop({'disabled': 'disabled'});
+		}
+	}
+
+	calculate_amount();
+
+	$("#strMessageFrom, #strSmsFrom, #arrGroupID").on('change', function()
+	{
+		calculate_amount();
+	});
+
+	$("#strSmsTo, #strMessageText, #strSmsText").on('keyup', function()
+	{
+		calculate_amount();
 	});
 
 	$("#mf_sms").on('submit', function()

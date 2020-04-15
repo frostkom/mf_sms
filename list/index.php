@@ -31,8 +31,8 @@ echo "<div class='wrap'>
 						.show_textfield(array('name' => 'strSmsTo', 'text' => __("To", 'lang_sms'), 'value' => $strSmsTo, 'required' => true, 'placeholder' => "0046701234567"))
 						.show_textarea(array('name' => 'strSmsText', 'text' => __("Message", 'lang_sms'), 'value' => "", 'required' => true))
 						.show_button(array('name' => 'btnGroupSend', 'text' => __("Send", 'lang_sms')))
-						."<span id='chars_left'></span> (<span id='sms_amount'>1</span>)
-					</form>";
+						.$obj_sms->get_message_count_html(array('display_total' => false))
+					."</form>";
 				}
 
 				else

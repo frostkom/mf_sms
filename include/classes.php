@@ -58,7 +58,7 @@ class mf_sms
 
 		if($setting_sms_senders != '')
 		{
-			foreach(explode(",", $setting_sms_senders) as $sender)
+			foreach(array_map('trim', explode(",", $setting_sms_senders)) as $sender)
 			{
 				if($sender != '')
 				{
@@ -429,7 +429,26 @@ class mf_sms
 		$plugin_include_url = plugin_dir_url(__FILE__);
 		$plugin_version = get_plugin_version(__FILE__);
 
-		mf_enqueue_script('script_sms', $plugin_include_url."script_wp.js", array('admin_url' => admin_url("admin.php?page=mf_sms/list/index.php"), 'plugin_url' => $plugin_include_url), $plugin_version);
+		switch(get_option('setting_sms_provider'))
+		{
+			case 'cellsynt':
+				$sms_price = 0.5;
+			break;
+
+			case 'ip1sms':
+				$sms_price = 0.59;
+			break;
+
+			default:
+				$sms_price = 0;
+			break;
+		}
+
+		mf_enqueue_script('script_sms', $plugin_include_url."script_wp.js", array(
+			'admin_url' => admin_url("admin.php?page=mf_sms/list/index.php"),
+			'plugin_url' => $plugin_include_url,
+			'sms_price' => $sms_price,
+		), $plugin_version);
 	}
 
 	function admin_menu()
@@ -466,17 +485,29 @@ class mf_sms
 		{
 			$data['html'] .= show_select(array('data' => $this->get_from_for_select(), 'name' => 'strMessageFrom', 'text' => __("From", 'lang_sms'), 'value' => $data['from_value'], 'required' => true))
 			.show_select(array('data' => $data['to_select'], 'name' => 'arrGroupID[]', 'text' => __("To", 'lang_sms'), 'value' => $data['to_value'], 'maxsize' => 6, 'required' => true))
-			.show_textarea(array('name' => 'strMessageText', 'text' => __("Message", 'lang_sms'), 'value' => $data['message'], 'required' => true));
+			.show_textarea(array('name' => 'strMessageText', 'text' => __("Message", 'lang_sms'), 'value' => $data['message'], 'required' => true, 'xtra' => " maxlength='1550'"));
 		}
 
 		return $data;
+	}
+
+	function get_message_count_html($data)
+	{
+		$out = "<span id='sms_count'>".sprintf(__("%s SMS, approx. %s left", 'lang_sms'), "<span></span>", "<span></span>")."</span>";
+
+		if($data['display_total'])
+		{
+			$out .= "<div id='sms_cost'>".sprintf(__("Totally %s SMS, approx. %s", 'lang_sms'), "<span></span>", "<span></span> SEK")."</div><br>";
+		}
+
+		return $out;
 	}
 
 	function get_group_message_send_fields($data)
 	{
 		if($data['type'] == $this->message_type)
 		{
-			$data['html'] .= " <span id='chars_left'></span> (<span id='sms_amount'>1</span>)";
+			$data['html'] .= $this->get_message_count_html(array('display_total' => true));
 		}
 
 		return $data;
