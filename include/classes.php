@@ -5,28 +5,29 @@ class mf_sms
 	function __construct()
 	{
 		$this->post_type = 'mf_sms';
+		$this->meta_prefix = $this->post_type.'_';
 		$this->message_type = 'sms';
+		
+		$this->chars_double = array("|", "^", "€", "{", "}", "[", "~", "]", "\\"); //, "\n", "\r", '\"', "\'"
 
 		switch(get_option('setting_sms_provider'))
 		{
 			case 'cellsynt':
 				$this->chars_limit_single = 160;
 				$this->chars_limit_multiple = 153;
-				$this->chars_double = array("|", "^", "€", "{", "}", "[", "~", "]", "\\");
 				$this->sms_limit = 6;
 				$this->sms_price = 0.5;
 			break;
 
 			case 'ip1sms':
 				$this->chars_limit_single = 160;
-				$this->chars_limit_multiple = 153;
-				$this->chars_double = array("|", "^", "€", "{", "}", "[", "~", "]", "\\");
+				$this->chars_limit_multiple = 152;
 				$this->sms_limit = 10;
 				$this->sms_price = 0.59;
 			break;
 
 			default:
-				$this->chars_limit_single = $this->chars_limit_multiple = $this->chars_double = $this->sms_limit = $this->sms_price = 0;
+				$this->chars_limit_single = $this->chars_limit_multiple = $this->sms_limit = $this->sms_price = 0;
 			break;
 		}
 	}
@@ -182,7 +183,24 @@ class mf_sms
 
 					if(substr($content, 0, 2) == "OK")
 					{
-						$wpdb->query($wpdb->prepare("INSERT INTO ".$wpdb->posts." SET post_type = %s, post_title = %s, post_name = %s, post_content = %s, post_author = '%d', post_excerpt = %s, post_date = NOW()", $this->post_type, $data['to'], $data['from'], $data['text'], $data['user_id'], substr($content, 4)));
+						$trackingids = substr($content, 4);
+
+						$post_data = array(
+							'post_type' => $this->post_type,
+							'post_name' => $data['from'],
+							'post_title' => $data['to'],
+							//'post_excerpt' => $trackingids,
+							'post_content' => $data['text'],
+							'post_author' => $data['user_id'],
+							'meta_input' => array(
+								$this->meta_prefix.'trackingids' => $trackingids,
+								$this->meta_prefix.'amount' => (substr_count($trackingids, ",") + 1),
+							),
+						);
+
+						wp_insert_post($post_data);
+
+						//$wpdb->query($wpdb->prepare("INSERT INTO ".$wpdb->posts." SET post_type = %s, post_title = %s, post_name = %s, post_content = %s, post_author = '%d', post_excerpt = %s, post_date = NOW()", $this->post_type, $data['to'], $data['from'], $data['text'], $data['user_id'], $trackingids));
 
 						return true;
 					}
@@ -258,17 +276,40 @@ class mf_sms
 								//do_log("JSON Row: ".var_export($r, true));
 
 								/*{
-								   "ID": 65416,
-								   "BundleID": null,
-								   "Status": 0,
-								   "StatusDescription": "Delivered to gateway",
-								   "Prio": 1,
-								   "From": "iP1sms",
-								   "To": "46123456789",
-								   "Message": "Hello world!"
+									"ID": 65416,
+									"BundleID": null,
+									"Status": 0,
+									"StatusDescription": "Delivered to gateway",
+									"Prio": 1,
+									"CountryCode": "string",
+									"Currency": 752,
+									"TotalPrice": 0.0,
+									"Price": 0.0,
+									"Encoding": 0,
+									"Segments": 0,
+									"From": "iP1sms",
+									"To": "46123456789",
+									"Message": "Hello world!"
 								}*/
 
-								$wpdb->query($wpdb->prepare("INSERT INTO ".$wpdb->posts." SET post_type = %s, post_title = %s, post_name = %s, post_content = %s, post_author = '%d', post_excerpt = %s, post_status = '%d', post_date = NOW()", $this->post_type, $data['to'], $data['from'], $data['text'], $data['user_id'], $r['ID'], $r['Status']));
+								$post_data = array(
+									'post_type' => $this->post_type,
+									'post_status' => $r['Status'],
+									'post_name' => $data['from'],
+									'post_title' => $data['to'],
+									//'post_excerpt' => $r['ID'],
+									'post_content' => $data['text'],
+									'post_author' => $data['user_id'],
+									'meta_input' => array(
+										//$this->meta_prefix.'ID' => $r['ID'],
+										$this->meta_prefix.'cost' => $r['TotalPrice'],
+										$this->meta_prefix.'amount' => $r['Segments'],
+									),
+								);
+
+								wp_insert_post($post_data);
+
+								//$wpdb->query($wpdb->prepare("INSERT INTO ".$wpdb->posts." SET post_type = %s, post_title = %s, post_name = %s, post_content = %s, post_author = '%d', post_excerpt = %s, post_status = '%d', post_date = NOW()", $this->post_type, $data['to'], $data['from'], $data['text'], $data['user_id'], $r['ID'], $r['Status']));
 							}
 
 							return true;
@@ -688,16 +729,23 @@ class mf_sms_table extends mf_list_table
 					break;
 				}
 
-				$amount_calculated = $obj_sms->calculate_amount($item['post_content']);
+				$amount_reported = get_post_meta($item['ID'], $this->meta_prefix.'amount', true);
 
-				if(strlen($item['post_excerpt']) > 2)
+				if($item['post_excerpt'] != '')
 				{
-					$amount_reported = substr_count($item['post_excerpt'], ",") + 1;
+					$trackingids = $item['post_excerpt'];
 				}
 
 				else
 				{
-					$amount_reported = 0;
+					$trackingsids = get_post_meta($item['ID'], $this->meta_prefix.'trackingids', true);
+				}
+
+				$amount_calculated = $obj_sms->calculate_amount($item['post_content']);
+
+				if(!($amount_reported > 0) && strlen($trackingids) > 6)
+				{
+					$amount_reported = substr_count($trackingids, ",") + 1;
 				}
 
 				$actions = array();
@@ -706,7 +754,7 @@ class mf_sms_table extends mf_list_table
 
 				if($amount_reported > 0)
 				{
-					$actions['amount'] .= " / <span title='".__("Reported from provider", 'lang_sms')." (".$item['post_excerpt'].")'>".$amount_reported."</span>";
+					$actions['amount'] .= " / <span title='".__("Reported from provider", 'lang_sms')." (".$trackingids.")'>".$amount_reported."</span>";
 				}
 
 				$out .= "<i class='".$status_icon."'></i>"

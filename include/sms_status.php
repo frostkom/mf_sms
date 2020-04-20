@@ -14,12 +14,7 @@ $status = check_var('status', 'char');
 
 $strDataIP = $_SERVER['REMOTE_ADDR'];
 
-$arr_ips = array(
-	/*"212.100.254.167",
-	"37.250.191.29",
-	"83.138.162.66",
-	"83.138.162.68",*/
-);
+$arr_ips = array();
 
 for($i = 64; $i <= 71; $i++)
 {
@@ -49,11 +44,11 @@ else
 {
 	$obj_sms = new mf_sms();
 
-	$wpdb->get_results($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_type = %s AND post_excerpt LIKE %s LIMIT 0, 1", $obj_sms->post_type, "%".$trackingid."%"));
+	$post_id = $wpdb->get_var($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." LEFT JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE post_type = %s AND (post_excerpt LIKE %s OR (meta_key = %s AND meta_value LIKE %s)) LIMIT 0, 1", $obj_sms->post_type, "%".$trackingid."%", $obj_sms->meta_prefix.'trackingids', "%".$trackingid."%"));
 
-	if($wpdb->num_rows > 0)
+	if($post_id > 0)
 	{
-		$wpdb->query($wpdb->prepare("UPDATE ".$wpdb->posts." SET post_status = %s WHERE post_type = %s AND post_excerpt LIKE %s", $status, $obj_sms->post_type, "%".$trackingid."%"));
+		$wpdb->query($wpdb->prepare("UPDATE ".$wpdb->posts." SET post_status = %s WHERE ID = '%d'", $status, $post_id));
 
 		if($wpdb->rows_affected == 1)
 		{
