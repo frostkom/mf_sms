@@ -6,6 +6,29 @@ class mf_sms
 	{
 		$this->post_type = 'mf_sms';
 		$this->message_type = 'sms';
+
+		switch(get_option('setting_sms_provider'))
+		{
+			case 'cellsynt':
+				$this->chars_limit_single = 160;
+				$this->chars_limit_multiple = 153;
+				$this->chars_double = array("|", "^", "€", "{", "}", "[", "~", "]", "\\");
+				$this->sms_limit = 6;
+				$this->sms_price = 0.5;
+			break;
+
+			case 'ip1sms':
+				$this->chars_limit_single = 160;
+				$this->chars_limit_multiple = 153;
+				$this->chars_double = array("|", "^", "€", "{", "}", "[", "~", "]", "\\");
+				$this->sms_limit = 10;
+				$this->sms_price = 0.59;
+			break;
+
+			default:
+				$this->chars_limit_single = $this->chars_limit_multiple = $this->chars_double = $this->sms_limit = $this->sms_price = 0;
+			break;
+		}
 	}
 
 	function strip_phone_no($data)
@@ -73,6 +96,28 @@ class mf_sms
 		}
 
 		return $arr_data;
+	}
+
+	function calculate_amount($message)
+	{
+		$message_length = strlen($message);
+
+		foreach($this->chars_double as $character)
+		{
+			$message_length += substr_count($message, $character);
+		}
+
+		if($message_length <= $this->chars_limit_single)
+		{
+			$sms_amount = 1;
+		}
+
+		else
+		{
+			$sms_amount = ceil($message_length / $this->chars_limit_multiple);
+		}
+
+		return $sms_amount;
 	}
 
 	function send_sms($data)
@@ -429,25 +474,14 @@ class mf_sms
 		$plugin_include_url = plugin_dir_url(__FILE__);
 		$plugin_version = get_plugin_version(__FILE__);
 
-		switch(get_option('setting_sms_provider'))
-		{
-			case 'cellsynt':
-				$sms_price = 0.5;
-			break;
-
-			case 'ip1sms':
-				$sms_price = 0.59;
-			break;
-
-			default:
-				$sms_price = 0;
-			break;
-		}
-
 		mf_enqueue_script('script_sms', $plugin_include_url."script_wp.js", array(
 			'admin_url' => admin_url("admin.php?page=mf_sms/list/index.php"),
 			'plugin_url' => $plugin_include_url,
-			'sms_price' => $sms_price,
+			'chars_limit_single' => $this->chars_limit_single,
+			'chars_limit_multiple' => $this->chars_limit_multiple,
+			'chars_double' => $this->chars_double,
+			'sms_limit' => $this->sms_limit,
+			'sms_price' => $this->sms_price,
 		), $plugin_version);
 	}
 
@@ -485,7 +519,7 @@ class mf_sms
 		{
 			$data['html'] .= show_select(array('data' => $this->get_from_for_select(), 'name' => 'strMessageFrom', 'text' => __("From", 'lang_sms'), 'value' => $data['from_value'], 'required' => true))
 			.show_select(array('data' => $data['to_select'], 'name' => 'arrGroupID[]', 'text' => __("To", 'lang_sms'), 'value' => $data['to_value'], 'maxsize' => 6, 'required' => true))
-			.show_textarea(array('name' => 'strMessageText', 'text' => __("Message", 'lang_sms'), 'value' => $data['message'], 'required' => true, 'xtra' => " maxlength='1550'"));
+			.show_textarea(array('name' => 'strMessageText', 'text' => __("Message", 'lang_sms'), 'value' => $data['message'], 'required' => true, 'xtra' => " maxlength='".($this->chars_limit_multiple  * $this->sms_limit)."'"));
 		}
 
 		return $data;
@@ -547,5 +581,171 @@ class mf_sms
 	function group_send_other($data)
 	{
 		return $this->send_sms(array('from' => $data['from'], 'to' => $data['to'], 'text' => $data['message'], 'user_id' => $data['user_id']));
+	}
+}
+
+class mf_sms_table extends mf_list_table
+{
+	function set_default()
+	{
+		$this->post_type = 'mf_sms';
+
+		$this->orderby_default = "post_date";
+		$this->orderby_default_order = "DESC";
+	}
+
+	function init_fetch()
+	{
+		global $wpdb;
+
+		$this->query_where .= ($this->query_where != '' ? " AND " : "")."post_author = '".esc_sql(get_current_user_id())."'";
+
+		if($this->search != '')
+		{
+			$this->query_where .= ($this->query_where != '' ? " AND " : "")."(post_name LIKE '%".$this->search."%' OR post_title LIKE '%".$this->search."%' OR post_content LIKE '%".$this->search."%' OR SOUNDEX(post_content) = SOUNDEX('".$this->search."') OR post_date LIKE '%".$this->search."%')";
+		}
+
+		$this->set_views(array(
+			'db_field' => 'post_status',
+			'types' => array(
+				'all' => __("All", 'lang_sms'),
+				'trash' => __("Trash", 'lang_sms'),
+			),
+		));
+
+		$this->set_columns(array(
+			'cb' => '<input type="checkbox">',
+			'post_status' => "",
+			'post_name' => __("From", 'lang_sms'),
+			'post_title' => __("To", 'lang_sms'),
+			'post_content' => __("Message", 'lang_sms'),
+			'post_date' => __("Date", 'lang_sms'),
+		));
+
+		$this->set_sortable_columns(array(
+			'post_name',
+			'post_title',
+			'post_date',
+		));
+	}
+
+	function column_default($item, $column_name)
+	{
+		global $obj_sms;
+
+		$out = "";
+
+		switch($column_name)
+		{
+			case 'post_status':
+				switch($item['post_status'])
+				{
+					// Cellsynt
+					case 'delivered':
+					//IP.1
+					case 22:
+						$status_icon = "fa fa-check green";
+					break;
+
+					// Cellsynt
+					case 'failed':
+					//IP.1
+					case 1:
+					case 2:
+					case 3:
+					case 4:
+					case 12:
+					case 30:
+					case 41:
+					case 42:
+					case 43:
+					case 44:
+					case 45:
+					case 50:
+					case 51:
+					case 52:
+					case 100:
+					case 101:
+					case 110:
+						$status_icon = "fa fa-ban red";
+					break;
+
+					// Cellsynt
+					case 'buffered':
+					//IP.1
+					case 0:
+					case 10:
+					case 11:
+					case 21:
+						$status_icon = "fa fa-cloud blue";
+					break;
+
+					default:
+					// Cellsynt
+					case 'unknown':
+					case 'acked':
+						$status_icon = "fa fa-question";
+					break;
+				}
+
+				$amount_calculated = $obj_sms->calculate_amount($item['post_content']);
+
+				if(strlen($item['post_excerpt']) > 2)
+				{
+					$amount_reported = substr_count($item['post_excerpt'], ",") + 1;
+				}
+
+				else
+				{
+					$amount_reported = 0;
+				}
+
+				$actions = array();
+
+				$actions['amount'] = "<span title='".sprintf(__("Calculated from %d characters", 'lang_sms'), strlen($item['post_content']))."'>".$amount_calculated."</span>";
+
+				if($amount_reported > 0)
+				{
+					$actions['amount'] .= " / <span title='".__("Reported from provider", 'lang_sms')." (".$item['post_excerpt'].")'>".$amount_reported."</span>";
+				}
+
+				$out .= "<i class='".$status_icon."'></i>"
+				.$this->row_actions($actions);
+			break;
+
+			case 'post_content':
+				/*$post_id = $item['ID'];
+				$post_status = $item['post_status'];
+				$post_author = $item['post_author'];*/
+				$post_content = $item['post_content'];
+				
+				/*$actions = array();
+
+				if($post_status != "trash")
+				{
+					if($post_author == get_current_user_id() || IS_ADMIN)
+					{
+						$actions['delete'] = "<a href='".wp_nonce_url(admin_url("admin.php?page=mf_sms/list/index.php&btnSmsDelete&intSmsID=".$post_id), 'sms_delete_'.$post_id, '_wpnonce_sms_delete')."'>".__("Delete", 'lang_sms')."</a>";
+					}
+				}*/
+
+				$out .= $post_content;
+				//$out .= shorten_text(array('string' => $post_content, 'limit' => 20));
+				//$out .= $this->row_actions($actions);
+			break;
+
+			case 'post_date':
+				$out .= format_date($item['post_date']);
+			break;
+
+			default:
+				if(isset($item[$column_name]))
+				{
+					$out .= $item[$column_name];
+				}
+			break;
+		}
+
+		return $out;
 	}
 }

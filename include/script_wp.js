@@ -38,18 +38,32 @@ jQuery(function($)
 
 	function calculate_amount()
 	{
-		var text_length = $("#strMessageText, #strSmsText").val().length,
-			recipients = 0,
-			chars_limit = 155;
+		var message = $("#strMessageText, #strSmsText").val(),
+			message_length = message.length,
+			recipients = 0;
 
-		if(text_length > 0)
+		if(message_length > 0)
 		{
-			var sms_amount = Math.ceil(text_length / chars_limit),
-				chars_left = chars_limit - (text_length % chars_limit);
-
-			if(chars_left == chars_limit)
+			$.each(script_sms.chars_double, function(key, value)
 			{
-				chars_left = 0;
+				message_length += message.split(value).length - 1;
+			});
+
+			if(message_length <= script_sms.chars_limit_single)
+			{
+				var sms_amount = 1,
+					chars_left = script_sms.chars_limit_single - message_length;
+			}
+
+			else
+			{
+				var sms_amount = Math.ceil(message_length / script_sms.chars_limit_multiple),
+					chars_left = script_sms.chars_limit_multiple - (message_length % script_sms.chars_limit_multiple);
+
+				if(chars_left == script_sms.chars_limit_multiple)
+				{
+					chars_left = 0;
+				}
 			}
 
 			$("#sms_count").removeClass('hide')
@@ -59,20 +73,14 @@ jQuery(function($)
 			if($("#strSmsTo").length > 0 && $("#strSmsTo").val() != '')
 			{
 				recipients++;
-
-				console.log("To");
 			}
 
 			else if($("#arrGroupID").length > 0)
 			{
-				var selected_options = $("#arrGroupID option:selected");
-
-				$.each(selected_options, function(e)
+				$("#arrGroupID option:selected").each(function()
 				{
 					recipients += parseInt($(this).attr('amount'));
 				});
-
-				console.log("Group");
 			}
 		}
 
@@ -96,7 +104,7 @@ jQuery(function($)
 		else
 		{
 			$("#sms_cost").addClass('hide');
-				
+
 			$("button[name='btnGroupSend']").prop({'disabled': 'disabled'});
 		}
 	}
