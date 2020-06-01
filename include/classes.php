@@ -7,7 +7,7 @@ class mf_sms
 		$this->post_type = 'mf_sms';
 		$this->meta_prefix = $this->post_type.'_';
 		$this->message_type = 'sms';
-		
+
 		$this->chars_double = array("|", "^", "€", "{", "}", "[", "~", "]", "\\"); //, "\n", "\r", '\"', "\'"
 
 		switch(get_option('setting_sms_provider'))
@@ -766,7 +766,7 @@ class mf_sms_table extends mf_list_table
 				$post_status = $item['post_status'];
 				$post_author = $item['post_author'];*/
 				$post_content = $item['post_content'];
-				
+
 				/*$actions = array();
 
 				if($post_status != "trash")

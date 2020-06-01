@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-11 06:42+0100\n"
+"POT-Creation-Date: 2020-06-01 07:36+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -15,166 +15,123 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../include/classes.php:56
-#: ../include/classes.php:384
-msgid "Choose Here"
-msgstr "Välj här"
-
-#: ../include/classes.php:328
-#: ../include/classes.php:329
-#: ../include/classes.php:330
-#: ../include/classes.php:375
-#: ../include/classes.php:460
-#: ../include/classes.php:476
-#: ../list/index.php:8
-msgid "SMS"
-msgstr ""
-
-#: ../include/classes.php:349
-msgid "Provider"
-msgstr "Leverantör"
-
-#: ../include/classes.php:360
-msgid "Username"
-msgstr "Användarnamn"
-
-#: ../include/classes.php:361
-msgid "Password"
-msgstr "Lösenord"
-
-#: ../include/classes.php:361
-msgid "API Key"
-msgstr "API-nyckel"
-
-#: ../include/classes.php:365
-msgid "Senders"
-msgstr "Avsändare"
-
-#: ../include/classes.php:392
-#, php-format
-msgid "Use the URL %s for delivery reports"
-msgstr "Använd URLen %s för leveransrapporter"
-
-#: ../include/classes.php:424
-msgid "Company,0046701234567"
-msgstr "Företag,0046701234567"
-
-#: ../include/classes.php:424
-msgid "One or more numbers/names separated by comma, is used for selecting which number/name is displayed to the recipient"
-msgstr "Ett eller flera nummer/namn separerat av komma, används för att kunna välja avsändare"
-
-#: ../include/classes.php:467
-#: ../stats/index.php:53
-msgid "Statistics"
-msgstr "Statistik"
-
-#: ../include/classes.php:486
-#: ../list/index.php:30
-#: ../list/index.php:59
-msgid "From"
-msgstr "Från"
-
-#: ../include/classes.php:487
-#: ../list/index.php:31
-#: ../list/index.php:60
-msgid "To"
-msgstr "Till"
-
-#: ../include/classes.php:488
-#: ../list/index.php:32
-#: ../list/index.php:61
-msgid "Message"
-msgstr "Meddelande"
-
-#: ../include/classes.php:496
-#, php-format
-msgid "%s SMS, approx. %s left"
-msgstr "%s SMS, ca %s kvar"
-
-#: ../include/classes.php:497
-#, php-format
-msgid "Totally %s SMS, approx. %s"
-msgstr "Totalt %s SMS, ca. %s"
-
-#: ../include/classes.php:512
-msgid "Phone number"
-msgstr "Telefonnummer"
-
-#: ../include/classes.php:519
-msgid "Send SMS to everyone in the group"
-msgstr "Skicka SMS till alla i gruppen"
-
-#: ../list/index.php:11
 msgid "The message was not sent, contact an admin if this persists"
 msgstr "Meddelandet skickades inte, kontakta en administratör om problemet kvarstår"
 
-#: ../list/index.php:16
 msgid "The message was sent"
 msgstr "Meddelandet skickades"
 
-#: ../list/index.php:20
 msgid "Send SMS"
 msgstr "Skicka SMS"
 
-#: ../list/index.php:30
+msgid "From"
+msgstr "Från"
+
 msgid "Add more"
 msgstr "Lägg till fler"
 
-#: ../list/index.php:30
 msgid "Profile"
 msgstr "Profil"
 
-#: ../list/index.php:30
 msgid "or"
 msgstr "eller"
 
-#: ../list/index.php:30
 msgid "Settings"
 msgstr "Inställningar"
 
-#: ../list/index.php:33
+msgid "To"
+msgstr "Till"
+
+msgid "Message"
+msgstr "Meddelande"
+
 msgid "Send"
 msgstr "Skicka"
 
-#: ../list/index.php:40
-#, php-format
 msgid "You have to %sadd your phone number in the profile%s or %sadd a sender on the settings page%s for this to work"
 msgstr "Du behöver %slägga in ditt telefonnummer i profilen%s eller %slägga till en avsändare på inställningssidan%s för att detta ska fungera"
 
-#: ../list/index.php:46
-#, php-format
 msgid "You have to %sadd Provider and credentials on the settings page%s for this to work"
 msgstr "Du behöver %slägga till leverantör och inloggningsuppgifter på inställsningssidan%s för att detta ska fungera"
 
-#: ../list/index.php:62
 msgid "Date"
 msgstr "Datum"
 
-#: ../stats/index.php:58
+msgid "Statistics"
+msgstr "Statistik"
+
 msgid "Amount / User"
 msgstr "Antal / användare"
 
-#: ../stats/index.php:81
 msgid "There were no text messages sent during this period"
 msgstr "Det skickades inga SMS under denna period"
 
-#: ../stats/index.php:89
 msgid "Filter"
 msgstr "Filtrera"
 
-#: ../stats/index.php:95
 msgid "Overall"
 msgstr "Allmänt"
 
-#: ../stats/index.php:102
 msgid "First Date"
 msgstr "Första datum"
 
-#: ../stats/index.php:103
 msgid "Last date"
 msgstr "Senaste datum"
 
-#: ../stats/index.php:104
 msgid "Total Amount"
 msgstr "Totalt antal"
+
+msgid "Choose Here"
+msgstr "Välj här"
+
+msgid "Provider"
+msgstr "Leverantör"
+
+msgid "Username"
+msgstr "Användarnamn"
+
+msgid "Password"
+msgstr "Lösenord"
+
+msgid "API Key"
+msgstr "API-nyckel"
+
+msgid "Senders"
+msgstr "Avsändare"
+
+msgid "Use the URL %s for delivery reports"
+msgstr "Använd URLen %s för leveransrapporter"
+
+msgid "Company,0046701234567"
+msgstr "Företag,0046701234567"
+
+msgid "One or more numbers/names separated by comma, is used for selecting which number/name is displayed to the recipient"
+msgstr "Ett eller flera nummer/namn separerat av komma, används för att kunna välja avsändare"
+
+msgid "%s SMS, approx. %s left"
+msgstr "%s SMS, ca %s kvar"
+
+msgid "Totally %s SMS, approx. %s"
+msgstr "Totalt %s SMS, ca. %s"
+
+msgid "Phone number"
+msgstr "Telefonnummer"
+
+msgid "Send SMS to everyone in the group"
+msgstr "Skicka SMS till alla i gruppen"
+
+msgid "All"
+msgstr "Alla"
+
+msgid "Trash"
+msgstr "Papperskorg"
+
+msgid "Calculated from %d characters"
+msgstr "Beräknad utifrån %d tecken"
+
+msgid "Reported from provider"
+msgstr "Rapporterat från leverantör"
+
+msgid "Delete"
+msgstr "Radera"
 
