@@ -512,18 +512,23 @@ class mf_sms
 
 	function admin_init()
 	{
-		$plugin_include_url = plugin_dir_url(__FILE__);
-		$plugin_version = get_plugin_version(__FILE__);
+		global $pagenow;
 
-		mf_enqueue_script('script_sms', $plugin_include_url."script_wp.js", array(
-			'admin_url' => admin_url("admin.php?page=mf_sms/list/index.php"),
-			'plugin_url' => $plugin_include_url,
-			'chars_limit_single' => $this->chars_limit_single,
-			'chars_limit_multiple' => $this->chars_limit_multiple,
-			'chars_double' => $this->chars_double,
-			'sms_limit' => $this->sms_limit,
-			'sms_price' => $this->sms_price,
-		), $plugin_version);
+		if($pagenow == 'admin.php' && in_array(check_var('page'), array("mf_sms/list/index.php", "mf_group/send/index.php")))
+		{
+			$plugin_include_url = plugin_dir_url(__FILE__);
+			$plugin_version = get_plugin_version(__FILE__);
+
+			mf_enqueue_script('script_sms', $plugin_include_url."script_wp.js", array(
+				'admin_url' => admin_url("admin.php?page=mf_sms/list/index.php"),
+				'plugin_url' => $plugin_include_url,
+				'chars_limit_single' => $this->chars_limit_single,
+				'chars_limit_multiple' => $this->chars_limit_multiple,
+				'chars_double' => $this->chars_double,
+				'sms_limit' => $this->sms_limit,
+				'sms_price' => $this->sms_price,
+			), $plugin_version);
+		}
 	}
 
 	function admin_menu()
@@ -597,7 +602,30 @@ class mf_sms
 
 	function add_group_list_amount_actions($actions, $post_id)
 	{
-		$actions['send_sms'] = "<a href='".admin_url("admin.php?page=mf_group/send/index.php&intGroupID=".$post_id."&type=sms")."' title='".__("Send SMS to everyone in the group", 'lang_sms')."'><i class='fa fa-mobile-alt fa-lg'></i></a>";
+		if(count($this->get_from_for_select()) > 1)
+		{
+			$sms_link = admin_url("admin.php?page=mf_group/send/index.php&intGroupID=".$post_id."&type=sms");
+			$sms_text = __("Send SMS to everyone in the group", 'lang_sms');
+		}
+
+		else
+		{
+			$meta_sms_phone = get_user_meta(get_current_user_id(), 'meta_sms_phone', true);
+
+			if($meta_sms_phone == '')
+			{
+				$sms_link = admin_url("profile.php");
+				$sms_text = __("You have not entered a cell phone number in your profile. Please do so, and then you can start sending messages", 'lang_sms');
+			}
+
+			else
+			{
+				$sms_link = admin_url("options-general.php?page=settings_mf_base#settings_sms");
+				$sms_text = __("You have not entered any senders in the settings. Please do so, and then you can start sending messages", 'lang_sms');
+			}
+		}
+
+		$actions['send_sms'] = "<a href='".$sms_link."' title='".$sms_text."'><i class='fa fa-mobile-alt fa-lg'></i></a>";
 
 		return $actions;
 	}
