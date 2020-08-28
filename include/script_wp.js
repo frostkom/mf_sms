@@ -98,14 +98,14 @@ jQuery(function($)
 				.children("span:first-child").text(sms_total)
 				.siblings("span").text(sms_cost);
 
-			$("button[name='btnGroupSend']").removeAttr("disabled");
+			$("button[name='btnGroupSend']").removeClass('is_disabled'); /*.removeAttr("disabled")*/
 		}
 
 		else
 		{
 			$("#sms_cost").addClass('hide');
 
-			$("button[name='btnGroupSend']").prop({'disabled': 'disabled'});
+			$("button[name='btnGroupSend']").addClass('is_disabled'); /*.prop({'disabled': 'disabled'})*/
 		}
 	}
 
