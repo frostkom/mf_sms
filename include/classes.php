@@ -514,6 +514,11 @@ class mf_sms
 	{
 		global $pagenow;
 
+		if(!is_plugin_active("mf_base/index.php"))
+		{
+			deactivate_plugins(str_replace("include/classes.php", "index.php", plugin_basename(__FILE__)));
+		}
+
 		if($pagenow == 'admin.php' && in_array(check_var('page'), array("mf_sms/list/index.php", "mf_group/send/index.php")))
 		{
 			$plugin_include_url = plugin_dir_url(__FILE__);
