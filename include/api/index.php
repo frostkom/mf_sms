@@ -19,7 +19,7 @@ $type = check_var('type', 'char');
 $arr_input = explode("/", $type);
 $type_action = $arr_input[0];
 
-if($type_action == 'sms_send' && get_current_user_id() > 0)
+if($type_action == 'sms_send' && is_user_logged_in())
 {
 	$strSmsFrom = check_var('strSmsFrom');
 	$strSmsTo = check_var('strSmsTo');
