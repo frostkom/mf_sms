@@ -189,7 +189,6 @@ class mf_sms
 							'post_type' => $this->post_type,
 							'post_name' => $data['from'],
 							'post_title' => $data['to'],
-							//'post_excerpt' => $trackingids,
 							'post_content' => $data['text'],
 							'post_author' => $data['user_id'],
 							'meta_input' => array(
@@ -199,8 +198,6 @@ class mf_sms
 						);
 
 						wp_insert_post($post_data);
-
-						//$wpdb->query($wpdb->prepare("INSERT INTO ".$wpdb->posts." SET post_type = %s, post_title = %s, post_name = %s, post_content = %s, post_author = '%d', post_excerpt = %s, post_date = NOW()", $this->post_type, $data['to'], $data['from'], $data['text'], $data['user_id'], $trackingids));
 
 						return true;
 					}
@@ -514,11 +511,6 @@ class mf_sms
 	{
 		global $pagenow;
 
-		if(!is_plugin_active("mf_base/index.php"))
-		{
-			deactivate_plugins(str_replace("include/classes.php", "index.php", plugin_basename(__FILE__)));
-		}
-
 		if($pagenow == 'admin.php' && in_array(check_var('page'), array("mf_sms/list/index.php", "mf_group/send/index.php")))
 		{
 			$plugin_include_url = plugin_dir_url(__FILE__);
@@ -773,7 +765,7 @@ if(class_exists('mf_list_table'))
 
 					else
 					{
-						$trackingsids = get_post_meta($item['ID'], $this->meta_prefix.'trackingids', true);
+						$trackingids = get_post_meta($item['ID'], $this->meta_prefix.'trackingids', true);
 					}
 
 					$amount_calculated = $obj_sms->calculate_amount($item['post_content']);
