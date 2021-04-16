@@ -1,5 +1,7 @@
 <?php
 
+$obj_sms = new mf_sms();
+
 $result = $wpdb->get_results("SELECT MIN(post_date) AS dateMin, MAX(post_date) AS dateMax FROM ".$wpdb->posts." WHERE post_type = 'mf_sms'");
 
 foreach($result as $r)
@@ -50,12 +52,12 @@ for($i = $intDateMin_year; $i <= $intDateMax_year; $i++)
 }
 
 echo "<div class='wrap'>
-	<h2>".__("Statistics", 'lang_sms')."</h2>
+	<h2>".__("Statistics", $obj_sms->lang_key)."</h2>
 	<div id='poststuff'>
 		<div id='post-body' class='columns-2'>
 			<div id='post-body-content'>
 				<div class='postbox'>
-					<h3 class='hndle'><span>".__("Amount / User", 'lang_sms')."</span></h3>
+					<h3 class='hndle'><span>".__("Amount / User", $obj_sms->lang_key)."</span></h3>
 					<div class='inside'>";
 
 						$result = $wpdb->get_results("SELECT post_author, COUNT(post_author) AS sms_amount, display_name FROM ".$wpdb->posts." LEFT JOIN ".$wpdb->users." ON ".$wpdb->posts.".post_author = ".$wpdb->users.".ID WHERE post_type = 'mf_sms'".($dteSmsMonth != '' ? " AND post_date LIKE '".$dteSmsMonth."-%'" : "")." GROUP BY post_author ORDER BY sms_amount DESC");
@@ -78,7 +80,7 @@ echo "<div class='wrap'>
 
 						else
 						{
-							echo "<p>".__("There were no text messages sent during this period", 'lang_sms')."</p>";
+							echo "<p>".__("There were no text messages sent during this period", $obj_sms->lang_key)."</p>";
 						}
 
 					echo "</div>
@@ -86,22 +88,22 @@ echo "<div class='wrap'>
 			</div>
 			<div id='postbox-container-1'>
 				<div class='postbox'>
-					<h3 class='hndle'><span>".__("Filter", 'lang_sms')."</span></h3>
+					<h3 class='hndle'><span>".__("Filter", $obj_sms->lang_key)."</span></h3>
 					<form method='post' class='inside mf_form'>"
 						.show_select(array('data' => $arr_data_months, 'name' => 'dteSmsMonth', 'value' => $dteSmsMonth, 'xtra' => "rel='submit_change' class='is_disabled' disabled"))
 					."</form>
 				</div>
 				<div class='postbox'>
-					<h3 class='hndle'><span>".__("Overall", 'lang_sms')."</span></h3>
+					<h3 class='hndle'><span>".__("Overall", $obj_sms->lang_key)."</span></h3>
 					<div class='inside'>";
 
 						$wpdb->get_results("SELECT post_author FROM ".$wpdb->posts." LEFT JOIN ".$wpdb->users." ON ".$wpdb->posts.".post_author = ".$wpdb->users.".ID WHERE post_type = 'mf_sms'");
 
 						$intSmsTotal = $wpdb->num_rows;
 
-						echo "<p>".__("First Date", 'lang_sms').": ".format_date($dteDateMin)."</p>
-						<p>".__("Last date", 'lang_sms').": ".format_date($dteDateMax)."</p>
-						<p>".__("Total Amount", 'lang_sms').": ".$intSmsTotal."</p>
+						echo "<p>".__("First Date", $obj_sms->lang_key).": ".format_date($dteDateMin)."</p>
+						<p>".__("Last date", $obj_sms->lang_key).": ".format_date($dteDateMax)."</p>
+						<p>".__("Total Amount", $obj_sms->lang_key).": ".$intSmsTotal."</p>
 					</div>
 				</div>
 			</div>

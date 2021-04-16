@@ -3,7 +3,7 @@
 Plugin Name: MF SMS
 Plugin URI: https://github.com/frostkom/mf_sms
 Description: 
-Version: 2.6.10
+Version: 2.6.11
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://frostkom.se
@@ -19,6 +19,8 @@ API Documentation: https://www.cellsynt.com/sv/sms/api-integration || https://ww
 if(is_plugin_active("mf_base/index.php"))
 {
 	include_once("include/classes.php");
+
+	load_plugin_textdomain('lang_sms', false, dirname(plugin_basename(__FILE__))."/lang/");
 
 	$obj_sms = new mf_sms();
 
@@ -44,8 +46,6 @@ if(is_plugin_active("mf_base/index.php"))
 
 	add_action('group_init_other', array($obj_sms, 'group_init_other'));
 	add_filter('group_send_other', array($obj_sms, 'group_send_other'));
-
-	load_plugin_textdomain('lang_sms', false, dirname(plugin_basename(__FILE__))."/lang/");
 
 	function uninstall_sms()
 	{

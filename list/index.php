@@ -5,19 +5,19 @@ $obj_sms = new mf_sms();
 $strSmsTo = check_var('strSmsTo');
 
 echo "<div class='wrap'>
-	<h2>".__("SMS", 'lang_sms')."</h2>
+	<h2>".__("SMS", $obj_sms->lang_key)."</h2>
 	<div class='error hide'>
 		<p>
-			<strong>".__("The message was not sent, contact an admin if this persists", 'lang_sms')."</strong>
+			<strong>".__("The message was not sent, contact an admin if this persists", $obj_sms->lang_key)."</strong>
 		</p>
 	</div>
 	<div class='updated hide'>
 		<p>
-			<strong>".__("The message was sent", 'lang_sms')."</strong>
+			<strong>".__("The message was sent", $obj_sms->lang_key)."</strong>
 		</p>
 	</div>
 	<div id='poststuff' class='postbox'>
-		<h3 class='hndle'>".__("Send SMS", 'lang_sms')."</h3>
+		<h3 class='hndle'>".__("Send SMS", $obj_sms->lang_key)."</h3>
 		<div class='inside'>";
 
 			if($obj_sms->has_correct_settings())
@@ -27,23 +27,23 @@ echo "<div class='wrap'>
 				if(count($arr_data_from) > 1)
 				{
 					echo "<form action='#' method='post' id='mf_sms' class='mf_form mf_settings'>"
-						.show_select(array('data' => $arr_data_from, 'name' => 'strSmsFrom', 'text' => __("From", 'lang_sms'), 'value' => "", 'required' => true, 'description' => __("Add more", 'lang_sms').": <a href='".admin_url("profile.php#meta_sms_phone")."'>".__("Profile", 'lang_sms')."</a> ".__("or", 'lang_sms')." <a href='".admin_url("options-general.php?page=settings_mf_base#settings_sms")."'>".__("Settings", 'lang_sms')."</a>"))
-						.show_textfield(array('name' => 'strSmsTo', 'text' => __("To", 'lang_sms'), 'value' => $strSmsTo, 'required' => true, 'placeholder' => "0046701234567"))
-						.show_textarea(array('name' => 'strSmsText', 'text' => __("Message", 'lang_sms'), 'value' => "", 'required' => true, 'xtra' => " maxlength='".($obj_sms->chars_limit_multiple * $obj_sms->sms_limit)."'"))
-						.show_button(array('name' => 'btnGroupSend', 'text' => __("Send", 'lang_sms')))
+						.show_select(array('data' => $arr_data_from, 'name' => 'strSmsFrom', 'text' => __("From", $obj_sms->lang_key), 'value' => "", 'required' => true, 'description' => __("Add more", $obj_sms->lang_key).": <a href='".admin_url("profile.php#meta_sms_phone")."'>".__("Profile", $obj_sms->lang_key)."</a> ".__("or", $obj_sms->lang_key)." <a href='".admin_url("options-general.php?page=settings_mf_base#settings_sms")."'>".__("Settings", $obj_sms->lang_key)."</a>"))
+						.show_textfield(array('name' => 'strSmsTo', 'text' => __("To", $obj_sms->lang_key), 'value' => $strSmsTo, 'required' => true, 'placeholder' => "0046701234567"))
+						.show_textarea(array('name' => 'strSmsText', 'text' => __("Message", $obj_sms->lang_key), 'value' => "", 'required' => true, 'xtra' => " maxlength='".($obj_sms->chars_limit_multiple * $obj_sms->sms_limit)."'"))
+						.show_button(array('name' => 'btnGroupSend', 'text' => __("Send", $obj_sms->lang_key)))
 						.$obj_sms->get_message_count_html(array('display_total' => false))
 					."</form>";
 				}
 
 				else
 				{
-					echo sprintf(__("You have to %sadd your phone number in the profile%s or %sadd a sender on the settings page%s for this to work", 'lang_sms'), "<a href='".admin_url("profile.php#meta_sms_phone")."'>", "</a>", "<a href='".admin_url("options-general.php?page=settings_mf_base#settings_sms")."'>", "</a>");
+					echo sprintf(__("You have to %sadd your phone number in the profile%s or %sadd a sender on the settings page%s for this to work", $obj_sms->lang_key), "<a href='".admin_url("profile.php#meta_sms_phone")."'>", "</a>", "<a href='".admin_url("options-general.php?page=settings_mf_base#settings_sms")."'>", "</a>");
 				}
 			}
 
 			else
 			{
-				echo sprintf(__("You have to %sadd Provider and credentials on the settings page%s for this to work", 'lang_sms'), "<a href='".admin_url("options-general.php?page=settings_mf_base#settings_sms")."'>", "</a>");
+				echo sprintf(__("You have to %sadd Provider and credentials on the settings page%s for this to work", $obj_sms->lang_key), "<a href='".admin_url("options-general.php?page=settings_mf_base#settings_sms")."'>", "</a>");
 			}
 
 		echo "</div>
@@ -70,10 +70,10 @@ echo "<div class='wrap'>
 			echo "<table class='widefat striped'>";
 
 				$arr_header[] = "";
-				$arr_header[] = __("From", 'lang_sms');
-				$arr_header[] = __("To", 'lang_sms');
-				$arr_header[] = __("Message", 'lang_sms');
-				$arr_header[] = __("Date", 'lang_sms');
+				$arr_header[] = __("From", $obj_sms->lang_key);
+				$arr_header[] = __("To", $obj_sms->lang_key);
+				$arr_header[] = __("Message", $obj_sms->lang_key);
+				$arr_header[] = __("Date", $obj_sms->lang_key);
 
 				echo show_table_header($arr_header)
 				."<tbody>";

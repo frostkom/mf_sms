@@ -144,6 +144,11 @@ jQuery(function($)
 
 				else
 				{
+					if(data.message != '')
+					{
+						$(".error strong").text(data.message);
+					}
+
 					$(".error").removeClass('hide');
 				}
 			}

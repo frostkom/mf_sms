@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-10 11:37+0100\n"
+"POT-Creation-Date: 2021-04-16 14:11+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -15,121 +15,121 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../include/classes.php:80
-#: ../include/classes.php:470
+#: ../include/classes.php:93
+#: ../include/classes.php:494
 msgid "Choose Here"
 msgstr "Välj här"
 
-#: ../include/classes.php:414
-#: ../include/classes.php:415
-#: ../include/classes.php:416
-#: ../include/classes.php:461
-#: ../include/classes.php:535
-#: ../include/classes.php:551
+#: ../include/classes.php:438
+#: ../include/classes.php:439
+#: ../include/classes.php:440
+#: ../include/classes.php:485
+#: ../include/classes.php:564
+#: ../include/classes.php:580
 #: ../list/index.php:8
 msgid "SMS"
 msgstr ""
 
-#: ../include/classes.php:435
+#: ../include/classes.php:459
 msgid "Provider"
 msgstr "Leverantör"
 
-#: ../include/classes.php:446
+#: ../include/classes.php:470
 msgid "Username"
 msgstr "Användarnamn"
 
-#: ../include/classes.php:447
+#: ../include/classes.php:471
 msgid "Password"
 msgstr "Lösenord"
 
-#: ../include/classes.php:447
+#: ../include/classes.php:471
 msgid "API Key"
 msgstr "API-nyckel"
 
-#: ../include/classes.php:451
+#: ../include/classes.php:475
 msgid "Senders"
 msgstr "Avsändare"
 
-#: ../include/classes.php:478
+#: ../include/classes.php:502
 #, php-format
 msgid "Use the URL %s for delivery reports"
 msgstr "Använd URLen %s för leveransrapporter"
 
-#: ../include/classes.php:510
-msgid "Company,0046701234567"
-msgstr "Företag,0046701234567"
+#: ../include/classes.php:534
+msgid "Company, 0046701234567"
+msgstr "Företag, 0046701234567"
 
-#: ../include/classes.php:510
-msgid "One or more numbers/names separated by comma, is used for selecting which number/name is displayed to the recipient"
-msgstr "Ett eller flera nummer/namn separerat av komma, används för att kunna välja avsändare"
+#: ../include/classes.php:534
+msgid "One or more numbers/names separated by comma, 1-11 characters each, is used for selecting which number/name is displayed to the recipient"
+msgstr "Ett eller flera nummer/namn separerat av komma, 1-11 tecken per namn, används för att kunna välja avsändare"
 
-#: ../include/classes.php:542
-#: ../stats/index.php:53
+#: ../include/classes.php:571
+#: ../stats/index.php:55
 msgid "Statistics"
 msgstr "Statistik"
 
-#: ../include/classes.php:561
-#: ../include/classes.php:683
+#: ../include/classes.php:590
+#: ../include/classes.php:718
 #: ../list/index.php:30
 msgid "From"
 msgstr "Från"
 
-#: ../include/classes.php:562
-#: ../include/classes.php:684
+#: ../include/classes.php:591
+#: ../include/classes.php:719
 #: ../list/index.php:31
 msgid "To"
 msgstr "Till"
 
-#: ../include/classes.php:563
-#: ../include/classes.php:685
+#: ../include/classes.php:592
+#: ../include/classes.php:720
 #: ../list/index.php:32
 msgid "Message"
 msgstr "Meddelande"
 
-#: ../include/classes.php:571
+#: ../include/classes.php:600
 #, php-format
 msgid "%s SMS, approx. %s left"
 msgstr "%s SMS, ca %s kvar"
 
-#: ../include/classes.php:575
+#: ../include/classes.php:604
 #, php-format
 msgid "Totally %s SMS, approx. %s"
 msgstr "Totalt %s SMS, ca. %s"
 
-#: ../include/classes.php:593
+#: ../include/classes.php:622
 msgid "Phone number"
 msgstr "Telefonnummer"
 
-#: ../include/classes.php:603
+#: ../include/classes.php:632
 msgid "Send SMS to everyone in the group"
 msgstr "Skicka SMS till alla i gruppen"
 
-#: ../include/classes.php:613
+#: ../include/classes.php:642
 msgid "You have not entered a cell phone number in your profile. Please do so, and then you can start sending messages"
 msgstr "Du har inte fyllt i ett mobilnummer i din profil. Var vänlig gör det, så kan du börja skicka sen"
 
-#: ../include/classes.php:619
+#: ../include/classes.php:648
 msgid "You have not entered any senders in the settings. Please do so, and then you can start sending messages"
 msgstr "Du har inte angett någon avsändare i inställningarna. Var vänlig gör det, så kan du börja skicka sen"
 
-#: ../include/classes.php:675
+#: ../include/classes.php:710
 msgid "All"
 msgstr "Alla"
 
-#: ../include/classes.php:676
+#: ../include/classes.php:711
 msgid "Trash"
 msgstr "Papperskorg"
 
-#: ../include/classes.php:686
+#: ../include/classes.php:721
 msgid "Date"
 msgstr "Datum"
 
-#: ../include/classes.php:776
+#: ../include/classes.php:811
 #, php-format
 msgid "Calculated from %d characters"
 msgstr "Beräknad utifrån %d tecken"
 
-#: ../include/classes.php:780
+#: ../include/classes.php:815
 msgid "Reported from provider"
 msgstr "Rapporterat från leverantör"
 
@@ -175,33 +175,36 @@ msgstr "Du behöver %slägga in ditt telefonnummer i profilen%s eller %slägga t
 msgid "You have to %sadd Provider and credentials on the settings page%s for this to work"
 msgstr "Du behöver %slägga till leverantör och inloggningsuppgifter på inställsningssidan%s för att detta ska fungera"
 
-#: ../stats/index.php:58
+#: ../stats/index.php:60
 msgid "Amount / User"
 msgstr "Antal / användare"
 
-#: ../stats/index.php:81
+#: ../stats/index.php:83
 msgid "There were no text messages sent during this period"
 msgstr "Det skickades inga SMS under denna period"
 
-#: ../stats/index.php:89
+#: ../stats/index.php:91
 msgid "Filter"
 msgstr "Filtrera"
 
-#: ../stats/index.php:95
+#: ../stats/index.php:97
 msgid "Overall"
 msgstr "Allmänt"
 
-#: ../stats/index.php:102
+#: ../stats/index.php:104
 msgid "First Date"
 msgstr "Första datum"
 
-#: ../stats/index.php:103
+#: ../stats/index.php:105
 msgid "Last date"
 msgstr "Senaste datum"
 
-#: ../stats/index.php:104
+#: ../stats/index.php:106
 msgid "Total Amount"
 msgstr "Totalt antal"
+
+#~ msgid "1-11 characters"
+#~ msgstr "1-11 tecken"
 
 #~ msgid "Delete"
 #~ msgstr "Radera"
