@@ -8,8 +8,6 @@ class mf_sms
 		$this->meta_prefix = $this->post_type.'_';
 		$this->message_type = 'sms';
 
-		$this->lang_key = 'lang_sms';
-
 		$this->chars_double = array("|", "^", "€", "{", "}", "[", "~", "]", "\\"); //, "\n", "\r", '\"', "\'"
 
 		switch(get_option('setting_sms_provider'))
@@ -90,7 +88,7 @@ class mf_sms
 		$user_data = get_userdata(get_current_user_id());
 
 		$arr_data = array(
-			'' => "-- ".__("Choose Here", $this->lang_key)." --",
+			'' => "-- ".__("Choose Here", 'lang_sms')." --",
 		);
 
 		if($setting_sms_senders != '')
@@ -437,9 +435,9 @@ class mf_sms
 	function init()
 	{
 		$labels = array(
-			'name' => _x(__("SMS", $this->lang_key), 'post type general name'),
-			'singular_name' => _x(__("SMS", $this->lang_key), 'post type singular name'),
-			'menu_name' => __("SMS", $this->lang_key)
+			'name' => _x(__("SMS", 'lang_sms'), 'post type general name'),
+			'singular_name' => _x(__("SMS", 'lang_sms'), 'post type singular name'),
+			'menu_name' => __("SMS", 'lang_sms')
 		);
 
 		$args = array(
@@ -458,7 +456,7 @@ class mf_sms
 		add_settings_section($options_area, "", array($this, $options_area."_callback"), BASE_OPTIONS_PAGE);
 
 		$arr_settings = array(
-			'setting_sms_provider' => __("Provider", $this->lang_key),
+			'setting_sms_provider' => __("Provider", 'lang_sms'),
 		);
 
 		$setting_sms_provider = get_option('setting_sms_provider');
@@ -469,12 +467,12 @@ class mf_sms
 			{
 				case 'cellsynt':
 				case 'ip1sms':
-					$arr_settings['setting_sms_username'] = __("Username", $this->lang_key);
-					$arr_settings['setting_sms_password'] = __("Password", $this->lang_key)." / ".__("API Key", $this->lang_key);
+					$arr_settings['setting_sms_username'] = __("Username", 'lang_sms');
+					$arr_settings['setting_sms_password'] = __("Password", 'lang_sms')." / ".__("API Key", 'lang_sms');
 				break;
 			}
 
-			$arr_settings['setting_sms_senders'] = __("Senders", $this->lang_key);
+			$arr_settings['setting_sms_senders'] = __("Senders", 'lang_sms');
 		}
 
 		show_settings_fields(array('area' => $options_area, 'object' => $this, 'settings' => $arr_settings));
@@ -484,7 +482,7 @@ class mf_sms
 	{
 		$setting_key = get_setting_key(__FUNCTION__);
 
-		echo settings_header($setting_key, __("SMS", $this->lang_key));
+		echo settings_header($setting_key, __("SMS", 'lang_sms'));
 	}
 
 	function setting_sms_provider_callback()
@@ -493,7 +491,7 @@ class mf_sms
 		$option = get_option($setting_key);
 
 		$arr_data = array(
-			'' => "-- ".__("Choose Here", $this->lang_key)." --",
+			'' => "-- ".__("Choose Here", 'lang_sms')." --",
 			'cellsynt' => "Cellsynt",
 			'ip1sms' => "IP.1",
 		);
@@ -501,7 +499,7 @@ class mf_sms
 		switch($option)
 		{
 			case 'cellsynt':
-				$description = sprintf(__("Use the URL %s for delivery reports", $this->lang_key), plugin_dir_url(__FILE__)."sms_status.php");
+				$description = sprintf(__("Use the URL %s for delivery reports", 'lang_sms'), plugin_dir_url(__FILE__)."sms_status.php");
 			break;
 
 			default:
@@ -533,7 +531,7 @@ class mf_sms
 		$setting_key = get_setting_key(__FUNCTION__);
 		$option = get_option($setting_key);
 
-		echo show_textfield(array('name' => $setting_key, 'value' => $option, 'placeholder' => __("Company, 0046701234567", $this->lang_key), 'description' => __("One or more numbers/names separated by comma, 1-11 characters each, is used for selecting which number/name is displayed to the recipient", $this->lang_key)));
+		echo show_textfield(array('name' => $setting_key, 'value' => $option, 'placeholder' => __("Company, 0046701234567", 'lang_sms'), 'description' => __("One or more numbers/names separated by comma, 1-11 characters each, is used for selecting which number/name is displayed to the recipient", 'lang_sms')));
 	}
 
 	function admin_init()
@@ -563,14 +561,14 @@ class mf_sms
 		$menu_start = $menu_root.'list/index.php';
 		$menu_capability = override_capability(array('page' => $menu_start, 'default' => 'edit_pages'));
 
-		$menu_title = __("SMS", $this->lang_key);
+		$menu_title = __("SMS", 'lang_sms');
 		add_menu_page($menu_title, $menu_title, $menu_capability, $menu_start, '', 'dashicons-phone', 99);
 
 		if($this->count_sent(array('limit' => 1)) > 0)
 		{
 			$menu_capability = override_capability(array('page' => $menu_start, 'default' => 'update_core'));
 
-			$menu_title = __("Statistics", $this->lang_key);
+			$menu_title = __("Statistics", 'lang_sms');
 			add_submenu_page($menu_start, $menu_title, $menu_title, $menu_capability, $menu_root."stats/index.php");
 		}
 	}
@@ -579,7 +577,7 @@ class mf_sms
 	{
 		if($type == $this->message_type)
 		{
-			$type = __("SMS", $this->lang_key);
+			$type = __("SMS", 'lang_sms');
 		}
 
 		return $type;
@@ -589,9 +587,9 @@ class mf_sms
 	{
 		if($data['type'] == $this->message_type)
 		{
-			$data['html'] .= show_select(array('data' => $this->get_from_for_select(), 'name' => 'strMessageFrom', 'text' => __("From", $this->lang_key), 'value' => $data['from_value'], 'required' => true))
-			.show_select(array('data' => $data['to_select'], 'name' => 'arrGroupID[]', 'text' => __("To", $this->lang_key), 'value' => $data['to_value'], 'maxsize' => 6, 'required' => true))
-			.show_textarea(array('name' => 'strMessageText', 'text' => __("Message", $this->lang_key), 'value' => $data['message'], 'required' => true, 'xtra' => " maxlength='".($this->chars_limit_multiple  * $this->sms_limit)."'"));
+			$data['html'] .= show_select(array('data' => $this->get_from_for_select(), 'name' => 'strMessageFrom', 'text' => __("From", 'lang_sms'), 'value' => $data['from_value'], 'required' => true))
+			.show_select(array('data' => $data['to_select'], 'name' => 'arrGroupID[]', 'text' => __("To", 'lang_sms'), 'value' => $data['to_value'], 'maxsize' => 6, 'required' => true))
+			.show_textarea(array('name' => 'strMessageText', 'text' => __("Message", 'lang_sms'), 'value' => $data['message'], 'required' => true, 'xtra' => " maxlength='".($this->chars_limit_multiple  * $this->sms_limit)."'"));
 		}
 
 		return $data;
@@ -599,11 +597,11 @@ class mf_sms
 
 	function get_message_count_html($data)
 	{
-		$out = "<span id='sms_count'>".sprintf(__("%s SMS, approx. %s left", $this->lang_key), "<span></span>", "<span></span>")."</span>";
+		$out = "<span id='sms_count'>".sprintf(__("%s SMS, approx. %s left", 'lang_sms'), "<span></span>", "<span></span>")."</span>";
 
 		if($data['display_total'])
 		{
-			$out .= "<div id='sms_cost'>".sprintf(__("Totally %s SMS, approx. %s", $this->lang_key), "<span></span>", "<span></span> SEK")."</div><br>";
+			$out .= "<div id='sms_cost'>".sprintf(__("Totally %s SMS, approx. %s", 'lang_sms'), "<span></span>", "<span></span> SEK")."</div><br>";
 		}
 
 		return $out;
@@ -621,7 +619,7 @@ class mf_sms
 
 	function user_contactmethods($profile_fields)
 	{
-		$profile_fields['meta_sms_phone'] = __("Phone number", $this->lang_key);
+		$profile_fields['meta_sms_phone'] = __("Phone number", 'lang_sms');
 
 		return $profile_fields;
 	}
@@ -631,7 +629,7 @@ class mf_sms
 		if(count($this->get_from_for_select()) > 1)
 		{
 			$sms_link = admin_url("admin.php?page=mf_group/send/index.php&intGroupID=".$post_id."&type=sms");
-			$sms_text = __("Send SMS to everyone in the group", $this->lang_key);
+			$sms_text = __("Send SMS to everyone in the group", 'lang_sms');
 		}
 
 		else
@@ -641,13 +639,13 @@ class mf_sms
 			if($meta_sms_phone == '')
 			{
 				$sms_link = admin_url("profile.php");
-				$sms_text = __("You have not entered a cell phone number in your profile. Please do so, and then you can start sending messages", $this->lang_key);
+				$sms_text = __("You have not entered a cell phone number in your profile. Please do so, and then you can start sending messages", 'lang_sms');
 			}
 
 			else
 			{
 				$sms_link = admin_url("options-general.php?page=settings_mf_base#settings_sms");
-				$sms_text = __("You have not entered any senders in the settings. Please do so, and then you can start sending messages", $this->lang_key);
+				$sms_text = __("You have not entered any senders in the settings. Please do so, and then you can start sending messages", 'lang_sms');
 			}
 		}
 
@@ -707,18 +705,18 @@ if(class_exists('mf_list_table'))
 			$this->set_views(array(
 				'db_field' => 'post_status',
 				'types' => array(
-					'all' => __("All", $obj_sms->lang_key),
-					'trash' => __("Trash", $obj_sms->lang_key),
+					'all' => __("All", 'lang_sms'),
+					'trash' => __("Trash", 'lang_sms'),
 				),
 			));
 
 			$this->set_columns(array(
 				'cb' => '<input type="checkbox">',
 				'post_status' => "",
-				'post_name' => __("From", $obj_sms->lang_key),
-				'post_title' => __("To", $obj_sms->lang_key),
-				'post_content' => __("Message", $obj_sms->lang_key),
-				'post_date' => __("Date", $obj_sms->lang_key),
+				'post_name' => __("From", 'lang_sms'),
+				'post_title' => __("To", 'lang_sms'),
+				'post_content' => __("Message", 'lang_sms'),
+				'post_date' => __("Date", 'lang_sms'),
 			));
 
 			$this->set_sortable_columns(array(
@@ -808,11 +806,11 @@ if(class_exists('mf_list_table'))
 
 					$actions = array();
 
-					$actions['amount'] = "<span title='".sprintf(__("Calculated from %d characters", $obj_sms->lang_key), strlen($item['post_content']))."'>".$amount_calculated."</span>";
+					$actions['amount'] = "<span title='".sprintf(__("Calculated from %d characters", 'lang_sms'), strlen($item['post_content']))."'>".$amount_calculated."</span>";
 
 					if($amount_reported > 0)
 					{
-						$actions['amount'] .= " / <span title='".__("Reported from provider", $obj_sms->lang_key)." (".$trackingids.")'>".$amount_reported."</span>";
+						$actions['amount'] .= " / <span title='".__("Reported from provider", 'lang_sms')." (".$trackingids.")'>".$amount_reported."</span>";
 					}
 
 					$out .= "<i class='".$status_icon."'></i>"
@@ -845,7 +843,7 @@ if(class_exists('mf_list_table'))
 					{
 						if($post_author == get_current_user_id() || IS_ADMIN)
 						{
-							$actions['delete'] = "<a href='".wp_nonce_url(admin_url("admin.php?page=mf_sms/list/index.php&btnSmsDelete&intSmsID=".$post_id), 'sms_delete_'.$post_id, '_wpnonce_sms_delete')."'>".__("Delete", $obj_sms->lang_key)."</a>";
+							$actions['delete'] = "<a href='".wp_nonce_url(admin_url("admin.php?page=mf_sms/list/index.php&btnSmsDelete&intSmsID=".$post_id), 'sms_delete_'.$post_id, '_wpnonce_sms_delete')."'>".__("Delete", 'lang_sms')."</a>";
 						}
 					}*/
 
