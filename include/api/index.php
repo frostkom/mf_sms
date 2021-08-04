@@ -11,7 +11,10 @@ if(!defined('ABSPATH'))
 
 require_once("../classes.php");
 
-$obj_sms = new mf_sms();
+if(!isset($obj_sms))
+{
+	$obj_sms = new mf_sms();
+}
 
 $json_output = array();
 

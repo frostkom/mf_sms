@@ -3,7 +3,7 @@
 Plugin Name: MF SMS
 Plugin URI: https://github.com/frostkom/mf_sms
 Description: 
-Version: 2.6.12
+Version: 2.6.13
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://frostkom.se
@@ -16,7 +16,7 @@ GitHub Plugin URI: frostkom/mf_sms
 API Documentation: https://www.cellsynt.com/sv/sms/api-integration || https://www.ip1sms.com/en/manuals/restful/
 */
 
-if(is_plugin_active("mf_base/index.php"))
+if(function_exists('is_plugin_active') && is_plugin_active("mf_base/index.php"))
 {
 	include_once("include/classes.php");
 
