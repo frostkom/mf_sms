@@ -832,24 +832,7 @@ if(class_exists('mf_list_table'))
 				break;
 
 				case 'post_content':
-					/*$post_id = $item['ID'];
-					$post_status = $item['post_status'];
-					$post_author = $item['post_author'];*/
-					$post_content = $item['post_content'];
-
-					/*$actions = array();
-
-					if($post_status != "trash")
-					{
-						if($post_author == get_current_user_id() || IS_ADMIN)
-						{
-							$actions['delete'] = "<a href='".wp_nonce_url(admin_url("admin.php?page=mf_sms/list/index.php&btnSmsDelete&intSmsID=".$post_id), 'sms_delete_'.$post_id, '_wpnonce_sms_delete')."'>".__("Delete", 'lang_sms')."</a>";
-						}
-					}*/
-
-					$out .= $post_content;
-					//$out .= shorten_text(array('string' => $post_content, 'limit' => 20));
-					//$out .= $this->row_actions($actions);
+					$out .= $item['post_content'];
 				break;
 
 				case 'post_date':

@@ -49,106 +49,12 @@ echo "<div class='wrap'>
 		echo "</div>
 	</div>";
 
-	/*if($_SERVER['REMOTE_ADDR'] == "")
-	{*/
-		$tbl_group = new mf_sms_table();
+	$tbl_group = new mf_sms_table();
 
-		$tbl_group->select_data(array(
-			//'select' => "*",
-			'debug' => ($_SERVER['REMOTE_ADDR'] == ""),
-		));
+	$tbl_group->select_data(array(
+		//'select' => "*",
+	));
 
-		$tbl_group->do_display();
-	/*}
-
-	else
-	{
-		$result = $wpdb->get_results($wpdb->prepare("SELECT ID, post_name, post_title, post_content, post_date, post_status FROM ".$wpdb->posts." WHERE post_type = 'mf_sms' AND post_author = '%d' ORDER BY post_date DESC", get_current_user_id()));
-
-		if($wpdb->num_rows > 0)
-		{
-			echo "<table class='widefat striped'>";
-
-				$arr_header[] = "";
-				$arr_header[] = __("From", 'lang_sms');
-				$arr_header[] = __("To", 'lang_sms');
-				$arr_header[] = __("Message", 'lang_sms');
-				$arr_header[] = __("Date", 'lang_sms');
-
-				echo show_table_header($arr_header)
-				."<tbody>";
-
-					foreach($result as $r)
-					{
-						$post_id = $r->ID;
-						$post_name = $r->post_name;
-						$post_title = $r->post_title;
-						$post_content = $r->post_content;
-						$post_date = $r->post_date;
-						$post_status = $r->post_status;
-
-						switch($post_status)
-						{
-							// Cellsynt
-							case 'delivered':
-							//IP.1
-							case 22:
-								$status_icon = "fa fa-check green";
-							break;
-
-							// Cellsynt
-							case 'failed':
-							//IP.1
-							case 1:
-							case 2:
-							case 3:
-							case 4:
-							case 12:
-							case 30:
-							case 41:
-							case 42:
-							case 43:
-							case 44:
-							case 45:
-							case 50:
-							case 51:
-							case 52:
-							case 100:
-							case 101:
-							case 110:
-								$status_icon = "fa fa-ban red";
-							break;
-
-							// Cellsynt
-							case 'buffered':
-							//IP.1
-							case 0:
-							case 10:
-							case 11:
-							case 21:
-								$status_icon = "fa fa-cloud blue";
-							break;
-
-							default:
-							// Cellsynt
-							case 'unknown':
-							case 'acked':
-								$status_icon = "fa fa-question";
-							break;
-						}
-
-						echo "<tr>
-							<td><i class='".$status_icon."'></i></td>
-							<td>".$post_name."</td>
-							<td>".$post_title."</td>
-							<td>".$post_content."</td>
-							<td>".format_date($post_date)."</td>
-						</tr>";
-					}
-
-				echo "</tbody>
-			</table>";
-		}
-	}*/
+	$tbl_group->do_display();
 
 echo "</div>";
