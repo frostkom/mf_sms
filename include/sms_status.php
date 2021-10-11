@@ -12,7 +12,7 @@ include_once("classes.php");
 $trackingid = check_var('trackingid', 'char');
 $status = check_var('status', 'char');
 
-$strDataIP = $_SERVER['REMOTE_ADDR'];
+$strDataIP = get_current_visitor_ip();
 
 $arr_ips = array();
 
