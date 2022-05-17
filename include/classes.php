@@ -571,6 +571,9 @@ class mf_sms
 			$menu_title = __("Statistics", 'lang_sms');
 			add_submenu_page($menu_start, $menu_title, $menu_title, $menu_capability, $menu_root."stats/index.php");
 		}
+
+		$menu_title = __("Settings", 'lang_sms');
+		add_submenu_page($menu_start, $menu_title, $menu_title, $menu_capability, admin_url("options-general.php?page=settings_mf_base#settings_sms"));
 	}
 
 	function get_group_message_type($type)
