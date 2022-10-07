@@ -12,7 +12,7 @@ include_once("classes.php");
 $trackingid = check_var('trackingid', 'char');
 $status = check_var('status', 'char');
 
-$strDataIP = get_current_visitor_ip();
+$remote_server_ip = get_current_visitor_ip();
 
 $arr_ips = array();
 
@@ -26,9 +26,9 @@ for($i = 144; $i <= 151; $i++)
 	$arr_ips[] = "159.135.143.".$i;
 }
 
-if(!in_array($strDataIP, $arr_ips))
+if(!in_array($remote_server_ip, $arr_ips))
 {
-	do_log("Wrong IP: ".$strDataIP.", ".$trackingid.", ".$status);
+	do_log("Wrong IP: ".$remote_server_ip.", ".$trackingid.", ".$status);
 
 	header("Status: 503 Unknown IP-address");
 }

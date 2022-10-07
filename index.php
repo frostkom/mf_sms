@@ -2,8 +2,8 @@
 /*
 Plugin Name: MF SMS
 Plugin URI: https://github.com/frostkom/mf_sms
-Description: 
-Version: 2.6.17
+Description:
+Version: 2.6.19
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://frostkom.se
@@ -19,8 +19,6 @@ API Documentation: https://www.cellsynt.com/sv/sms/api-integration || https://ww
 if(!function_exists('is_plugin_active') || function_exists('is_plugin_active') && is_plugin_active("mf_base/index.php"))
 {
 	include_once("include/classes.php");
-
-	load_plugin_textdomain('lang_sms', false, dirname(plugin_basename(__FILE__))."/lang/");
 
 	$obj_sms = new mf_sms();
 
@@ -47,12 +45,18 @@ if(!function_exists('is_plugin_active') || function_exists('is_plugin_active') &
 	add_action('group_init_other', array($obj_sms, 'group_init_other'));
 	add_filter('group_send_other', array($obj_sms, 'group_send_other'));
 
+	load_plugin_textdomain('lang_sms', false, dirname(plugin_basename(__FILE__))."/lang/");
+
 	function uninstall_sms()
 	{
+		include_once("include/classes.php");
+
+		$obj_sms = new mf_sms();
+
 		mf_uninstall_plugin(array(
 			'options' => array('setting_sms_provider', 'setting_sms_username', 'setting_sms_password', 'setting_sms_senders'),
 			'meta' => array('meta_sms_phone'),
-			'post_types' => array('mf_sms'),
+			'post_types' => array($obj_sms->post_type),
 		));
 	}
 }
