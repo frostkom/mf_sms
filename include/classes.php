@@ -702,7 +702,7 @@ if(class_exists('mf_list_table'))
 
 			if($this->search != '')
 			{
-				$this->query_where .= ($this->query_where != '' ? " AND " : "")."(post_name LIKE '%".$this->search."%' OR post_title LIKE '%".$this->search."%' OR post_content LIKE '%".$this->search."%' OR SOUNDEX(post_content) = SOUNDEX('".$this->search."') OR post_date LIKE '%".$this->search."%')";
+				$this->query_where .= ($this->query_where != '' ? " AND " : "")."(post_name LIKE '".$this->filter_search_before_like($this->search)."' OR post_title LIKE '".$this->filter_search_before_like($this->search)."' OR post_content LIKE '".$this->filter_search_before_like($this->search)."' OR SOUNDEX(post_content) = SOUNDEX('".$this->search."') OR post_date LIKE '".$this->filter_search_before_like($this->search)."')";
 			}
 
 			$this->set_views(array(
