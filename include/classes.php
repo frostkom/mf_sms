@@ -16,7 +16,7 @@ class mf_sms
 				$this->chars_limit_single = 160;
 				$this->chars_limit_multiple = 153;
 				$this->sms_limit = 6;
-				$this->sms_price = 0.5;
+				$this->sms_price = (date("Y-m-d") >= "2023-10-01" ? 0.6 : 0.5);
 			break;
 
 			case 'ip1sms':
