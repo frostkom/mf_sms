@@ -2,13 +2,22 @@
 
 class mf_sms
 {
+	var $post_type = 'mf_sms';
+	var $meta_prefix = "";
+	var $message_type = 'sms';
+	var $chars_double = array("|", "^", "€", "{", "}", "[", "~", "]", "\\"); //, "\n", "\r", '\"', "\'"
+	var $chars_limit_single = 0;
+	var $chars_limit_multiple = 0;
+	var $sms_limit = 0;
+	var $sms_price = 0;
+
 	function __construct()
 	{
-		$this->post_type = 'mf_sms';
+		//$this->post_type = 'mf_sms';
 		$this->meta_prefix = $this->post_type.'_';
-		$this->message_type = 'sms';
+		//$this->message_type = 'sms';
 
-		$this->chars_double = array("|", "^", "€", "{", "}", "[", "~", "]", "\\"); //, "\n", "\r", '\"', "\'"
+		//$this->chars_double = array("|", "^", "€", "{", "}", "[", "~", "]", "\\"); //, "\n", "\r", '\"', "\'"
 
 		switch(get_option('setting_sms_provider'))
 		{
@@ -26,9 +35,9 @@ class mf_sms
 				$this->sms_price = 0.59;
 			break;
 
-			default:
+			/*default:
 				$this->chars_limit_single = $this->chars_limit_multiple = $this->sms_limit = $this->sms_price = 0;
-			break;
+			break;*/
 		}
 	}
 
