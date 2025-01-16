@@ -550,7 +550,6 @@ class mf_sms
 		if($pagenow == 'admin.php' && in_array(check_var('page'), array("mf_sms/list/index.php", "mf_group/send/index.php")))
 		{
 			$plugin_include_url = plugin_dir_url(__FILE__);
-			$plugin_version = get_plugin_version(__FILE__);
 
 			mf_enqueue_script('script_sms', $plugin_include_url."script_wp.js", array(
 				'admin_url' => admin_url("admin.php?page=mf_sms/list/index.php"),
@@ -560,7 +559,7 @@ class mf_sms
 				'chars_double' => $this->chars_double,
 				'sms_limit' => $this->sms_limit,
 				'sms_price' => $this->sms_price,
-			), $plugin_version);
+			));
 		}
 	}
 
