@@ -443,19 +443,18 @@ class mf_sms
 
 	function init()
 	{
-		$labels = array(
-			'name' => _x(__("SMS", 'lang_sms'), 'post type general name'),
-			'singular_name' => _x(__("SMS", 'lang_sms'), 'post type singular name'),
-			'menu_name' => __("SMS", 'lang_sms')
-		);
-
-		$args = array(
-			'labels' => $labels,
+		// Post types
+		#######################
+		register_post_type($this->post_type, array(
+			'labels' => array(
+				'name' => _x(__("SMS", 'lang_sms'), 'post type general name'),
+				'singular_name' => _x(__("SMS", 'lang_sms'), 'post type singular name'),
+				'menu_name' => __("SMS", 'lang_sms')
+			),
 			'public' => false,
 			'exclude_from_search' => true,
-		);
-
-		register_post_type($this->post_type, $args);
+		));
+		#######################
 	}
 
 	function settings_sms()
