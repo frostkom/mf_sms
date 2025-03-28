@@ -225,11 +225,11 @@ class mf_sms
 							'post_title' => $data['to'],
 							'post_content' => $data['text'],
 							'post_author' => $data['user_id'],
-							'meta_input' => array(
+							'meta_input' => apply_filters('filter_meta_input', array(
 								$this->meta_prefix.'from' => $data['from'],
 								$this->meta_prefix.'trackingids' => $trackingids,
 								$this->meta_prefix.'amount' => (substr_count($trackingids, ",") + 1),
-							),
+							)),
 						);
 
 						wp_insert_post($post_data);
@@ -332,12 +332,12 @@ class mf_sms
 									//'post_excerpt' => $r['ID'],
 									'post_content' => $data['text'],
 									'post_author' => $data['user_id'],
-									'meta_input' => array(
+									'meta_input' => apply_filters('filter_meta_input', array(
 										//$this->meta_prefix.'ID' => $r['ID'],
 										$this->meta_prefix.'from' => $data['from'],
 										$this->meta_prefix.'cost' => $r['TotalPrice'],
 										$this->meta_prefix.'amount' => $r['Segments'],
-									),
+									)),
 								);
 
 								wp_insert_post($post_data);
@@ -447,8 +447,8 @@ class mf_sms
 		#######################
 		register_post_type($this->post_type, array(
 			'labels' => array(
-				'name' => _x(__("SMS", 'lang_sms'), 'post type general name'),
-				'singular_name' => _x(__("SMS", 'lang_sms'), 'post type singular name'),
+				'name' => __("SMS", 'lang_sms'),
+				'singular_name' => __("SMS", 'lang_sms'),
 				'menu_name' => __("SMS", 'lang_sms')
 			),
 			'public' => false,
