@@ -171,6 +171,9 @@ class mf_sms
 			$setting_sms_username = get_option('setting_sms_username');
 			$setting_sms_password = get_option('setting_sms_password');
 
+			$obj_encryption = new mf_encryption(__CLASS__);
+			$setting_sms_password = $obj_encryption->decrypt($setting_sms_password, md5(AUTH_KEY));
+
 			switch($setting_sms_provider)
 			{
 				case 'cellsynt':
@@ -374,6 +377,9 @@ class mf_sms
 			$setting_sms_username = get_option('setting_sms_username');
 			$setting_sms_password = get_option('setting_sms_password');
 
+			$obj_encryption = new mf_encryption(__CLASS__);
+			$setting_sms_password = $obj_encryption->decrypt($setting_sms_password, md5(AUTH_KEY));
+
 			switch($setting_sms_provider)
 			{
 				case 'ip1sms':
@@ -486,6 +492,19 @@ class mf_sms
 		show_settings_fields(array('area' => $options_area, 'object' => $this, 'settings' => $arr_settings));
 	}
 
+	function pre_update_option($new_value, $old_value)
+	{
+		$out = "";
+
+		if($new_value != '')
+		{
+			$obj_encryption = new mf_encryption(__CLASS__);
+			$out = $obj_encryption->encrypt($new_value, md5(AUTH_KEY));
+		}
+
+		return $out;
+	}
+
 	function settings_sms_callback()
 	{
 		$setting_key = get_setting_key(__FUNCTION__);
@@ -530,6 +549,9 @@ class mf_sms
 	{
 		$setting_key = get_setting_key(__FUNCTION__);
 		$option = get_option($setting_key);
+
+		$obj_encryption = new mf_encryption(__CLASS__);
+		$option = $obj_encryption->decrypt($option, md5(AUTH_KEY));
 
 		echo show_password_field(array('name' => $setting_key, 'value' => $option, 'xtra' => " autocomplete='new-password'"));
 	}
