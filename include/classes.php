@@ -13,11 +13,7 @@ class mf_sms
 
 	function __construct()
 	{
-		//$this->post_type = 'mf_sms';
 		$this->meta_prefix = $this->post_type.'_';
-		//$this->message_type = 'sms';
-
-		//$this->chars_double = array("|", "^", "€", "{", "}", "[", "~", "]", "\\"); //, "\n", "\r", '\"', "\'"
 
 		switch(get_option('setting_sms_provider'))
 		{
@@ -33,6 +29,13 @@ class mf_sms
 				$this->chars_limit_multiple = 152;
 				$this->sms_limit = 10;
 				$this->sms_price = 0.59;
+			break;
+
+			case 'pixie':
+				$this->chars_limit_single = 160;
+				$this->chars_limit_multiple = 153;
+				$this->sms_limit = floor(1000 / 153);
+				$this->sms_price = 0.48;
 			break;
 
 			/*default:
@@ -70,6 +73,7 @@ class mf_sms
 		{
 			case 'cellsynt':
 			case 'ip1sms':
+			case 'pixie':
 				if(get_option('setting_sms_username') != '' && get_option('setting_sms_password') != '')
 				{
 					return true;
@@ -344,8 +348,112 @@ class mf_sms
 								);
 
 								wp_insert_post($post_data);
+							}
 
-								//$wpdb->query($wpdb->prepare("INSERT INTO ".$wpdb->posts." SET post_type = %s, post_title = %s, post_name = %s, post_content = %s, post_author = '%d', post_excerpt = %s, post_status = '%d', post_date = NOW()", $this->post_type, $data['to'], $data['from'], $data['text'], $data['user_id'], $r['ID'], $r['Status']));
+							$sent = true;
+						break;
+
+						default:
+							do_log("IP1SMS Error: ".$headers['http_code']." (".htmlspecialchars($content).", ".var_export($arr_post_data, true).")");
+
+							$message = htmlspecialchars($content);
+						break;
+					}
+				break;
+
+				case 'pixie':
+					// 10 requests / second
+
+					// E164-format (ex. 0708123456 -> 46708123456)
+					if(!preg_match("/^(\+|00)/", $data['to']))
+					{
+						if(substr($data['to'], 0, 1) == 0)
+						{
+							$data['to'] = substr($data['to'], 1, 20);
+						}
+					}
+
+					$data['to'] = $data['country_no'].$data['to'];
+
+					if($data['from'] != '')
+					{
+						if(is_numeric($data['from']))
+						{
+							$originatortype = 'numeric';
+
+							if(!preg_match("/^(\+|00)/", $data['from']))
+							{
+								if(substr($data['from'], 0, 1) == 0)
+								{
+									$data['from'] = substr($data['from'], 1, 20);
+								}
+							}
+
+							$data['from'] = "+".$data['country_no'].$data['from'];
+						}
+
+						else
+						{
+							$originatortype = 'alpha';
+
+							$data['from'] = urlencode($data['from']);
+						}
+					}
+
+					$api_key = $setting_sms_password;
+
+					$arr_headers = [
+						'Content-Type: application/json',
+						'Authorization: Bearer '.$api_key,
+					];
+
+					$arr_post_data = [
+						"sender" => $data['from'],
+						"message" => $data['text'],
+						"recipients" => array($data['to'])
+					];
+
+					list($content, $headers) = get_url_content(array(
+						'url' => "https://app.pixie.se/api/v2/sms/send",
+						'catch_head' => true,
+						'headers' => $arr_headers,
+						'post_data' => json_encode($arr_post_data),
+					));
+
+					switch($headers['http_code'])
+					{
+						case 200:
+						case 201:
+							$json = json_decode($content, true);
+
+							foreach($json as $r)
+							{
+								//do_log("JSON Row: ".var_export($r, true));
+
+								/*{
+									"id": 172122,
+									"smsCount": 2,
+									"totalCost": 0.6800
+								}*/
+
+								$post_data = array(
+									'post_type' => $this->post_type,
+									//'post_status' => $r['Status'],
+									'post_name' => $data['from'],
+									'post_title' => $data['to'],
+									//'post_excerpt' => $r['ID'],
+									'post_content' => $data['text'],
+									'post_author' => $data['user_id'],
+									'meta_input' => apply_filters('filter_meta_input', array(
+										//$this->meta_prefix.'ID' => $r['ID'],
+										$this->meta_prefix.'trackingids' => $r['id'],
+										$this->meta_prefix.'from' => $data['from'],
+										$this->meta_prefix.'cost' => $r['totalCost'],
+										$this->meta_prefix.'amount' => $r['smsCount'],
+									)),
+								);
+
+								wp_insert_post($post_data);
 							}
 
 							$sent = true;
@@ -481,6 +589,7 @@ class mf_sms
 			{
 				case 'cellsynt':
 				case 'ip1sms':
+				case 'pixie':
 					$arr_settings['setting_sms_username'] = __("Username", 'lang_sms');
 					$arr_settings['setting_sms_password'] = __("Password", 'lang_sms')." / ".__("API Key", 'lang_sms');
 				break;
@@ -521,6 +630,7 @@ class mf_sms
 			'' => "-- ".__("Choose Here", 'lang_sms')." --",
 			'cellsynt' => "Cellsynt",
 			'ip1sms' => "IP.1",
+			'pixie' => "Pixie",
 		);
 
 		switch($option)
