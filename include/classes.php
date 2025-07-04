@@ -73,8 +73,16 @@ class mf_sms
 		{
 			case 'cellsynt':
 			case 'ip1sms':
-			case 'pixie':
 				if(get_option('setting_sms_username') != '' && get_option('setting_sms_password') != '')
+				{
+					return true;
+				}
+			break;
+
+			case 'cellsynt':
+			case 'ip1sms':
+			case 'pixie':
+				if(get_option('setting_sms_password') != '')
 				{
 					return true;
 				}
@@ -365,7 +373,7 @@ class mf_sms
 					// 10 requests / second
 
 					// E164-format (ex. 0708123456 -> 46708123456)
-					if(!preg_match("/^(\+|00)/", $data['to']))
+					/*if(!preg_match("/^(\+|00)/", $data['to']))
 					{
 						if(substr($data['to'], 0, 1) == 0)
 						{
@@ -373,7 +381,7 @@ class mf_sms
 						}
 					}
 
-					$data['to'] = $data['country_no'].$data['to'];
+					$data['to'] = $data['country_no'].$data['to'];*/
 
 					if($data['from'] != '')
 					{
@@ -404,7 +412,7 @@ class mf_sms
 
 					$arr_headers = [
 						'Content-Type: application/json',
-						'Authorization: Bearer '.$api_key,
+						'Authorization: '.$api_key,
 					];
 
 					$arr_post_data = [
@@ -414,7 +422,7 @@ class mf_sms
 					];
 
 					list($content, $headers) = get_url_content(array(
-						'url' => "https://app.pixie.se/api/v2/sms/send",
+						'url' => "https://app.pixie.se/api/v2/sms",
 						'catch_head' => true,
 						'headers' => $arr_headers,
 						'post_data' => json_encode($arr_post_data),
@@ -460,9 +468,9 @@ class mf_sms
 						break;
 
 						default:
-							do_log("IP1SMS Error: ".$headers['http_code']." (".htmlspecialchars($content).", ".var_export($arr_post_data, true).")");
+							do_log("Pixie Error: ".$headers['http_code']." (".htmlspecialchars($content).", ".var_export($arr_post_data, true).")");
 
-							$message = htmlspecialchars($content);
+							$message = $content;
 						break;
 					}
 				break;
@@ -589,9 +597,12 @@ class mf_sms
 			{
 				case 'cellsynt':
 				case 'ip1sms':
-				case 'pixie':
 					$arr_settings['setting_sms_username'] = __("Username", 'lang_sms');
 					$arr_settings['setting_sms_password'] = __("Password", 'lang_sms')." / ".__("API Key", 'lang_sms');
+				break;
+
+				case 'pixie':
+					$arr_settings['setting_sms_password'] = __("API Key", 'lang_sms');
 				break;
 			}
 
@@ -741,11 +752,11 @@ class mf_sms
 
 	function get_message_count_html($data)
 	{
-		$out = "<span id='sms_count'>".sprintf(__("%s SMS, approx. %s left", 'lang_sms'), "<span></span>", "<span></span>")."</span>";
+		$out = "&nbsp;<span id='sms_count'>".sprintf(__("%s SMS, approx. %s left", 'lang_sms'), "<span></span>", "<span></span>")."</span>";
 
 		if($data['display_total'])
 		{
-			$out .= "<div id='sms_cost'>".sprintf(__("Totally %s SMS, approx. %s", 'lang_sms'), "<span></span>", "<span></span> SEK")."</div><br>";
+			$out .= "&nbsp;<div id='sms_cost'>".sprintf(__("Totally %s SMS, approx. %s", 'lang_sms'), "<span></span>", "<span></span> SEK")."</div><br>";
 		}
 
 		return $out;

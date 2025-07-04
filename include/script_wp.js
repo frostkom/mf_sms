@@ -91,21 +91,21 @@ jQuery(function($)
 
 		if(($("#strMessageFrom").length > 0 && $("#strMessageFrom").val() != '' || $("#strSmsFrom").length > 0 && $("#strSmsFrom").val() != '') && recipients > 0)
 		{
-			var sms_total = recipients * sms_amount,
+			var sms_total = (recipients * sms_amount),
 				sms_cost = Math.ceil(sms_total * script_sms.sms_price);
 
 			$("#sms_cost").removeClass('hide')
 				.children("span:first-child").text(sms_total)
 				.siblings("span").text(sms_cost);
 
-			$("button[name='btnGroupSend']").removeClass('is_disabled'); /*.removeAttr("disabled")*/
+			$("button[name='btnGroupSend']").removeClass('is_disabled');
 		}
 
 		else
 		{
 			$("#sms_cost").addClass('hide');
 
-			$("button[name='btnGroupSend']").addClass('is_disabled'); /*.prop({'disabled': 'disabled'})*/
+			$("button[name='btnGroupSend']").addClass('is_disabled');
 		}
 	}
 
