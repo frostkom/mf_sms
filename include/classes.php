@@ -51,7 +51,7 @@ class mf_sms
 		return str_replace($exkludera, "", $data['number']);
 	}
 
-	function count_sent($data = array())
+	function count_sent($data = [])
 	{
 		global $wpdb;
 
@@ -779,7 +779,7 @@ class mf_sms
 		return $profile_fields;
 	}
 
-	function add_group_list_amount_actions($actions, $post_id)
+	function add_group_list_amount_actions($arr_actions, $post_id)
 	{
 		if(count($this->get_from_for_select()) > 1)
 		{
@@ -804,9 +804,9 @@ class mf_sms
 			}
 		}
 
-		$actions['send_sms'] = "<a href='".$sms_link."' title='".$sms_text."'><i class='fa fa-mobile-alt fa-lg'></i></a>";
+		$arr_actions['send_sms'] = "<a href='".$sms_link."' title='".$sms_text."'><i class='fa fa-mobile-alt fa-lg'></i></a>";
 
-		return $actions;
+		return $arr_actions;
 	}
 
 	function group_init_other()
@@ -959,17 +959,17 @@ if(class_exists('mf_list_table'))
 						$amount_reported = substr_count($trackingids, ",") + 1;
 					}
 
-					$actions = array();
+					$arr_actions = [];
 
-					$actions['amount'] = "<span title='".sprintf(__("Calculated from %d characters", 'lang_sms'), strlen($item['post_content']))."'>".$amount_calculated."</span>";
+					$arr_actions['amount'] = "<span title='".sprintf(__("Calculated from %d characters", 'lang_sms'), strlen($item['post_content']))."'>".$amount_calculated."</span>";
 
 					if($amount_reported > 0)
 					{
-						$actions['amount'] .= " / <span title='".__("Reported from provider", 'lang_sms')." (".$trackingids.")'>".$amount_reported."</span>";
+						$arr_actions['amount'] .= " / <span title='".__("Reported from provider", 'lang_sms')." (".$trackingids.")'>".$amount_reported."</span>";
 					}
 
 					$out .= "<i class='".$status_icon."'></i>"
-					.$this->row_actions($actions);
+					.$this->row_actions($arr_actions);
 				break;
 
 				case 'post_name':

@@ -17,7 +17,7 @@ $intDateMax_month = date("Y-m", strtotime($dteDateMax));
 
 $dteSmsMonth = check_var('dteSmsMonth', 'date', true, date("Y-m", strtotime($dteDateMax)));
 
-$arr_data_months = array();
+$arr_data_months = [];
 
 for($i = $intDateMin_year; $i <= $intDateMax_year; $i++)
 {

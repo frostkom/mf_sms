@@ -14,7 +14,7 @@ $status = check_var('status', 'char');
 
 $remote_server_ip = apply_filters('get_current_visitor_ip', $_SERVER['REMOTE_ADDR']);
 
-$arr_ips = array();
+$arr_ips = [];
 
 for($i = 64; $i <= 71; $i++)
 {
