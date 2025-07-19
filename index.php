@@ -3,15 +3,12 @@
 Plugin Name: MF SMS
 Plugin URI: https://github.com/frostkom/mf_sms
 Description:
-Version: 2.7.14
+Version: 2.7.15
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://martinfors.se
 Text Domain: lang_sms
 Domain Path: /lang
-
-Depends: MF Base
-GitHub Plugin URI: frostkom/mf_sms
 
 API Documentation: https://www.cellsynt.com/sv/sms/api-integration || https://www.ip1sms.com/en/manuals/restful/ || https://www.pixie.se/api-documentation
 */
