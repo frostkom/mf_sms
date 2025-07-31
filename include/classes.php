@@ -574,7 +574,6 @@ class mf_sms
 				'menu_name' => __("SMS", 'lang_sms')
 			),
 			'public' => false,
-			'exclude_from_search' => true,
 		));
 		#######################
 	}
