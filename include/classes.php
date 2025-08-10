@@ -5,7 +5,7 @@ class mf_sms
 	var $post_type = 'mf_sms';
 	var $meta_prefix = "";
 	var $message_type = 'sms';
-	var $chars_double = array("|", "^", "€", "{", "}", "[", "~", "]", "\\"); //, "\n", "\r", '\"', "\'"
+	var $chars_double = array("|", "^", "€", "{", "}", "[", "~", "]", "\\");
 	var $chars_limit_single = 0;
 	var $chars_limit_multiple = 0;
 	var $sms_limit = 0;
@@ -254,7 +254,7 @@ class mf_sms
 
 					else
 					{
-						do_log("Error while sending SMS through Cellsynt: ".htmlspecialchars($content)." (".var_export($data, true).")");
+						do_log(__FUNCTION__." - ".$setting_sms_provider.": ".htmlspecialchars($content)." (".var_export($data, true).")");
 
 						$message = htmlspecialchars($content);
 					}
@@ -316,11 +316,11 @@ class mf_sms
 					{
 						case 200:
 						case 201:
-							$json = json_decode($content, true);
+							$arr_json = json_decode($content, true);
 
-							foreach($json as $r)
+							foreach($arr_json as $r)
 							{
-								//do_log("JSON Row: ".var_export($r, true));
+								//do_log(__FUNCTION__." - ".$setting_sms_provider." - JSON: ".var_export($r, true));
 
 								/*{
 									"ID": 65416,
@@ -362,7 +362,7 @@ class mf_sms
 						break;
 
 						default:
-							do_log("IP1SMS Error: ".$headers['http_code']." (".htmlspecialchars($content).", ".var_export($arr_post_data, true).")");
+							do_log(__FUNCTION__." - ".$setting_sms_provider.": ".$headers['http_code']." (".htmlspecialchars($content).", ".var_export($arr_post_data, true).")");
 
 							$message = htmlspecialchars($content);
 						break;
@@ -432,43 +432,61 @@ class mf_sms
 					{
 						case 200:
 						case 201:
-							$json = json_decode($content, true);
+							$arr_json = json_decode($content, true);
 
-							foreach($json as $r)
+							if(is_array($arr_json))
 							{
-								//do_log("JSON Row: ".var_export($r, true));
+								foreach($arr_json as $r)
+								{
+									do_log(__FUNCTION__." - ".$setting_sms_provider." - JSON: ".var_export($r, true));
 
-								/*{
-									"id": 172122,
-									"smsCount": 2,
-									"totalCost": 0.6800
-								}*/
+									/*{
+									  "id": 42,
+									  "smsCount": 2,
+									  "cost": 0.00234,
+									  "rejected": {
+										"invalid": [
+										  {
+											"number": "+46701740605",
+											"reason": "invalid_number_format"
+										  }
+										],
+										"optedOut": [
+										  "+46701740605"
+										]
+									  }
+									}*/
 
-								$post_data = array(
-									'post_type' => $this->post_type,
-									//'post_status' => $r['Status'],
-									'post_name' => $data['from'],
-									'post_title' => $data['to'],
-									//'post_excerpt' => $r['ID'],
-									'post_content' => $data['text'],
-									'post_author' => $data['user_id'],
-									'meta_input' => apply_filters('filter_meta_input', array(
-										//$this->meta_prefix.'ID' => $r['ID'],
-										$this->meta_prefix.'trackingids' => $r['id'],
-										$this->meta_prefix.'from' => $data['from'],
-										$this->meta_prefix.'cost' => $r['totalCost'],
-										$this->meta_prefix.'amount' => $r['smsCount'],
-									)),
-								);
+									$post_data = array(
+										'post_type' => $this->post_type,
+										//'post_status' => $r['Status'],
+										'post_name' => $data['from'],
+										'post_title' => $data['to'],
+										//'post_excerpt' => $r['ID'],
+										'post_content' => $data['text'],
+										'post_author' => $data['user_id'],
+										'meta_input' => apply_filters('filter_meta_input', array(
+											$this->meta_prefix.'trackingids' => $r['id'],
+											$this->meta_prefix.'from' => $data['from'],
+											$this->meta_prefix.'cost' => $r['cost'],
+											$this->meta_prefix.'amount' => $r['smsCount'],
+										)),
+									);
 
-								wp_insert_post($post_data);
+									wp_insert_post($post_data);
+								}
+							}
+
+							else
+							{
+								do_log(__FUNCTION__." - ".$setting_sms_provider.": ".htmlspecialchars($content)." -> ".var_export($arr_json, true));
 							}
 
 							$sent = true;
 						break;
 
 						default:
-							do_log("Pixie Error: ".$headers['http_code']." (".htmlspecialchars($content).", ".var_export($arr_post_data, true).")");
+							do_log(__FUNCTION__." - ".$setting_sms_provider.": ".$headers['http_code']." (".htmlspecialchars($content).", ".var_export($arr_post_data, true).")");
 
 							$message = $content;
 						break;
@@ -521,7 +539,7 @@ class mf_sms
 						{
 							case 200:
 							case 201:
-								$json = json_decode($content, true);
+								$arr_json = json_decode($content, true);
 
 								/*{
 									"Created": "2019-05-21T17:53:36.3333017+00:00",
@@ -544,13 +562,13 @@ class mf_sms
 									"Message": "sample string 8"
 								}*/
 
-								$wpdb->query($wpdb->prepare("UPDATE ".$wpdb->posts." SET post_status = '%d' WHERE post_type = %s AND post_excerpt = %s", $json['Status'], $this->post_type, $json['ID']));
+								$wpdb->query($wpdb->prepare("UPDATE ".$wpdb->posts." SET post_status = '%d' WHERE post_type = %s AND post_excerpt = %s", $arr_json['Status'], $this->post_type, $arr_json['ID']));
 
 								return true;
 							break;
 
 							default:
-								do_log("Error while getting SMS status through IP1SMS: ".$headers['http_code']." (".htmlspecialchars($content).")");
+								do_log(__FUNCTION__." - ".$setting_sms_provider.": ".$headers['http_code']." (".htmlspecialchars($content).")");
 
 								return false;
 							break;
