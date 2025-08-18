@@ -436,45 +436,41 @@ class mf_sms
 
 							if(is_array($arr_json))
 							{
-								foreach($arr_json as $r)
-								{
-									do_log(__FUNCTION__." - ".$setting_sms_provider." - JSON: ".var_export($r, true));
+								do_log(__FUNCTION__." - ".$setting_sms_provider." - JSON: ".var_export($arr_json, true));
 
-									/*{
-									  "id": 42,
-									  "smsCount": 2,
-									  "cost": 0.00234,
-									  "rejected": {
-										"invalid": [
-										  {
-											"number": "+46701740605",
-											"reason": "invalid_number_format"
-										  }
-										],
-										"optedOut": [
-										  "+46701740605"
-										]
+								/*{
+								  "id": 42,
+								  "smsCount": 2,
+								  "cost": 0.00234,
+								  "rejected": {
+									"invalid": [
+									  {
+										"number": "+46701740605",
+										"reason": "invalid_number_format"
 									  }
-									}*/
+									],
+									"optedOut": [
+									  "+46701740605"
+									]
+								  }
+								}*/
 
-									$post_data = array(
-										'post_type' => $this->post_type,
-										//'post_status' => $r['Status'],
-										'post_name' => $data['from'],
-										'post_title' => $data['to'],
-										//'post_excerpt' => $r['ID'],
-										'post_content' => $data['text'],
-										'post_author' => $data['user_id'],
-										'meta_input' => apply_filters('filter_meta_input', array(
-											$this->meta_prefix.'trackingids' => $r['id'],
-											$this->meta_prefix.'from' => $data['from'],
-											$this->meta_prefix.'cost' => $r['cost'],
-											$this->meta_prefix.'amount' => $r['smsCount'],
-										)),
-									);
+								$post_data = array(
+									'post_type' => $this->post_type,
+									//'post_status' => $arr_json['Status'],
+									'post_name' => $data['from'],
+									'post_title' => $data['to'],
+									'post_content' => $data['text'],
+									'post_author' => $data['user_id'],
+									'meta_input' => apply_filters('filter_meta_input', array(
+										$this->meta_prefix.'trackingids' => $arr_json['id'],
+										$this->meta_prefix.'from' => $data['from'],
+										$this->meta_prefix.'cost' => $arr_json['cost'],
+										$this->meta_prefix.'amount' => $arr_json['smsCount'],
+									)),
+								);
 
-									wp_insert_post($post_data);
-								}
+								wp_insert_post($post_data);
 							}
 
 							else
