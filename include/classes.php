@@ -105,7 +105,14 @@ class mf_sms
 	function get_from_for_select()
 	{
 		$setting_sms_senders = get_option('setting_sms_senders');
-		$meta_sms_phone = get_user_meta(get_current_user_id(), 'meta_sms_phone', true);
+
+		$profile_phone = get_the_author_meta('profile_phone', get_current_user_id());
+
+		if($profile_phone == '')
+		{
+			$profile_phone = get_user_meta(get_current_user_id(), 'meta_sms_phone', true);
+		}
+
 		$user_data = get_userdata(get_current_user_id());
 
 		$arr_data = array(
@@ -125,11 +132,11 @@ class mf_sms
 			}
 		}
 
-		if($meta_sms_phone != '')
+		if($profile_phone != '')
 		{
-			$meta_sms_phone = $this->shorten_sender_name($meta_sms_phone);
+			$profile_phone = $this->shorten_sender_name($profile_phone);
 
-			$arr_data[$meta_sms_phone] = $meta_sms_phone;
+			$arr_data[$profile_phone] = $profile_phone;
 		}
 
 		if($user_data->display_name != '')
@@ -503,6 +510,10 @@ class mf_sms
 
 		if($obj_cron->is_running == false)
 		{
+			replace_user_meta(array('old' => 'meta_sms_phone', 'new' => 'profile_phone'));
+
+			// Get status
+			##################################
 			$setting_sms_provider = get_option('setting_sms_provider');
 			$setting_sms_username = get_option('setting_sms_username');
 			$setting_sms_password = get_option('setting_sms_password');
@@ -572,6 +583,7 @@ class mf_sms
 					}
 				break;
 			}
+			##################################
 		}
 
 		$obj_cron->end();
@@ -585,7 +597,7 @@ class mf_sms
 			'labels' => array(
 				'name' => __("SMS", 'lang_sms'),
 				'singular_name' => __("SMS", 'lang_sms'),
-				'menu_name' => __("SMS", 'lang_sms')
+				'menu_name' => __("SMS", 'lang_sms'),
 			),
 			'public' => false,
 		));
@@ -787,7 +799,12 @@ class mf_sms
 
 	function user_contactmethods($profile_fields)
 	{
-		$profile_fields['meta_sms_phone'] = __("Phone number", 'lang_sms');
+		$setting_users_add_profile_fields = get_option('setting_users_add_profile_fields');
+
+		if(!is_array($setting_users_add_profile_fields) || !in_array('profile_phone', $setting_users_add_profile_fields))
+		{
+			$profile_fields['profile_phone'] = __("Phone Number", 'lang_sms');
+		}
 
 		return $profile_fields;
 	}
@@ -802,9 +819,14 @@ class mf_sms
 
 		else
 		{
-			$meta_sms_phone = get_user_meta(get_current_user_id(), 'meta_sms_phone', true);
+			$profile_phone = get_the_author_meta('profile_phone', get_current_user_id());
 
-			if($meta_sms_phone == '')
+			if($profile_phone == '')
+			{
+				$profile_phone = get_user_meta(get_current_user_id(), 'meta_sms_phone', true);
+			}
+
+			if($profile_phone == '')
 			{
 				$sms_link = admin_url("profile.php");
 				$sms_text = __("You have not entered a cell phone number in your profile. Please do so, and then you can start sending messages", 'lang_sms');
