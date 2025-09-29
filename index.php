@@ -3,7 +3,7 @@
 Plugin Name: MF SMS
 Plugin URI: https://github.com/frostkom/mf_sms
 Description:
-Version: 2.7.19
+Version: 2.7.20
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://martinfors.se
@@ -53,7 +53,7 @@ if(!function_exists('is_plugin_active') || function_exists('is_plugin_active') &
 
 		mf_uninstall_plugin(array(
 			'options' => array('setting_sms_provider', 'setting_sms_username', 'setting_sms_password', 'setting_sms_senders'),
-			'meta' => array('meta_sms_phone'),
+			'user_meta' => array('meta_sms_phone'),
 			'post_types' => array($obj_sms->post_type),
 		));
 	}

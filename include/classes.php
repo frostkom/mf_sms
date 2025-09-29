@@ -598,6 +598,10 @@ class mf_sms
 				'name' => __("SMS", 'lang_sms'),
 				'singular_name' => __("SMS", 'lang_sms'),
 				'menu_name' => __("SMS", 'lang_sms'),
+				'all_items' => __('List', 'lang_sms'),
+				'edit_item' => __('Edit', 'lang_sms'),
+				'view_item' => __('View', 'lang_sms'),
+				'add_new_item' => __('Add New', 'lang_sms'),
 			),
 			'public' => false,
 		));
