@@ -591,6 +591,8 @@ class mf_sms
 
 	function init()
 	{
+		load_plugin_textdomain('lang_sms', false, str_replace("/include", "", dirname(plugin_basename(__FILE__)))."/lang/");
+
 		// Post types
 		#######################
 		register_post_type($this->post_type, array(
