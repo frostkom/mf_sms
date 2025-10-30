@@ -89,9 +89,11 @@ echo "<div class='wrap'>
 			<div id='postbox-container-1'>
 				<div class='postbox'>
 					<h3 class='hndle'><span>".__("Filter", 'lang_sms')."</span></h3>
-					<form method='post' class='inside mf_form'>"
-						.show_select(array('data' => $arr_data_months, 'name' => 'dteSmsMonth', 'value' => $dteSmsMonth, 'xtra' => "rel='submit_change' class='is_disabled' disabled"))
-					."</form>
+					<div class='inside'>
+						<form".apply_filters('get_form_attr', "").">"
+							.show_select(array('data' => $arr_data_months, 'name' => 'dteSmsMonth', 'value' => $dteSmsMonth, 'xtra' => "rel='submit_change' class='is_disabled' disabled"))
+						."</form>
+					</div>
 				</div>
 				<div class='postbox'>
 					<h3 class='hndle'><span>".__("Overall", 'lang_sms')."</span></h3>
