@@ -2,7 +2,7 @@
 
 class mf_sms
 {
-	var $post_type = 'mf_sms';
+	var $post_type = __CLASS__;
 	var $meta_prefix = "";
 	var $message_type = 'sms';
 	var $chars_double = array("|", "^", "€", "{", "}", "[", "~", "]", "\\");
@@ -820,6 +820,8 @@ class mf_sms
 
 	function add_group_list_amount_actions($arr_actions, $post_id)
 	{
+		do_action('load_font_awesome');
+
 		if(count($this->get_from_for_select()) > 1)
 		{
 			$sms_link = admin_url("admin.php?page=mf_group/send/index.php&intGroupID=".$post_id."&type=sms");
