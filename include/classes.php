@@ -986,7 +986,7 @@ if(class_exists('mf_list_table'))
 						break;
 					}
 
-					$amount_reported = get_post_meta($item['ID'], $this->meta_prefix.'amount', true);
+					$amount_reported = get_post_meta($item['ID'], $obj_sms->meta_prefix.'amount', true);
 
 					if($item['post_excerpt'] != '')
 					{
@@ -995,7 +995,7 @@ if(class_exists('mf_list_table'))
 
 					else
 					{
-						$trackingids = get_post_meta($item['ID'], $this->meta_prefix.'trackingids', true);
+						$trackingids = get_post_meta($item['ID'], $obj_sms->meta_prefix.'trackingids', true);
 					}
 
 					$amount_calculated = $obj_sms->calculate_amount($item['post_content']);
@@ -1019,7 +1019,7 @@ if(class_exists('mf_list_table'))
 				break;
 
 				case 'post_name':
-					$post_from = get_post_meta($item['ID'], $this->meta_prefix.'from', true);
+					$post_from = get_post_meta($item['ID'], $obj_sms->meta_prefix.'from', true);
 
 					if($post_from != '')
 					{
