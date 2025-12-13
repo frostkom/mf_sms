@@ -808,7 +808,7 @@ class mf_sms
 
 	function user_contactmethods($profile_fields)
 	{
-		$setting_users_add_profile_fields = get_option('setting_users_add_profile_fields');
+		$setting_users_add_profile_fields = get_site_option('setting_users_add_profile_fields');
 
 		if(!is_array($setting_users_add_profile_fields) || !in_array('profile_phone', $setting_users_add_profile_fields))
 		{
