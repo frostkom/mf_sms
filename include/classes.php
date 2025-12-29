@@ -751,8 +751,8 @@ class mf_sms
 		if($this->count_sent(array('limit' => 1)) > 0)
 		{
 			$menu_title = __("Statistics", 'lang_sms');
-			$menu_capability = 'update_core';
-			add_submenu_page($menu_start, $menu_title, $menu_title, $menu_capability, $menu_root."stats/index.php");
+			$menu_capability_temp = 'update_core';
+			add_submenu_page($menu_start, $menu_title, $menu_title, $menu_capability_temp, $menu_root."stats/index.php");
 		}
 
 		if(IS_EDITOR)
