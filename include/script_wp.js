@@ -98,14 +98,15 @@ jQuery(function($)
 				.children("span:first-child").text(sms_total)
 				.siblings("span").text(sms_cost);
 
-			$("button[name='btnGroupSend']").removeClass('is_disabled');
+			/*$("button[name='btnGroupSend']").removeClass('is_disabled');*/
 		}
 
 		else
 		{
 			$("#sms_cost").addClass('hide');
 
-			$("button[name='btnGroupSend']").addClass('is_disabled');
+			/* This will not disable it anayway, and it will display button when sending e-mail aswell */
+			/*$("button[name='btnGroupSend']").addClass('is_disabled');*/
 		}
 	}
 
