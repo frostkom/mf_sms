@@ -3,7 +3,7 @@
 Plugin Name: MF SMS
 Plugin URI: https://github.com/frostkom/mf_sms
 Description: Make it possible to send text messages
-Version: 2.7.32
+Version: 2.7.33
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://martinfors.se

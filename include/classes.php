@@ -681,7 +681,7 @@ class mf_sms
 		switch($option)
 		{
 			case 'cellsynt':
-				$description = sprintf(__("Use the URL %s for delivery reports", 'lang_sms'), plugin_dir_url(__FILE__)."sms_status.php");
+				$description = sprintf(__("Use the URL %s for delivery reports", 'lang_sms'), "<code>".plugin_dir_url(__FILE__)."sms_status.php</code>");
 			break;
 
 			default:
