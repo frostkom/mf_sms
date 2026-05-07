@@ -35,7 +35,7 @@ class mf_sms
 				$this->chars_limit_single = 160;
 				$this->chars_limit_multiple = 153;
 				$this->sms_limit = floor(1000 / 153);
-				$this->sms_price = 0.48;
+				$this->sms_price = 0.49;
 			break;
 
 			/*default:
