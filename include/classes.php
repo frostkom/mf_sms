@@ -755,7 +755,7 @@ class mf_sms
 			add_submenu_page($menu_start, $menu_title, $menu_title, $menu_capability_temp, $menu_root."stats/index.php");
 		}
 
-		if(IS_EDITOR)
+		if(IS_ADMINISTRATOR)
 		{
 			$menu_title = __("Settings", 'lang_sms');
 			add_submenu_page($menu_start, $menu_title, $menu_title, $menu_capability, admin_url("options-general.php?page=settings_mf_base#settings_sms"));
