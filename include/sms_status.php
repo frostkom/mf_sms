@@ -44,30 +44,30 @@ else
 {
 	$obj_sms = new mf_sms();
 
-	$wpdb->get_results($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_type = %s AND post_date > DATE_SUB(NOW(), INTERVAL 10 DAY) LIMIT 0, 1", $obj_sms->post_type));
+	$post_id = $wpdb->get_var($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." LEFT JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE post_type = %s AND (post_excerpt LIKE %s OR (meta_key = %s AND meta_value LIKE %s)) LIMIT 0, 1", $obj_sms->post_type, "%".$trackingid."%", $obj_sms->meta_prefix.'trackingids', "%".$trackingid."%"));
 
-	if($wpdb->num_rows > 0)
+	if($post_id > 0)
 	{
-		$post_id = $wpdb->get_var($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." LEFT JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE post_type = %s AND (post_excerpt LIKE %s OR (meta_key = %s AND meta_value LIKE %s)) LIMIT 0, 1", $obj_sms->post_type, "%".$trackingid."%", $obj_sms->meta_prefix.'trackingids', "%".$trackingid."%"));
+		$wpdb->query($wpdb->prepare("UPDATE ".$wpdb->posts." SET post_status = %s WHERE ID = '%d'", $status, $post_id));
 
-		if($post_id > 0)
+		if($wpdb->rows_affected == 1)
 		{
-			$wpdb->query($wpdb->prepare("UPDATE ".$wpdb->posts." SET post_status = %s WHERE ID = '%d'", $status, $post_id));
-
-			if($wpdb->rows_affected == 1)
-			{
-				header("Status: 200 OK");
-			}
-
-			else
-			{
-				do_log("No trackingIDs were updated (".var_export($_REQUEST, true).", ".$wpdb->last_query.")");
-
-				header("Status: 500 Internal Server Error");
-			}
+			header("Status: 200 OK");
 		}
 
 		else
+		{
+			do_log("No trackingIDs were updated (".var_export($_REQUEST, true).", ".$wpdb->last_query.")");
+
+			header("Status: 500 Internal Server Error");
+		}
+	}
+
+	else
+	{
+		$wpdb->get_results($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_type = %s AND post_date > DATE_SUB(NOW(), INTERVAL 10 DAY) LIMIT 0, 1", $obj_sms->post_type));
+
+		if($wpdb->num_rows > 0)
 		{
 			do_log("There were no trackingIDs that matched (".var_export($_REQUEST, true).", ".$wpdb->last_query.")");
 
