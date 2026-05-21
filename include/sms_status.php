@@ -44,29 +44,34 @@ else
 {
 	$obj_sms = new mf_sms();
 
-	$post_id = $wpdb->get_var($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." LEFT JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE post_type = %s AND (post_excerpt LIKE %s OR (meta_key = %s AND meta_value LIKE %s)) LIMIT 0, 1", $obj_sms->post_type, "%".$trackingid."%", $obj_sms->meta_prefix.'trackingids', "%".$trackingid."%"));
+	$wpdb->get_results($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_type = %s AND post_date > DATE_SUB(NOW(), INTERVAL 10 DAY) LIMIT 0, 1", $obj_sms->post_type));
 
-	if($post_id > 0)
+	if($wpdb->num_rows > 0)
 	{
-		$wpdb->query($wpdb->prepare("UPDATE ".$wpdb->posts." SET post_status = %s WHERE ID = '%d'", $status, $post_id));
+		$post_id = $wpdb->get_var($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." LEFT JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE post_type = %s AND (post_excerpt LIKE %s OR (meta_key = %s AND meta_value LIKE %s)) LIMIT 0, 1", $obj_sms->post_type, "%".$trackingid."%", $obj_sms->meta_prefix.'trackingids', "%".$trackingid."%"));
 
-		if($wpdb->rows_affected == 1)
+		if($post_id > 0)
 		{
-			header("Status: 200 OK");
+			$wpdb->query($wpdb->prepare("UPDATE ".$wpdb->posts." SET post_status = %s WHERE ID = '%d'", $status, $post_id));
+
+			if($wpdb->rows_affected == 1)
+			{
+				header("Status: 200 OK");
+			}
+
+			else
+			{
+				do_log("No trackingIDs were updated (".var_export($_REQUEST, true).", ".$wpdb->last_query.")");
+
+				header("Status: 500 Internal Server Error");
+			}
 		}
 
 		else
 		{
-			do_log("No trackingIDs were updated (".var_export($_REQUEST, true).", ".$wpdb->last_query.")");
+			do_log("There were no trackingIDs that matched (".var_export($_REQUEST, true).", ".$wpdb->last_query.")");
 
 			header("Status: 500 Internal Server Error");
 		}
-	}
-
-	else
-	{
-		do_log("There were no trackingIDs that matched (".var_export($_REQUEST, true).", ".$wpdb->last_query.")");
-
-		header("Status: 500 Internal Server Error");
 	}
 }
