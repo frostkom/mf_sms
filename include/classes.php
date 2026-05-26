@@ -136,15 +136,15 @@ class mf_sms
 		{
 			$profile_phone = $this->shorten_sender_name($profile_phone);
 
-			$arr_data[$profile_phone] = $profile_phone;
+			$arr_data[$profile_phone] = $user_data->display_name." (".$profile_phone.")";
 		}
 
-		if($user_data->display_name != '')
+		/*if($user_data->display_name != '')
 		{
 			$display_name = $this->shorten_sender_name($user_data->display_name);
 
 			$arr_data[$display_name] = $display_name;
-		}
+		}*/
 
 		return $arr_data;
 	}
@@ -419,7 +419,7 @@ class mf_sms
 
 					$arr_headers = [
 						'Content-Type: application/json',
-						'Authorization: '.$api_key,
+						'Authorization: Bearer '.$api_key,
 					];
 
 					$arr_post_data = [
@@ -800,7 +800,7 @@ class mf_sms
 	{
 		if($data['type'] == $this->message_type)
 		{
-			$data['html'] .= $this->get_message_count_html(array('display_total' => true));
+			//$data['html'] .= $this->get_message_count_html(array('display_total' => true));
 		}
 
 		return $data;
@@ -853,23 +853,6 @@ class mf_sms
 		$arr_actions['send_sms'] = "<a href='".$sms_link."' title='".$sms_text."'><i class='fa fa-mobile-alt fa-lg'></i></a>";
 
 		return $arr_actions;
-	}
-
-	function group_init_other()
-	{
-		// Do I really need this now when it is an action?
-
-		//Must be here to make sure that send_sms() is loaded
-		##################
-		/*require_once(ABSPATH."wp-admin/includes/plugin.php");
-
-		if(is_plugin_active("mf_sms/index.php"))
-		{
-			require_once(ABSPATH."wp-content/plugins/mf_sms/include/classes.php");
-		}
-		##################
-
-		$obj_sms = new mf_sms();*/
 	}
 
 	function group_send_other($data)
