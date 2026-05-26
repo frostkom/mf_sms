@@ -46,7 +46,7 @@ class mf_sms
 
 	function strip_phone_no($data)
 	{
-		$exkludera = array("/", "-", " ");
+		$exkludera = array("/", "-", " ", "(0)");
 
 		return str_replace($exkludera, "", $data['number']);
 	}
@@ -180,6 +180,8 @@ class mf_sms
 
 		if(!isset($data['country_no'])){	$data['country_no'] = "46";}
 		if(!isset($data['user_id'])){		$data['user_id'] = get_current_user_id();}
+
+		$data['text'] = preg_replace('/<br\s*\/?>/i', "\n", $data['text']);
 
 		if($data['to'] != '' && $data['text'] != '')
 		{
@@ -404,7 +406,7 @@ class mf_sms
 								}
 							}
 
-							$data['from'] = "+".$data['country_no'].$data['from'];
+							$data['from'] = $data['country_no'].$data['from']; //"+".
 						}
 
 						else
@@ -415,11 +417,9 @@ class mf_sms
 						}
 					}
 
-					$api_key = $setting_sms_password;
-
 					$arr_headers = [
 						'Content-Type: application/json',
-						'Authorization: Bearer '.$api_key,
+						'Authorization: Bearer '.$setting_sms_password,
 					];
 
 					$arr_post_data = [
@@ -489,7 +489,7 @@ class mf_sms
 						break;
 
 						default:
-							do_log(__FUNCTION__." - ".$setting_sms_provider.": ".$headers['http_code']." (".htmlspecialchars($content).", ".var_export($arr_post_data, true).")");
+							do_log(__FUNCTION__." - ".$setting_sms_provider.": ".$headers['http_code'].", ".var_export($arr_headers, true)." + ".var_export($arr_post_data, true)." -> ".$content);
 
 							$message = $content;
 						break;
