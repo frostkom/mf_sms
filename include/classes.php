@@ -443,7 +443,7 @@ class mf_sms
 
 							if(is_array($arr_json))
 							{
-								do_log(__FUNCTION__." - ".$setting_sms_provider." - JSON: ".var_export($arr_json, true));
+								//do_log(__FUNCTION__." - ".$setting_sms_provider." - JSON: ".var_export($arr_json, true));
 
 								/*{
 								  "id": 42,
@@ -681,6 +681,7 @@ class mf_sms
 		switch($option)
 		{
 			case 'cellsynt':
+			case 'pixie':
 				$description = sprintf(__("Use the URL %s for delivery reports", 'lang_sms'), "<code>".plugin_dir_url(__FILE__)."sms_status.php</code>");
 			break;
 

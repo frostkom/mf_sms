@@ -16,6 +16,8 @@ $remote_server_ip = apply_filters('get_current_visitor_ip', "");
 
 $arr_ips = [];
 
+// Cellsynt
+###################
 for($i = 64; $i <= 71; $i++)
 {
 	$arr_ips[] = "83.138.162.".$i;
@@ -25,6 +27,12 @@ for($i = 144; $i <= 151; $i++)
 {
 	$arr_ips[] = "159.135.143.".$i;
 }
+###################
+
+// Pixie
+###################
+$arr_ips[] = "34.140.202.119";
+###################
 
 if(!in_array($remote_server_ip, $arr_ips))
 {
