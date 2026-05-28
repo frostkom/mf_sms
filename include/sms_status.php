@@ -9,41 +9,53 @@ if(!defined('ABSPATH'))
 
 include_once("classes.php");
 
-$trackingid = check_var('trackingid', 'char');
-$status = check_var('status', 'char');
-
 $remote_server_ip = apply_filters('get_current_visitor_ip', "");
+
+$service = check_var('service', 'char', 'cellsynt');
 
 $arr_ips = [];
 
-// Cellsynt
-###################
-for($i = 64; $i <= 71; $i++)
+switch($service)
 {
-	$arr_ips[] = "83.138.162.".$i;
-}
+	case 'cellsynt':
+		$tracking_id = check_var('trackingid', 'char');
+		$status = check_var('status', 'char');
 
-for($i = 144; $i <= 151; $i++)
-{
-	$arr_ips[] = "159.135.143.".$i;
-}
-###################
+		for($i = 64; $i <= 71; $i++)
+		{
+			$arr_ips[] = "83.138.162.".$i;
+		}
 
-// Pixie
-###################
-$arr_ips[] = "34.140.202.119";
-###################
+		for($i = 144; $i <= 151; $i++)
+		{
+			$arr_ips[] = "159.135.143.".$i;
+		}
+	break;
+
+	case 'pixie':
+		$raw = file_get_contents('php://input');
+		$arr_json = json_decode($raw, true);
+
+		$tracking_id = $arr_json['id']; // smsId
+		$status = strtolower($arr_json['outgoingStatus']['code']);
+
+		$arr_ips[] = "34.140.202.119";
+	break;
+}
 
 if(!in_array($remote_server_ip, $arr_ips))
 {
-	do_log("Wrong IP: ".$remote_server_ip.", ".$trackingid.", ".$status);
+	do_log("Wrong IP: ".$remote_server_ip.", ".$tracking_id.", ".$status);
 
 	header("Status: 503 Unknown IP-address");
 }
 
-else if($trackingid == '' || $status == '')
+else if($tracking_id == '' || $status == '')
 {
-	do_log("No trackingIDs or status attached (".var_export($_REQUEST, true).")");
+	$raw = file_get_contents('php://input');
+	$arr_json = json_decode($raw, true);
+
+	do_log("No trackingIDs or status attached (".var_export($_REQUEST, true).", ".var_export($arr_json, true).")");
 
 	header("Status: 400 Bad Request");
 }
@@ -52,7 +64,7 @@ else
 {
 	$obj_sms = new mf_sms();
 
-	$post_id = $wpdb->get_var($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." LEFT JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE post_type = %s AND (post_excerpt LIKE %s OR (meta_key = %s AND meta_value LIKE %s)) LIMIT 0, 1", $obj_sms->post_type, "%".$trackingid."%", $obj_sms->meta_prefix.'trackingids', "%".$trackingid."%"));
+	$post_id = $wpdb->get_var($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." LEFT JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE post_type = %s AND (post_excerpt LIKE %s OR (meta_key = %s AND meta_value LIKE %s)) LIMIT 0, 1", $obj_sms->post_type, "%".$tracking_id."%", $obj_sms->meta_prefix.'trackingids', "%".$tracking_id."%"));
 
 	if($post_id > 0)
 	{

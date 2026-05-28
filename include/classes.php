@@ -682,7 +682,7 @@ class mf_sms
 		{
 			case 'cellsynt':
 			case 'pixie':
-				$description = sprintf(__("Use the URL %s for delivery reports", 'lang_sms'), "<code>".plugin_dir_url(__FILE__)."sms_status.php</code>");
+				$description = sprintf(__("Use the URL %s for delivery reports", 'lang_sms'), "<code>".plugin_dir_url(__FILE__)."sms_status.php?service=".$option."</code>");
 			break;
 
 			default:
@@ -926,6 +926,8 @@ if(class_exists('mf_list_table'))
 						case 'delivered':
 						//IP.1
 						case 22:
+						// Pixie
+						case 'delivered':
 							$status_icon = "fa fa-check green";
 						break;
 
