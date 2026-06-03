@@ -11,12 +11,13 @@ include_once("classes.php");
 
 $remote_server_ip = apply_filters('get_current_visitor_ip', "");
 
-$service = check_var('service', 'char', 'cellsynt');
+$service = check_var('service', 'char', true, 'cellsynt');
 
 $arr_ips = [];
 
 switch($service)
 {
+	default:
 	case 'cellsynt':
 		$tracking_id = check_var('trackingid', 'char');
 		$status = check_var('status', 'char');
@@ -45,7 +46,7 @@ switch($service)
 
 if(!in_array($remote_server_ip, $arr_ips))
 {
-	do_log("Wrong IP: ".$remote_server_ip.", ".$tracking_id.", ".$status);
+	do_log("Wrong IP: ".$service.", ".$remote_server_ip.", ".$tracking_id.", ".$status);
 
 	header("Status: 503 Unknown IP-address");
 }
