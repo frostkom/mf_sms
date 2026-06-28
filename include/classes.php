@@ -46,7 +46,7 @@ class mf_sms
 
 	function strip_phone_no($data)
 	{
-		$exkludera = array("/", "-", " ", "(0)");
+		$exkludera = array("/", "-", " ", "(0)", "(", ")");
 
 		return str_replace($exkludera, "", $data['number']);
 	}
@@ -489,7 +489,7 @@ class mf_sms
 						break;
 
 						default:
-							do_log(__FUNCTION__." - ".$setting_sms_provider.": ".$headers['http_code'].", ".var_export($arr_headers, true)." + ".var_export($arr_post_data, true)." -> ".$content);
+							//do_log(__FUNCTION__." - ".$setting_sms_provider.": ".$headers['http_code'].", ".var_export($arr_headers, true)." + ".var_export($arr_post_data, true)." -> ".$content);
 
 							$message = $content;
 						break;

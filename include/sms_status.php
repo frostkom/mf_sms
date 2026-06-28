@@ -84,15 +84,15 @@ else
 		}
 	}
 
-	else
+	/*else
 	{
 		$wpdb->get_results($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_type = %s AND post_date > DATE_SUB(NOW(), INTERVAL 10 DAY) LIMIT 0, 1", $obj_sms->post_type));
 
 		if($wpdb->num_rows > 0)
 		{
-			do_log("There were no trackingIDs that matched (".var_export($_REQUEST, true).", ".$wpdb->last_query.")");
+			do_log("There were trackingIDs that matched (".var_export($_REQUEST, true)." + ".$tracking_id." + ".$status.", ".$wpdb->last_query.")");
 
 			header("Status: 500 Internal Server Error");
 		}
-	}
+	}*/
 }
